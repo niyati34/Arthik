@@ -1,0 +1,29 @@
+{
+    "incomes": [
+        {
+            "id": "1",
+            "title": "Salary",
+            "amount": 5000,
+            "date": "2024-09-01",
+            "category": "salary",
+            "description": "Monthly salary for September"
+        }
+        
+    ],
+    "expenses": [
+        {
+            "_id": "1",
+            "title": "Groceries",
+            "amount": 50,
+            "date": "2023-09-20",
+            "category": "groceries",
+            "description": "Weekly grocery shopping"
+        },{
+            "_id": "9",
+            "title": "Groceries",
+            "amount": 50,
+            "date": "2023-09-20",
+            "category": "groceries",
+            "description": "Weekly grocery shopping"
+        }]
+}

@@ -1,0 +1,127 @@
+.features-section {
+   width: auto;
+   max-width: auto;
+   height: auto; /* Set height to make it square */
+   margin-top: 0px;
+   text-align: center;
+   position: relative;
+   overflow: hidden; /* Prevent overflow */
+   background-image: url('../assets1/fbg1.png'); /* Add your background image here */
+   background-size: cover; /* Cover the entire section */
+   background-position: center; /* Center the background image */
+   background-repeat: no-repeat; /* Prevent repetition */
+}
+
+.features-section h2 {
+   font-size: 46px;
+   margin-bottom: 20px;
+   margin-top: 100px;
+   background: linear-gradient(70deg, #00dbde, #fc00ff, #00f260, #0575e6);
+   background-size: 400%;
+   background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+   animation: gradientAnimation 8s linear infinite;
+   position: relative;
+}
+
+.feature-blocks {
+   display: flex;
+   flex-direction: column; /* Stacks blocks vertically */
+   align-items: center; /* Centers blocks horizontally */
+   gap: 20px; /* Space between blocks */
+   z-index: 1;
+   padding: 20px; /* Add some padding */
+}
+
+.feature-block {
+   width: 90%; /* Set block width to 90% of the container */
+   max-width: 600px; /* Limit the maximum width */
+   border-radius: 15px; /* Rounded corners */
+   background: rgba(255, 255, 255, 0.1); /* Semi-transparent white background */
+   backdrop-filter: blur(10px); /* Blur background */
+   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Soft shadow */
+   padding: 20px; /* Inner padding */
+   transition: transform 0.5s ease, box-shadow 0.5s ease; /* Smooth transition */
+   margin-bottom: 300px;
+}
+
+/* Hover effect */
+.feature-block:hover {
+   transform: translateY(-20px); /* Lift effect */
+   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Stronger shadow on hover */
+}
+
+/* Feature Block Headings */
+.feature-block h3 {
+   font-size: 24px; /* Smaller heading */
+   color: #00dbde; /* Color for headings */
+   margin-bottom: 20px; /* Space below headings */
+   position: relative; /* Position relative for pseudo-elements */
+}
+
+/* Add a decorative line under headings */
+.feature-block h3::after {
+   content: "";
+   display: block;
+   width: 50px; /* Length of the line */
+   height: 4px; /* Thickness of the line */
+   background: #00dbde; /* Color of the line */
+   margin: 10px auto; /* Center the line */
+   border-radius: 2px; /* Rounded ends */
+}
+
+/* Feature Block Paragraphs */
+.feature-block p {
+   font-size: 16px; /* Font size for paragraph */
+   color: #f1f1f1; /* Softer color for description */
+   line-height: 1.5; /* Line height for readability */
+}
+
+/* Zig-zag pattern: Alternating positions */
+.feature-block:nth-child(odd) {
+   align-self: flex-start; /* Align block to the left */
+   margin-top: 70px;
+   margin-bottom: 70px;
+   transform: translateX(-100px) translateY(100px); /* Move left and down */
+   text-align: left;
+}
+
+.feature-block:nth-child(even) {
+   align-self: flex-end; /* Align block to the right */
+   margin-top: 70px;
+   margin-right: 40px;
+   margin-bottom: 70px;
+   transform: translateX(100px) translateY(100px); /* Move right and down */
+   text-align: right;
+}
+
+/* Animation when the blocks become visible */
+.feature-block.visible {
+   opacity: 1;
+   transform: translateX(0) translateY(0); /* Move to normal position */
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+   .feature-block {
+       width: 100%; /* Full width on mobile */
+       text-align: center; /* Center text on mobile */
+   }
+
+   .feature-block:nth-child(odd),
+   .feature-block:nth-child(even) {
+       align-self: center; /* Center blocks on mobile */
+       text-align: center;
+   }
+}
+
+/* Keyframes for gradient animation */
+@keyframes gradientAnimation {
+   0% {
+       background-position: 0% 50%;
+   }
+   100% {
+       background-position: 100% 50%;
+   }
+}

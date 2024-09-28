@@ -1,0 +1,106 @@
+/* Contact Section */
+.contact-section {
+   width: auto;
+   max-width: 1200px; /* Limit width for larger screens */
+   margin-top: 40px; /* Space between sections */
+   padding: 50px; /* Padding around the section */
+   padding-left: 270px;
+   text-align: center;
+   position: relative;
+   background: url('../assets1/neon8.jpg') no-repeat center center/cover; /* Add background image */
+   color: #ffffff; /* White text color for better contrast */
+   border-radius: 20px; /* Round the corners of the section */
+   box-shadow: 0 10px 30px rgba(0, 242, 96, 0.6); /* Neon shadow */
+ }
+ 
+ /* Section Title */
+ .contact-section h2 {
+   margin-bottom: 30px;
+   margin-right: 200px;
+   font-size: 50px;
+   transition: background 0.3s ease, color 0.3s ease;
+   background: linear-gradient(70deg, #00dbde, #fc00ff, #00f260, #0575e6); /* Animated gradient colors */
+   background-size: 400%; /* Larger background size for animation */
+   background-clip: text;
+   -webkit-background-clip: text;
+   background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+   animation: gradientAnimation 8s linear infinite;
+ }
+ 
+ /* Contact Form Styles */
+ .contact-form {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 20px; /* Space between form elements */
+   margin-right: 200px;
+   position: relative;
+ }
+ 
+ /* Input and Textarea Styles */
+ .contact-form input,
+ .contact-form textarea {
+   width: 80%; /* Full width of the form elements */
+   padding: 15px;
+   border-radius: 10px; /* Rounded corners */
+   border: 1px solid rgba(0, 242, 96, 0.4); /* Neon border color */
+   background: rgba(255, 255, 255, 0.1); /* Slightly transparent background */
+   color: #ffffff; /* White text color */
+   outline: none; /* Remove default outline */
+   box-shadow: 0 5px 15px rgba(0, 242, 96, 0.3); /* Neon shadow */
+   transition: all 0.3s ease; /* Smooth transitions */
+ }
+ 
+ /* Hover and Focus Effect for Inputs and Textarea */
+ .contact-form input:hover,
+ .contact-form textarea:hover,
+ .contact-form input:focus,
+ .contact-form textarea:focus {
+   border: 1px solid #00f260; /* Neon green border on focus */
+   box-shadow: 0 0 15px #00f260, 0 0 30px #00f260; /* Neon glow */
+   background: rgba(255, 255, 255, 0.15); /* Slightly lighter background */
+ }
+ 
+ /* Submit Button Styles */
+ .submit-button {
+   background: linear-gradient(45deg, #00c6ff, #0072ff); /* Gradient Colors */
+   border: none;
+   padding: 15px 30px; /* Increase padding for larger button */
+   color: #ffffff; /* White text */
+   font-size: 16px; /* Larger font size */
+   border-radius: 20px; /* Rounded corners */
+   margin-right: 80px;
+   cursor: pointer;
+   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transform */
+   box-shadow: 0 10px 30px rgba(0, 114, 255, 0.6); /* Initial neon shadow */
+ }
+ 
+ /* Hover Effect for Submit Button */
+ .submit-button:hover {
+   transform: translateY(-5px); /* Lift effect on hover */
+   box-shadow: 0 0 15px #00c6ff, 0 0 30px #00c6ff, 0 0 45px #00c6ff; /* Neon glow on hover */
+ }
+ 
+ /* Gradient Animation */
+ @keyframes gradientAnimation {
+   0% {
+     background-position: 0% 50%;
+   }
+   50% {
+     background-position: 100% 50%;
+   }
+   100% {
+     background-position: 0% 50%;
+   }
+ }
+ 
+ /* Responsive Design */
+ @media (max-width: 768px) {
+   .contact-form input,
+   .contact-form textarea {
+     width: 90%; /* Full width on small screens */
+   }
+ }
+ 

@@ -1,0 +1,41 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background: #000000; /* Dark background */
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); /* New Color Scheme */
+    scroll-behavior: smooth; 
+  }
+  
+  .App {
+    overflow-x: hidden;
+  }
+  
+  /* Global Styles */
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
+  }
+  
+  p {
+    margin: 0;
+    padding: 0;
+  }
+  
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    body, html {
+      font-size: 14px;
+    }
+  }

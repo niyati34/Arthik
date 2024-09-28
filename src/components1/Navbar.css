@@ -1,0 +1,136 @@
+/* Navbar Styles */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 10;
+    transition: background 0.3s ease, backdrop-filter 0.3s ease;
+  }
+  
+  .navbar.transparent {
+    background: transparent;
+  }
+  
+  .navbar.scrolled {
+    background: rgba(15, 12, 41, 0.4);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  
+  /* Logo Styling */
+  .logo {
+    transition: background 0.3s ease, color 0.3s ease;
+    background: linear-gradient(70deg, #FFD700, #C0C0C0, #6A0DAD, #008080 , #B76E79);
+    background-size: 400%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientAnimation 8s linear infinite;
+    flex: 0 1 auto;
+  }
+  
+  /* Nav Links Container */
+  .nav-links {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+    list-style-type: none;
+    margin: 0;
+    margin-right: 50px;
+    padding: 0;
+    overflow: visible;
+  }
+  
+  /* Nav Links Styling */
+  .nav-links a {
+    text-decoration: none;
+    font-size: 15px;
+    transition: background 0.3s ease, color 0.3s ease;
+    background: linear-gradient(70deg, #00dbde, #fc00ff, #00f260, #0575e6);
+    background-size: 400%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientAnimation 8s linear infinite;
+  }
+  
+  .nav-links a:hover {
+    background: linear-gradient(70deg, #00f260, #0575e6, #ff4e50, #f9d423);
+    background-size: 400%;
+     background-clip: text;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  /* Gradient Animation */
+  @keyframes gradientAnimation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .navbar {
+      padding: 15px 15px;
+    }
+    .nav-links {
+      gap: 10px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .navbar {
+      flex-wrap: wrap;
+      padding: 15px 10px;
+    }
+    .nav-links {
+      margin-left: auto;
+      gap: 5px;
+      justify-content: flex-end;
+    }
+    .nav-links a {
+      font-size: 16px;
+    }
+  }
+  
+  /* Additional styling for the Sign In/Sign Up link */
+  .signup-link {
+    font-size: 16px;
+    padding: 8px 20px; /* Padding for the button effect */
+    border: 2px solid #fff; /* Border around the link */
+    border-radius: 25px; /* Rounded corners */
+    background: linear-gradient(90deg, #ff4e50, #f9d423); /* Neon Gradient */
+    color: white; /* Text color */
+    transition: all 0.4s ease; /* Smooth transition */
+  }
+  
+  .signup-link:hover {
+    background: linear-gradient(90deg, #00dbde, #fc00ff); /* Change gradient on hover */
+    color: #fff; /* Keep the text color */
+  }
+  

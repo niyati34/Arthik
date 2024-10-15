@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import styled from 'styled-components';
-import bg from './img/bg.png';
+// Refactored asset imports for scalability (Oct 15, 2024)
+import bg from './assets1/neonwaves.svg';
 import { MainLayout } from './styles/Layouts';
 import Orb from './Components/Orb/Orb';
 import Navigation from './Components/Navigation/Navigation';

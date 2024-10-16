@@ -1,53 +1,33 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
-import avatar from '../../img/avatar.png';
-import { signout } from '../../utils/Icons';
-import { menuItems } from '../../utils/menuItems';
+import { Link } from 'react-router-dom';
+
+// Enhanced Navigation for scalability (Oct 16, 2024)
+const navLinks = [
+    { name: 'Home', path: '/home' },
+    { name: 'Features', path: '/features' },
+    { name: 'Budget', path: '/budget' },
+    { name: 'Expenses', path: '/expenses' },
+    { name: 'Income', path: '/income' },
+    { name: 'Goal Setter', path: '/goal-setter' },
+    { name: 'Testimonials', path: '/testimonials' },
+    { name: 'Pricing', path: '/pricing' },
+    { name: 'Contact', path: '/contact' },
+];
 
 function Navigation({ active, setActive }) {
     return (
-        <NavStyled>
-            <UserSection>
-                <img src={avatar} alt="User Avatar" />
-                <div className="text">
-                    <h2>Mike</h2>
-                    <p>Your Money</p>
-                </div>
-            </UserSection>
-            <MenuList>
-                {menuItems.map((item) => (
-                    <MenuItem
-                        key={item.id}
-                        onClick={() => setActive(item.id)}
-                        isActive={active === item.id}
-                    >
-                        <div className="item-box">
-                            {item.icon}
-                            <span>{item.title}</span>
-                        </div>
-                    </MenuItem>
+        <nav className="navigation">
+            <ul>
+                {navLinks.map((link, idx) => (
+                    <li key={link.name} className={active === idx + 1 ? 'active' : ''}>
+                        <Link to={link.path} onClick={() => setActive(idx + 1)}>{link.name}</Link>
+                    </li>
                 ))}
-            </MenuList>
-            <BottomNav>
-                <li>
-                    {signout} Sign Out
-                </li>
-            </BottomNav>
-        </NavStyled>
+            </ul>
+        </nav>
     );
 }
 
-// Keyframes for glowing animation
-const glowAnimation = keyframes`
-    0% { box-shadow: 0 0 5px #00ffab, 0 0 15px #00ffab; }
-    25% { box-shadow: 0 0 5px #ff00ab, 0 0 15px #ff00ab; }
-    50% { box-shadow: 0 0 5px #00f0ab, 0 0 15px #00f0ab; }
-    75% { box-shadow: 0 0 5px #00ffab, 0 0 15px #00ffab; }
-    100% { box-shadow: 0 0 5px #00ffab, 0 0 15px #00ffab; }
-`;
-
-const NavStyled = styled.nav`
-    padding: 1rem; /* Adjust padding */
     width: 374px;
     height: auto; /* Allow height to adjust based on content */
     background: #000; /* Solid black background */
@@ -152,4 +132,3 @@ const BottomNav = styled.div`
     }
 `;
 
-export default Navigation;

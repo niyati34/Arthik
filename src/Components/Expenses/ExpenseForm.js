@@ -14,6 +14,10 @@ function ExpenseForm({ addExpense }) {
         description: '',
     });
 
+    const categories = [
+        'Education', 'Groceries', 'Health', 'Subscriptions', 'Takeaways', 'Clothing', 'Travelling', 'Bills', 'Transport', 'Entertainment', 'Other'
+    ];
+
     const { title, amount, date, category, description } = inputState;
 
     const handleInput = (name) => (e) => {
@@ -22,18 +26,22 @@ function ExpenseForm({ addExpense }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (title && amount && date && category) {
-            addExpense({ title, amount, date, category, description });
-            setInputState({
-                title: '',
-                amount: '',
-                date: '',
-                category: '',
-                description: '',
-            });
-        } else {
-            alert("Please fill all fields");
+        if (!title || !amount || !date || !category) {
+            alert("Please fill all required fields");
+            return;
         }
+        if (isNaN(amount) || Number(amount) <= 0) {
+            alert("Amount must be a positive number");
+            return;
+        }
+        addExpense({ title, amount, date, category, description });
+        setInputState({
+            title: '',
+            amount: '',
+            date: '',
+            category: '',
+            description: '',
+        });
     };
 
     return (
@@ -69,14 +77,9 @@ function ExpenseForm({ addExpense }) {
                 <label>Category</label>
                 <select required value={category} onChange={handleInput('category')}>
                     <option value="" disabled>Select Category</option>
-                    <option value="education">Education</option>
-                    <option value="groceries">Groceries</option>
-                    <option value="health">Health</option>
-                    <option value="subscriptions">Subscriptions</option>
-                    <option value="takeaways">Takeaways</option>
-                    <option value="clothing">Clothing</option>
-                    <option value="travelling">Travelling</option>
-                    <option value="other">Other</option>
+                    {categories.map((cat) => (
+                        <option key={cat} value={cat.toLowerCase()}>{cat}</option>
+                    ))}
                 </select>
             </div>
             <div className="input-control">

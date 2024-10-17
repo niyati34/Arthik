@@ -7,6 +7,19 @@ import { useGlobalContext } from '../../context/globalContext';
 
 function Expenses() {
     const { expenses, addExpense, deleteExpense, totalExpenses } = useGlobalContext();
+    const [filterCategory, setFilterCategory] = React.useState('');
+    const [filterDate, setFilterDate] = React.useState('');
+
+    // Filter expenses by category and date
+    const filteredExpenses = expenses.filter(exp => {
+        let match = true;
+        if (filterCategory && exp.category !== filterCategory) match = false;
+        if (filterDate && exp.date !== filterDate) match = false;
+        return match;
+    });
+
+    // Get unique categories for filter dropdown
+    const categories = Array.from(new Set(expenses.map(exp => exp.category)));
 
     return (
         <ExpenseStyled>
@@ -19,25 +32,48 @@ function Expenses() {
                     <div className="form-container">
                         <ExpenseForm addExpense={addExpense} />
                     </div>
-                    <div className="expenses">
-                        {expenses.length > 0 ? (
-                            expenses.map((expense) => (
-                                <IncomeItem
-                                    key={expense.id}
-                                    id={expense.id}
-                                    title={expense.title || 'N/A'}
-                                    description={expense.description || 'N/A'}
-                                    amount={expense.amount}
-                                    date={expense.date || 'N/A'}
-                                    category={expense.category || 'N/A'}
-                                    type="expense"
-                                    deleteItem={deleteExpense}
-                                    indicatorColor="var(--color-red)"
-                                />
-                            ))
-                        ) : (
-                            <p>No expenses recorded yet.</p>
-                        )}
+                    <div className="filter-bar">
+                        <label>Category:</label>
+                        <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)}>
+                            <option value="">All</option>
+                            {categories.map(cat => (
+                                <option key={cat} value={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>
+                            ))}
+                        </select>
+                        <label>Date:</label>
+                        <input type="date" value={filterDate} onChange={e => setFilterDate(e.target.value)} />
+                    </div>
+                    <div className="expenses-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Amount</th>
+                                    <th>Category</th>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredExpenses.length > 0 ? (
+                                    filteredExpenses.map(expense => (
+                                        <tr key={expense.id}>
+                                            <td>{expense.title}</td>
+                                            <td>${expense.amount}</td>
+                                            <td>{expense.category}</td>
+                                            <td>{expense.date}</td>
+                                            <td>{expense.description}</td>
+                                            <td>
+                                                <button onClick={() => deleteExpense(expense.id)}>Delete</button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr><td colSpan="6">No expenses recorded yet.</td></tr>
+                                )}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </InnerLayout>

@@ -15,11 +15,31 @@ const Home = () => {
             <div className="main-content">
                 <div className="text-section">
                     <h1>Track. Control. Grow.</h1>
-                    <p>Track expenses, set budgets, and gain insights <br></br>to improve your financial health effortlessly.</p>
+                    <p>Track expenses, set budgets, and gain insights <br />to improve your financial health effortlessly.</p>
                     <button className="hero-button">Get Started</button>
                 </div>
                 <div className="image-section">
                     <img className="right-image" src={piggyImg} alt="Animated Piggy" />
+                </div>
+            </div>
+            <div className="features-section">
+                <h2>Why Arthik?</h2>
+                <div className="features-list">
+                    <div className="feature-card">
+                        <span role="img" aria-label="budget">💰</span>
+                        <h3>Budget Tracking</h3>
+                        <p>Set monthly budgets and track your spending in real time.</p>
+                    </div>
+                    <div className="feature-card">
+                        <span role="img" aria-label="insights">📊</span>
+                        <h3>Smart Insights</h3>
+                        <p>Visualize your financial health with charts and analytics.</p>
+                    </div>
+                    <div className="feature-card">
+                        <span role="img" aria-label="secure">🔒</span>
+                        <h3>Secure & Private</h3>
+                        <p>Your data is encrypted and never shared.</p>
+                    </div>
                 </div>
             </div>
         </div>

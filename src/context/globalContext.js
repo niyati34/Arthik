@@ -78,19 +78,18 @@ export const GlobalProvider = ({ children }) => {
     };
 
     // Calculate Total Expenses
-    const totalExpenses = () => {
+    // Memoized selectors for performance
+    const totalExpenses = useMemo(() => {
         return expenses.reduce((acc, curr) => acc + parseFloat(curr.amount || 0), 0);
-    };
+    }, [expenses]);
 
-    // Calculate Total Incomes
-    const totalIncomes = () => {
+    const totalIncomes = useMemo(() => {
         return incomes.reduce((acc, curr) => acc + parseFloat(curr.amount || 0), 0);
-    };
+    }, [incomes]);
 
-    // Calculate Total Balance
-    const totalBalance = () => {
-        return totalIncomes() - totalExpenses();
-    };
+    const totalBalance = useMemo(() => {
+        return totalIncomes - totalExpenses;
+    }, [totalIncomes, totalExpenses]);
 
     // Generate Transaction History (Latest 3 Transactions)
     const transactionHistory = useMemo(() => {

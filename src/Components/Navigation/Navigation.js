@@ -2,17 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 // Enhanced Navigation for scalability (Oct 16, 2024)
-const navLinks = [
-    { name: 'Home', path: '/home' },
-    { name: 'Features', path: '/features' },
-    { name: 'Budget', path: '/budget' },
-    { name: 'Expenses', path: '/expenses' },
-    { name: 'Income', path: '/income' },
-    { name: 'Goal Setter', path: '/goal-setter' },
-    { name: 'Testimonials', path: '/testimonials' },
-    { name: 'Pricing', path: '/pricing' },
-    { name: 'Contact', path: '/contact' },
-];
+// ...existing code...
 
 function Navigation({ active, setActive }) {
     return (

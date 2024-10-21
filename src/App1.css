@@ -5,6 +5,7 @@ body, html {
     background: #000000; /* Dark background */
     background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); /* New Color Scheme */
     scroll-behavior: smooth; 
+    color: #f8f9fa;
   }
   
   .App {
@@ -15,11 +16,13 @@ body, html {
   h1, h2, h3, h4, h5, h6 {
     margin: 0;
     padding: 0;
+    color: #f8f9fa;
   }
   
   p {
     margin: 0;
     padding: 0;
+    color: #e0e0e0;
   }
   
   ul {
@@ -30,12 +33,28 @@ body, html {
   
   a {
     text-decoration: none;
-    color: inherit;
+    color: #00ffab;
+    outline: none;
+    transition: color 0.2s, box-shadow 0.2s;
+  }
+  a:focus, a:hover {
+    color: #fff;
+    box-shadow: 0 0 0 2px #00ffab55;
   }
   
   /* Responsive Design */
   @media (max-width: 768px) {
     body, html {
       font-size: 14px;
+      color: #f8f9fa;
+    }
+    h1 {
+      font-size: 2rem;
+    }
+    h2 {
+      font-size: 1.5rem;
+    }
+    p {
+      font-size: 1rem;
     }
   }

@@ -57,27 +57,22 @@
   
   /* Nav Links Styling */
   .nav-links a {
-    text-decoration: none;
-    font-size: 15px;
-    transition: background 0.3s ease, color 0.3s ease;
-    background: linear-gradient(70deg, #00dbde, #fc00ff, #00f260, #0575e6);
-    background-size: 400%;
-    background-clip: text;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: gradientAnimation 8s linear infinite;
+      text-decoration: none;
+      font-size: 15px;
+      color: #00ffab;
+      background: none;
+      outline: none;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      transition: color 0.2s, box-shadow 0.2s;
+      animation: none;
   }
   
-  .nav-links a:hover {
-    background: linear-gradient(70deg, #00f260, #0575e6, #ff4e50, #f9d423);
-    background-size: 400%;
-     background-clip: text;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    .nav-links a:focus,
+    .nav-links a:hover {
+      color: #fff;
+      background: #00ffab;
+      box-shadow: 0 0 0 2px #00ffab55;
   }
   
   /* Gradient Animation */
@@ -120,17 +115,19 @@
   
   /* Additional styling for the Sign In/Sign Up link */
   .signup-link {
-    font-size: 16px;
-    padding: 8px 20px; /* Padding for the button effect */
-    border: 2px solid #fff; /* Border around the link */
-    border-radius: 25px; /* Rounded corners */
-    background: linear-gradient(90deg, #ff4e50, #f9d423); /* Neon Gradient */
-    color: white; /* Text color */
-    transition: all 0.4s ease; /* Smooth transition */
+      font-size: 16px;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      background: #222260;
+      color: #fff;
+      outline: none;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
   }
   
-  .signup-link:hover {
-    background: linear-gradient(90deg, #00dbde, #fc00ff); /* Change gradient on hover */
-    color: #fff; /* Keep the text color */
+    .signup-link:focus,
+    .signup-link:hover {
+      background: #00ffab;
+      color: #222260;
+      box-shadow: 0 0 0 2px #00ffab55;
   }
   

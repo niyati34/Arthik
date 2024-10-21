@@ -52,6 +52,15 @@
    box-shadow: 0 5px 15px rgba(0, 242, 96, 0.3); /* Neon shadow */
    transition: all 0.3s ease; /* Smooth transitions */
  }
+
+/* Focus styles for accessibility */
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: 2px solid #00ffab;
+  box-shadow: 0 0 0 2px #00ffab55;
+  background: #222260;
+  color: #fff;
+}
  
  /* Hover and Focus Effect for Inputs and Textarea */
  .contact-form input:hover,
@@ -76,6 +85,11 @@
    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transform */
    box-shadow: 0 10px 30px rgba(0, 114, 255, 0.6); /* Initial neon shadow */
  }
+
+.submit-button:focus {
+  outline: 2px solid #00ffab;
+  box-shadow: 0 0 0 2px #00ffab55;
+}
  
  /* Hover Effect for Submit Button */
  .submit-button:hover {
@@ -102,5 +116,19 @@
    .contact-form textarea {
      width: 90%; /* Full width on small screens */
    }
+  .contact-section {
+    padding: 20px;
+    padding-left: 0;
+    border-radius: 12px;
+  }
+  .contact-form input,
+  .contact-form textarea {
+    font-size: 1rem;
+  }
+  .submit-button {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+  }
  }
  

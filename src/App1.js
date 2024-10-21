@@ -11,16 +11,18 @@ import './App1.css';
 
 function App1() {
   return (
-    <div className="App">
+    <div className="App" role="main" aria-label="Main content">
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/sign-in" element={<SignInSignUp />} />
-      </Routes>
-      <Features />
-      <Testimonials />
-      <Pricing />
-      <Contact />
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/sign-in" element={<SignInSignUp />} />
+        </Routes>
+        <Features />
+        <Testimonials />
+        <Pricing />
+        <Contact />
+      </main>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import {dashboard, expenses, transactions, trend} from '../utils/Icons'
 
-export const menuItems = [
+const menuItems = [
     {
         id: 1,
         title: 'Dashboard',
@@ -38,3 +38,5 @@ export const menuItems = [
         link: "/goal-setter",
     },
 ]
+
+export default menuItems;

@@ -12,8 +12,9 @@ import './App1.css';
 function App1() {
   return (
     <div className="App" role="main" aria-label="Main content">
+      <a href="#main-content" className="visually-hidden" tabIndex="0">Skip to main content</a>
       <Navbar />
-      <main>
+      <main id="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/sign-in" element={<SignInSignUp />} />

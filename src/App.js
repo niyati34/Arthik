@@ -44,8 +44,9 @@ function App() {
 
   const orbMemo = useMemo(() => <Orb />, []);
 
+  const fallbackBg = bg || require('./assets1/bg.png');
   return (
-    <AppStyled bg={bg} className="App">
+    <AppStyled bg={fallbackBg} className="App" role="main" aria-label="Main content">
       {orbMemo}
       <MainLayout>
         <Navigation active={active} setActive={setActive} />

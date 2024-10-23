@@ -15,13 +15,21 @@ function App1() {
       <a href="#main-content" className="visually-hidden" tabIndex="0">Skip to main content</a>
       <Navbar />
       <main id="main-content">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/sign-in" element={<SignInSignUp />} />
-        </Routes>
+        {/* Modern, minimal hero section */}
+        <section className="hero-section">
+          <div className="hero-content">
+            <h1>Arthik: Your Advanced Expense Tracker</h1>
+            <p>Track, analyze, and optimize your finances with a beautiful, secure, and easy-to-use platform.</p>
+            <a href="/sign-in" className="hero-button">Get Started</a>
+          </div>
+        </section>
+        {/* Feature highlights */}
         <Features />
+        {/* Social proof/testimonials */}
         <Testimonials />
+        {/* Pricing plans */}
         <Pricing />
+        {/* Contact section */}
         <Contact />
       </main>
     </div>

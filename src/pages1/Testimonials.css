@@ -50,10 +50,42 @@
    opacity: 0; /* Initially hidden */
    transform: translateY(50px); /* Start below the viewport */
    animation: fadeIn 0.5s forwards; /* Fade-in effect */
+   flex-direction: column;
+   padding: 24px 16px;
 }
 .testimonial-box blockquote{
    color: beige;
    font-size: 19px;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 8px;
+   margin: 0;
+}
+/* Avatar Styles */
+.testimonial-avatar {
+   width: 56px;
+   height: 56px;
+   border-radius: 50%;
+   object-fit: cover;
+   margin-bottom: 12px;
+   box-shadow: 0 2px 8px #00dbde88;
+   border: 2px solid #fc00ff;
+}
+
+.testimonial-quote {
+   font-size: 1.1rem;
+   font-weight: 500;
+   color: #f1f1f1;
+   text-align: center;
+   margin-bottom: 4px;
+}
+
+.testimonial-author {
+   font-size: 0.95rem;
+   color: #00dbde;
+   font-style: italic;
+   text-align: center;
 }
 /* Individual testimonials with staggered animations */
 .testimonial-box:nth-child(1) {

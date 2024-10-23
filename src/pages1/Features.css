@@ -29,7 +29,24 @@
    display: flex;
    flex-direction: column; /* Stacks blocks vertically */
    align-items: center; /* Centers blocks horizontally */
+   display: flex;
+   flex-direction: column;
+   align-items: center;
    gap: 20px; /* Space between blocks */
+/* Feature Icon Styles */
+.feature-icon {
+   display: block;
+   margin-bottom: 16px;
+   color: #00dbde;
+   filter: drop-shadow(0 2px 8px #00dbde88);
+   transition: transform 0.3s;
+}
+
+.feature-block:hover .feature-icon {
+   transform: scale(1.15) rotate(-8deg);
+   color: #fc00ff;
+   filter: drop-shadow(0 4px 16px #fc00ff88);
+}
    z-index: 1;
    padding: 20px; /* Add some padding */
 }

@@ -6,18 +6,14 @@ function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const offset = window.scrollY;
-      setScrolled(offset > 50);
+      setScrolled(window.scrollY > 50);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <nav
-      className={`navbar${scrolled ? " scrolled" : ""}`}
-      aria-label="Main navigation"
-    >
+    <nav className={`navbar${scrolled ? " scrolled" : ""}`}>
       <div className="nav-container">
         <div className="logo">ExpenseFlow</div>
         <ul className="nav-links">

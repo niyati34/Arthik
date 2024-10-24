@@ -5,13 +5,13 @@ function Contact() {
   return (
     <section className="contact" id="contact">
       <div className="contact-container">
-        <div className="fade-in">
+        <div className="contact-header">
           <h2>Get in Touch</h2>
           <p className="contact-subtitle">
             Have questions? We'd love to hear from you.
           </p>
         </div>
-        <form className="contact-form fade-in">
+        <form className="contact-form">
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="firstName">First Name</label>
@@ -35,11 +35,7 @@ function Contact() {
               required
             ></textarea>
           </div>
-          <button
-            type="submit"
-            className="cta-button"
-            style={{ width: "100%" }}
-          >
+          <button type="submit" className="contact-submit">
             Send Message
           </button>
         </form>

@@ -5,14 +5,14 @@ function Pricing() {
   return (
     <section className="pricing" id="pricing">
       <div className="pricing-container">
-        <div className="fade-in">
+        <div className="pricing-header">
           <h2>Simple, Transparent Pricing</h2>
           <p className="pricing-subtitle">
             Choose the plan that fits your financial goals
           </p>
         </div>
         <div className="pricing-grid">
-          <div className="pricing-card fade-in">
+          <div className="pricing-card">
             <h3 className="plan-name">Basic</h3>
             <div className="plan-price">
               $0<span>/month</span>
@@ -24,20 +24,11 @@ function Pricing() {
               <li>Mobile app access</li>
               <li>Email support</li>
             </ul>
-            <a
-              href="#"
-              className="cta-button"
-              style={{
-                width: "100%",
-                textAlign: "center",
-                display: "block",
-                textDecoration: "none",
-              }}
-            >
+            <a href="#" className="pricing-cta">
               Get Started
             </a>
           </div>
-          <div className="pricing-card featured fade-in">
+          <div className="pricing-card featured">
             <h3 className="plan-name">Pro</h3>
             <div className="plan-price">
               $9<span>/month</span>
@@ -50,20 +41,11 @@ function Pricing() {
               <li>Goal tracking</li>
               <li>Priority support</li>
             </ul>
-            <a
-              href="#"
-              className="cta-button"
-              style={{
-                width: "100%",
-                textAlign: "center",
-                display: "block",
-                textDecoration: "none",
-              }}
-            >
+            <a href="#" className="pricing-cta">
               Start Free Trial
             </a>
           </div>
-          <div className="pricing-card fade-in">
+          <div className="pricing-card">
             <h3 className="plan-name">Business</h3>
             <div className="plan-price">
               $29<span>/month</span>
@@ -76,16 +58,7 @@ function Pricing() {
               <li>Advanced security</li>
               <li>Dedicated support</li>
             </ul>
-            <a
-              href="#"
-              className="cta-button"
-              style={{
-                width: "100%",
-                textAlign: "center",
-                display: "block",
-                textDecoration: "none",
-              }}
-            >
+            <a href="#" className="pricing-cta">
               Contact Sales
             </a>
           </div>

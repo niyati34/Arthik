@@ -1,133 +1,96 @@
-.testimonials-section {
-   width: 100%;
-   max-width: 1200px; /* Limit width for larger screens */
-   height: 600px;
-   margin-top: 0px; /* Space between sections */
-   padding: 160px; /* Add horizontal padding */ 
-   text-align: center; 
-   position: relative;
-   overflow: hidden; /* Prevent overflow */
-   background-image: url('../assets1/neon3.jpg'); /* Add your background image */
-   background-size: cover; /* Cover the entire section */
-   background-position: center; /* Center the background image */
-   background-repeat: no-repeat; /* Prevent tiling of the background image */
-   border-radius: 20px; /* Optional: if you want rounded corners */
+/* Testimonials Section - ExpenseFlow UI */
+.testimonials {
+  padding: 6rem 2rem;
+  background: #1a1a1a;
 }
-
-.testimonials-section h2 {
-   margin-top: 100px; 
-   transition: background 0.3s ease, color 0.3s ease;
-   background: linear-gradient(70deg, #00dbde, #fc00ff, #00f260, #0575e6); /* Animated gradient colors */
-   background-size: 400%; /* Larger background size for animation */
-   -webkit-background-clip: text;
-   background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-   animation: gradientAnimation 8s linear infinite; /* Continuous animation */
-   margin-bottom: 100px;
-}
-
 .testimonials-container {
-   display: flex; /* Align boxes in a row */
-   animation: slide 15s linear infinite; /* Slide animation */
-   width: calc(300px * 3); /* Adjust based on number of boxes */
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
 }
-
-.testimonials-container:hover {
-   animation-play-state: paused; /* Pause on hover */
+.testimonials h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 4rem;
+  color: #fff;
 }
-
-.testimonial-box {
-   min-width: 300px; /* Fixed width for each box */
-   height: 200px; /* Fixed height for square effect */
-   backdrop-filter: blur(10px); /* Blur background */   border-radius: 15px; /* Rounded corners */
-   box-shadow: 0 4px 20px rgba(20, 28, 169, 0.69); /* Soft shadow */
-   display: flex; /* Flexbox for content alignment */
-   align-items: center; /* Center vertically */
-   justify-content: center; /* Center horizontally */
-   margin: 0 20px; /* Space between boxes */
-   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
-   opacity: 0; /* Initially hidden */
-   transform: translateY(50px); /* Start below the viewport */
-   animation: fadeIn 0.5s forwards; /* Fade-in effect */
-   flex-direction: column;
-   padding: 24px 16px;
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
 }
-.testimonial-box blockquote{
-   color: beige;
-   font-size: 19px;
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   gap: 8px;
-   margin: 0;
+.testimonial-card {
+  background: #18181b;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid #27272a;
+  text-align: left;
+  position: relative;
+  transition: all 0.3s ease;
 }
-/* Avatar Styles */
-.testimonial-avatar {
-   width: 56px;
-   height: 56px;
-   border-radius: 50%;
-   object-fit: cover;
-   margin-bottom: 12px;
-   box-shadow: 0 2px 8px #00dbde88;
-   border: 2px solid #fc00ff;
+.testimonial-rating {
+  color: #fbbf24;
+  margin-bottom: 1rem;
 }
-
-.testimonial-quote {
-   font-size: 1.1rem;
-   font-weight: 500;
-   color: #f1f1f1;
-   text-align: center;
-   margin-bottom: 4px;
+.testimonial-text {
+  color: #a1a1aa;
+  margin-bottom: 1.5rem;
+  font-style: italic;
 }
-
 .testimonial-author {
-   font-size: 0.95rem;
-   color: #00dbde;
-   font-style: italic;
-   text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
-/* Individual testimonials with staggered animations */
-.testimonial-box:nth-child(1) {
-   animation-delay: 0s;
+.author-avatar {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
 }
-.testimonial-box:nth-child(2) {
-   animation-delay: 0.5s;
+.author-info h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
 }
-.testimonial-box:nth-child(3) {
-   animation-delay: 1s;
+.author-info p {
+  font-size: 0.8rem;
+  color: #a1a1aa;
 }
-
-/* Hover effect */
-.testimonial-box:hover {
-   transform: translateY(-20px); /* Lift effect */
-   box-shadow: 0 10px 30px rgba(60, 49, 213, 0.5); /* Stronger shadow on hover */
+@media (max-width: 768px) {
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Animation keyframes */
 @keyframes slide {
-   0% {
-       transform: translateX(100%); /* Start from right */
-   }
-   100% {
-       transform: translateX(-100%); /* Move to left */
-   }
+  0% {
+    transform: translateX(100%); /* Start from right */
+  }
+  100% {
+    transform: translateX(-100%); /* Move to left */
+  }
 }
 
 /* Keyframes for fade-in effect */
 @keyframes fadeIn {
-   to {
-       opacity: 1; /* Fade to visible */
-       transform: translateY(0); /* Move to original position */
-   }
+  to {
+    opacity: 1; /* Fade to visible */
+    transform: translateY(0); /* Move to original position */
+  }
 }
 
 /* Keyframes for gradient animation */
 @keyframes gradientAnimation {
-   0% {
-       background-position: 0% 50%;
-   }
-   100% {
-       background-position: 100% 50%;
-   }
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
 }

@@ -1,144 +1,83 @@
-.features-section {
-   width: auto;
-   max-width: auto;
-   height: auto; /* Set height to make it square */
-   margin-top: 0px;
-   text-align: center;
-   position: relative;
-   overflow: hidden; /* Prevent overflow */
-   background-image: url('../assets1/fbg1.png'); /* Add your background image here */
-   background-size: cover; /* Cover the entire section */
-   background-position: center; /* Center the background image */
-   background-repeat: no-repeat; /* Prevent repetition */
+.features {
+  padding: 6rem 2rem;
+  background: #18181b;
 }
-
-.features-section h2 {
-   font-size: 46px;
-   margin-bottom: 20px;
-   margin-top: 100px;
-   background: linear-gradient(70deg, #00dbde, #fc00ff, #00f260, #0575e6);
-   background-size: 400%;
-   background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-   animation: gradientAnimation 8s linear infinite;
-   position: relative;
+.features-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
 }
-
-.feature-blocks {
-   display: flex;
-   flex-direction: column; /* Stacks blocks vertically */
-   align-items: center; /* Centers blocks horizontally */
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   gap: 20px; /* Space between blocks */
-/* Feature Icon Styles */
+.features h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+.features-subtitle {
+  font-size: 1.2rem;
+  color: #a1a1aa;
+  margin-bottom: 4rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+.feature-card {
+  background: #1a1a1a;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid #27272a;
+  text-align: left;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.feature-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+.feature-card:hover::before {
+  transform: translateX(0);
+}
+.feature-card:hover {
+  transform: translateY(-5px);
+  border-color: #4f46e5;
+}
 .feature-icon {
-   display: block;
-   margin-bottom: 16px;
-   color: #00dbde;
-   filter: drop-shadow(0 2px 8px #00dbde88);
-   transition: transform 0.3s;
+  width: 48px;
+  height: 48px;
+  background: rgba(79, 70, 229, 0.1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
 }
-
-.feature-block:hover .feature-icon {
-   transform: scale(1.15) rotate(-8deg);
-   color: #fc00ff;
-   filter: drop-shadow(0 4px 16px #fc00ff88);
+.feature-card h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #fff;
 }
-   z-index: 1;
-   padding: 20px; /* Add some padding */
+.feature-card p {
+  color: #a1a1aa;
+  line-height: 1.6;
 }
-
-.feature-block {
-   width: 90%; /* Set block width to 90% of the container */
-   max-width: 600px; /* Limit the maximum width */
-   border-radius: 15px; /* Rounded corners */
-   background: rgba(255, 255, 255, 0.1); /* Semi-transparent white background */
-   backdrop-filter: blur(10px); /* Blur background */
-   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Soft shadow */
-   padding: 20px; /* Inner padding */
-   transition: transform 0.5s ease, box-shadow 0.5s ease; /* Smooth transition */
-   margin-bottom: 300px;
-}
-
-/* Hover effect */
-.feature-block:hover {
-   transform: translateY(-20px); /* Lift effect */
-   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Stronger shadow on hover */
-}
-
-/* Feature Block Headings */
-.feature-block h3 {
-   font-size: 24px; /* Smaller heading */
-   color: #00dbde; /* Color for headings */
-   margin-bottom: 20px; /* Space below headings */
-   position: relative; /* Position relative for pseudo-elements */
-}
-
-/* Add a decorative line under headings */
-.feature-block h3::after {
-   content: "";
-   display: block;
-   width: 50px; /* Length of the line */
-   height: 4px; /* Thickness of the line */
-   background: #00dbde; /* Color of the line */
-   margin: 10px auto; /* Center the line */
-   border-radius: 2px; /* Rounded ends */
-}
-
-/* Feature Block Paragraphs */
-.feature-block p {
-   font-size: 16px; /* Font size for paragraph */
-   color: #f1f1f1; /* Softer color for description */
-   line-height: 1.5; /* Line height for readability */
-}
-
-/* Zig-zag pattern: Alternating positions */
-.feature-block:nth-child(odd) {
-   align-self: flex-start; /* Align block to the left */
-   margin-top: 70px;
-   margin-bottom: 70px;
-   transform: translateX(-100px) translateY(100px); /* Move left and down */
-   text-align: left;
-}
-
-.feature-block:nth-child(even) {
-   align-self: flex-end; /* Align block to the right */
-   margin-top: 70px;
-   margin-right: 40px;
-   margin-bottom: 70px;
-   transform: translateX(100px) translateY(100px); /* Move right and down */
-   text-align: right;
-}
-
-/* Animation when the blocks become visible */
-.feature-block.visible {
-   opacity: 1;
-   transform: translateX(0) translateY(0); /* Move to normal position */
-}
-
-/* Mobile adjustments */
 @media (max-width: 768px) {
-   .feature-block {
-       width: 100%; /* Full width on mobile */
-       text-align: center; /* Center text on mobile */
-   }
-
-   .feature-block:nth-child(odd),
-   .feature-block:nth-child(even) {
-       align-self: center; /* Center blocks on mobile */
-       text-align: center;
-   }
-}
-
-/* Keyframes for gradient animation */
-@keyframes gradientAnimation {
-   0% {
-       background-position: 0% 50%;
-   }
-   100% {
-       background-position: 100% 50%;
-   }
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
 }

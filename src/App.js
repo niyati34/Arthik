@@ -1,15 +1,15 @@
-import React, { useState, useMemo } from 'react';
-import styled from 'styled-components';
+import React, { useState, useMemo } from "react";
+import styled from "styled-components";
 // Refactored asset imports for scalability (Oct 15, 2024)
-import bg from './assets1/neonwaves.svg';
-import { MainLayout } from './styles/Layouts';
-import Orb from './Components/Orb/Orb';
-import Navigation from './Components/Navigation/Navigation';
-import Dashboard from './Components/Dashboard/Dashboard';
-import Income from './Components/Income/Income';
-import Expenses from './Components/Expenses/Expenses';
-import BudgetPage from './Components/BudgetTracker/BudgetPage';
-import GoalSetter from './Components/GoalSetter/GoalSetter';
+import bg from "./assets1/neonwaves.svg";
+import { MainLayout } from "./styles/Layouts";
+import Orb from "./Components/Orb/Orb";
+import Navigation from "./Components/Navigation/Navigation";
+import Dashboard from "./Components/Dashboard/Dashboard";
+import Income from "./Components/Income/Income";
+import Expenses from "./Components/Expenses/Expenses";
+import BudgetPage from "./Components/BudgetTracker/BudgetPage";
+import GoalSetter from "./Components/GoalSetter/GoalSetter";
 
 function App() {
   const [active, setActive] = useState(1);
@@ -44,9 +44,14 @@ function App() {
 
   const orbMemo = useMemo(() => <Orb />, []);
 
-  const fallbackBg = bg || require('./assets1/bg.png');
+  const fallbackBg = bg || require("./img/bg.png");
   return (
-    <AppStyled bg={fallbackBg} className="App" role="main" aria-label="Main content">
+    <AppStyled
+      bg={fallbackBg}
+      className="App"
+      role="main"
+      aria-label="Main content"
+    >
       {orbMemo}
       <MainLayout>
         <Navigation active={active} setActive={setActive} />

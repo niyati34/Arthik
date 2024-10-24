@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
+  font-family: "Roboto", "Segoe UI", Arial, sans-serif;
   background: #f8f9fa;
   color: #222260;
   -webkit-font-smoothing: antialiased;
@@ -8,7 +8,8 @@ body {
 }
 
 code {
-  font-family: 'Fira Mono', 'Menlo', 'Monaco', 'Consolas', 'Courier New', monospace;
+  font-family: "Fira Mono", "Menlo", "Monaco", "Consolas", "Courier New",
+    monospace;
   background: #f4f4f4;
   padding: 0.2rem 0.5rem;
   border-radius: 4px;

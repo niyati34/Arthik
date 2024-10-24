@@ -1,134 +1,113 @@
-/* Contact Section */
-.contact-section {
-   width: auto;
-   max-width: 1200px; /* Limit width for larger screens */
-   margin-top: 40px; /* Space between sections */
-   padding: 50px; /* Padding around the section */
-   padding-left: 270px;
-   text-align: center;
-   position: relative;
-   background: url('../assets1/neon8.jpg') no-repeat center center/cover; /* Add background image */
-   color: #ffffff; /* White text color for better contrast */
-   border-radius: 20px; /* Round the corners of the section */
-   box-shadow: 0 10px 30px rgba(0, 242, 96, 0.6); /* Neon shadow */
- }
- 
- /* Section Title */
- .contact-section h2 {
-   margin-bottom: 30px;
-   margin-right: 200px;
-   font-size: 50px;
-   transition: background 0.3s ease, color 0.3s ease;
-   background: linear-gradient(70deg, #00dbde, #fc00ff, #00f260, #0575e6); /* Animated gradient colors */
-   background-size: 400%; /* Larger background size for animation */
-   background-clip: text;
-   -webkit-background-clip: text;
-   background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-   animation: gradientAnimation 8s linear infinite;
- }
- 
- /* Contact Form Styles */
- .contact-form {
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   gap: 20px; /* Space between form elements */
-   margin-right: 200px;
-   position: relative;
- }
- 
- /* Input and Textarea Styles */
- .contact-form input,
- .contact-form textarea {
-   width: 80%; /* Full width of the form elements */
-   padding: 15px;
-   border-radius: 10px; /* Rounded corners */
-   border: 1px solid rgba(0, 242, 96, 0.4); /* Neon border color */
-   background: rgba(255, 255, 255, 0.1); /* Slightly transparent background */
-   color: #ffffff; /* White text color */
-   outline: none; /* Remove default outline */
-   box-shadow: 0 5px 15px rgba(0, 242, 96, 0.3); /* Neon shadow */
-   transition: all 0.3s ease; /* Smooth transitions */
- }
-
-/* Focus styles for accessibility */
-.contact-form input:focus,
-.contact-form textarea:focus {
-  outline: 2px solid #00ffab;
-  box-shadow: 0 0 0 2px #00ffab55;
-  background: #222260;
-  color: #fff;
+:root {
+  --primary: #1a1a1a;
+  --secondary: #2d2d2d;
+  --accent: #4f46e5;
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --surface: #18181b;
+  --border: #27272a;
+  --success: #22c55e;
+  --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
- 
- /* Hover and Focus Effect for Inputs and Textarea */
- .contact-form input:hover,
- .contact-form textarea:hover,
- .contact-form input:focus,
- .contact-form textarea:focus {
-   border: 1px solid #00f260; /* Neon green border on focus */
-   box-shadow: 0 0 15px #00f260, 0 0 30px #00f260; /* Neon glow */
-   background: rgba(255, 255, 255, 0.15); /* Slightly lighter background */
- }
- 
- /* Submit Button Styles */
- .submit-button {
-   background: linear-gradient(45deg, #00c6ff, #0072ff); /* Gradient Colors */
-   border: none;
-   padding: 15px 30px; /* Increase padding for larger button */
-   color: #ffffff; /* White text */
-   font-size: 16px; /* Larger font size */
-   border-radius: 20px; /* Rounded corners */
-   margin-right: 80px;
-   cursor: pointer;
-   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transform */
-   box-shadow: 0 10px 30px rgba(0, 114, 255, 0.6); /* Initial neon shadow */
- }
 
-.submit-button:focus {
-  outline: 2px solid #00ffab;
-  box-shadow: 0 0 0 2px #00ffab55;
+.contact {
+  padding: 6rem 2rem;
+  background: var(--primary);
 }
- 
- /* Hover Effect for Submit Button */
- .submit-button:hover {
-   transform: translateY(-5px); /* Lift effect on hover */
-   box-shadow: 0 0 15px #00c6ff, 0 0 30px #00c6ff, 0 0 45px #00c6ff; /* Neon glow on hover */
- }
- 
- /* Gradient Animation */
- @keyframes gradientAnimation {
-   0% {
-     background-position: 0% 50%;
-   }
-   50% {
-     background-position: 100% 50%;
-   }
-   100% {
-     background-position: 0% 50%;
-   }
- }
- 
- /* Responsive Design */
- @media (max-width: 768px) {
-   .contact-form input,
-   .contact-form textarea {
-     width: 90%; /* Full width on small screens */
-   }
-  .contact-section {
-    padding: 20px;
-    padding-left: 0;
-    border-radius: 12px;
+
+.contact-container {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.contact h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.contact-subtitle {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  margin-bottom: 3rem;
+}
+
+.contact-form {
+  display: grid;
+  gap: 1.5rem;
+  text-align: left;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text-primary);
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.cta-button {
+  background: var(--accent);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.cta-button:hover {
+  background: #3730a3;
+  transform: translateY(-2px);
+}
+
+/* Fade-in animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
   }
-  .contact-form input,
-  .contact-form textarea {
-    font-size: 1rem;
-  }
-  .submit-button {
-    font-size: 1rem;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-  }
- }
- 
+}

@@ -3,7 +3,7 @@ import "./Features.css";
 
 function Features() {
   useEffect(() => {
-    const featureBlocks = document.querySelectorAll('.feature-block');
+    const featureBlocks = document.querySelectorAll(".feature-block");
 
     const handleScroll = () => {
       featureBlocks.forEach((block) => {
@@ -11,52 +11,83 @@ function Features() {
         const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
 
         if (isVisible) {
-          block.classList.add('visible');
+          block.classList.add("visible");
         } else {
-          block.classList.remove('visible');
+          block.classList.remove("visible");
         }
       });
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     handleScroll(); // Initial check in case the blocks are already in view
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   return (
-      <section className="features-section" id="features" aria-labelledby="features-heading">
-        <h2 id="features-heading">Advanced Features That Empower Your Finances</h2>
-        <div className="feature-blocks" role="list">
-          <div className="feature-block" role="listitem">
-            <span className="feature-icon" aria-hidden="true" style={{fontSize: '2.5rem'}}>💸</span>
-            <h3>Expense Tracking & Categorization</h3>
-            <p>Effortlessly log and categorize your expenses to visualize spending patterns and optimize your budget.</p>
+    <section className="features" id="features">
+      <div className="features-container">
+        <div className="fade-in">
+          <h2>Powerful Features for Smart Money Management</h2>
+          <p className="features-subtitle">
+            Everything you need to track, analyze, and optimize your spending in
+            one intuitive platform
+          </p>
+        </div>
+        <div className="features-grid">
+          <div className="feature-card fade-in">
+            <div className="feature-icon">�</div>
+            <h3>Expense Tracking</h3>
+            <p>
+              Automatically categorize and track all your expenses with smart
+              recognition and customizable categories.
+            </p>
           </div>
-          <div className="feature-block" role="listitem">
-            <span className="feature-icon" aria-hidden="true" style={{fontSize: '2.5rem'}}>📊</span>
-            <h3>Budget Creation & Management</h3>
-            <p>Create, adjust, and monitor budgets with real-time feedback and smart suggestions for financial discipline.</p>
+          <div className="feature-card fade-in">
+            <div className="feature-icon">�</div>
+            <h3>Budget Management</h3>
+            <p>
+              Set realistic budgets, monitor spending limits, and get alerts
+              when you're approaching your limits.
+            </p>
           </div>
-          <div className="feature-block" role="listitem">
-            <span className="feature-icon" aria-hidden="true" style={{fontSize: '2.5rem'}}>💰</span>
-            <h3>Income & Savings Tracker</h3>
-            <p>Track all income sources, monitor savings growth, and set automated reminders for deposits and goals.</p>
+          <div className="feature-card fade-in">
+            <div className="feature-icon">📈</div>
+            <h3>Financial Insights</h3>
+            <p>
+              Get detailed reports and analytics to understand your spending
+              patterns and identify saving opportunities.
+            </p>
           </div>
-          <div className="feature-block" role="listitem">
-            <span className="feature-icon" aria-hidden="true" style={{fontSize: '2.5rem'}}>📈</span>
-            <h3>Financial Insights & Reports</h3>
-            <p>Receive comprehensive, interactive reports with actionable insights to improve your financial health.</p>
+          <div className="feature-card fade-in">
+            <div className="feature-icon">🎯</div>
+            <h3>Goal Setting</h3>
+            <p>
+              Set and track financial goals with visual progress indicators and
+              milestone celebrations.
+            </p>
           </div>
-          <div className="feature-block" role="listitem">
-            <span className="feature-icon" aria-hidden="true" style={{fontSize: '2.5rem'}}>🎯</span>
-            <h3>Goal Setting & Progress Tracking</h3>
-            <p>Define savings goals, visualize progress, and celebrate milestones with motivational feedback.</p>
+          <div className="feature-card fade-in">
+            <div className="feature-icon">�</div>
+            <h3>Bank-Level Security</h3>
+            <p>
+              Your financial data is protected with enterprise-grade encryption
+              and security protocols.
+            </p>
+          </div>
+          <div className="feature-card fade-in">
+            <div className="feature-icon">📱</div>
+            <h3>Multi-Device Sync</h3>
+            <p>
+              Access your data anywhere with seamless synchronization across all
+              your devices.
+            </p>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
   );
 }
 

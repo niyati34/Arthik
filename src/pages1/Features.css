@@ -1,6 +1,7 @@
-/* Minimalist Features Styles */
+/* Professional Minimalist Features Styles */
 .features {
   padding: 72px 0;
+  background: #fffafb;
 }
 
 .features-container {
@@ -18,12 +19,12 @@
   font-size: 32px;
   font-weight: 700;
   margin-bottom: 16px;
-  color: #0f172a;
+  color: #2b2c28;
 }
 
 .features-subtitle {
   font-size: 18px;
-  color: #475569;
+  color: #131515;
   line-height: 1.6;
   max-width: 640px;
   margin: 0 auto;
@@ -36,33 +37,35 @@
 }
 
 .feature-card {
-  border: 1px solid #e2e8f0;
+  border: 1px solid #e5e7eb;
   border-radius: 12px;
   padding: 24px;
-  background: #ffffff;
+  background: #fffafb;
   transition: all 0.2s ease;
+  position: relative;
 }
 
 .feature-card:hover {
-  border-color: #2563eb;
+  border-color: #7de2d1;
   transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 24px rgba(125, 226, 209, 0.12);
 }
 
 .feature-icon {
   font-size: 32px;
   margin-bottom: 16px;
+  display: block;
 }
 
 .feature-card h3 {
+  margin-bottom: 12px;
   font-size: 18px;
   font-weight: 600;
-  margin-bottom: 12px;
-  color: #0f172a;
+  color: #2b2c28;
 }
 
 .feature-card p {
-  color: #475569;
+  color: #131515;
   line-height: 1.6;
   font-size: 14px;
 }

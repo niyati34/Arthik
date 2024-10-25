@@ -1,9 +1,7 @@
-/* Minimalist Pricing Styles */
+/* Professional Minimalist Pricing Styles */
 .pricing {
   padding: 72px 0;
-  background: #fafafa;
-  border-top: 1px solid #e2e8f0;
-  border-bottom: 1px solid #e2e8f0;
+  background: #fffafb;
 }
 
 .pricing-container {
@@ -21,12 +19,12 @@
   font-size: 32px;
   font-weight: 700;
   margin-bottom: 16px;
-  color: #0f172a;
+  color: #2b2c28;
 }
 
 .pricing-subtitle {
   font-size: 18px;
-  color: #475569;
+  color: #131515;
   line-height: 1.6;
   max-width: 640px;
   margin: 0 auto;
@@ -39,23 +37,24 @@
 }
 
 .pricing-card {
-  border: 1px solid #e2e8f0;
+  border: 1px solid #e5e7eb;
   border-radius: 12px;
   padding: 32px 24px;
-  background: #ffffff;
+  background: #fffafb;
   position: relative;
   transition: all 0.2s ease;
 }
 
 .pricing-card:hover {
-  border-color: #2563eb;
+  border-color: #7de2d1;
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 12px 32px rgba(125, 226, 209, 0.15);
 }
 
 .pricing-card.featured {
-  border-color: #2563eb;
+  border-color: #339989;
   border-width: 2px;
+  background: #f8fafc;
 }
 
 .plan-name {
@@ -63,7 +62,7 @@
   font-weight: 600;
   margin-bottom: 16px;
   text-align: center;
-  color: #0f172a;
+  color: #2b2c28;
 }
 
 .plan-price {
@@ -71,12 +70,12 @@
   margin-bottom: 16px;
   font-size: 48px;
   font-weight: 700;
-  color: #0f172a;
+  color: #339989;
 }
 
 .plan-price span {
   font-size: 16px;
-  color: #475569;
+  color: #131515;
   font-weight: 400;
 }
 
@@ -87,7 +86,7 @@
 
 .plan-features li {
   padding: 8px 0;
-  color: #0f172a;
+  color: #2b2c28;
   position: relative;
   padding-left: 20px;
   font-size: 14px;
@@ -97,13 +96,13 @@
   content: "✓";
   position: absolute;
   left: 0;
-  color: #059669;
+  color: #339989;
   font-weight: bold;
 }
 
 .pricing-cta {
-  background: #111827;
-  color: #ffffff;
+  background: #339989;
+  color: #fffafb;
   padding: 12px 24px;
   border-radius: 8px;
   text-decoration: none;
@@ -115,8 +114,9 @@
 }
 
 .pricing-cta:hover {
-  background: #1f2937;
+  background: #131515;
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(51, 153, 137, 0.2);
 }
 
 /* Responsive */

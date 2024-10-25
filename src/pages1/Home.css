@@ -1,156 +1,154 @@
-/* home.css */
-
-/* Home Section Container */
-.home-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  color: #ffffff;
+/* Professional Minimalist Home Hero Styles */
+.home-hero {
+  padding: 120px 0 64px;
+  background: #fffafb;
+  border-bottom: 1px solid #e5e7eb;
   position: relative;
-  overflow: hidden;
 }
 
-/* Video Background Styling */
-.video-container {
-  position: absolute;
-  top: 0;
-  left: 0;
+.home-hero .container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
   width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: 0;
-  pointer-events: none;
 }
 
-.video-background {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.hero__eyebrow {
+  color: #339989;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 12px;
+  margin-bottom: 16px;
+  font-weight: 600;
 }
 
-/* Main content styling */
-/* Main content styling */
-.main-content {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: 100%;
-  position: relative;
-  z-index: 1;
-}
-
-/* Features Section */
-.features-section {
-  margin-top: 3rem;
-  text-align: center;
-  z-index: 2;
-}
-
-.features-list {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-.feature-card {
-  background: rgba(0, 0, 0, 0.7);
-  border-radius: 16px;
-  padding: 2rem 1.5rem;
-  color: #fff;
-  box-shadow: 0 4px 24px rgba(0, 255, 171, 0.2);
-  width: 220px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: transform 0.2s;
-}
-
-.feature-card:hover {
-  transform: translateY(-8px) scale(1.04);
-  box-shadow: 0 8px 32px rgba(0, 255, 171, 0.3);
-}
-
-.feature-card span {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-  /* Removed unexpected closing brace and misplaced styles */
-  /* If needed, move margin-top, padding, flex-wrap to the correct selector */
-}
-
-/* Text section in the main content */
-.text-section {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  flex: 1;
-  padding: 20px;
-}
-
-.text-section h1 {
+.hero__title {
   font-size: 56px;
-  margin-top: 20px;
-  margin-left: 70px;
-  line-height: 1.2;
-  color: #ffffff;
-  text-shadow: none;
-  background: none;
-  -webkit-text-fill-color: initial;
-  animation: none;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #2b2c28 !important;
+  background: none !important;
+  background-image: none !important;
+  background-clip: unset !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: unset !important;
+  animation: none !important;
+  background-position: unset !important;
+  background-size: unset !important;
 }
 
-.text-section p {
-  font-size: 20px;
-  margin-left: 75px;
-  margin-bottom: 30px;
-  color: #cccccc;
+.hero__subtitle {
+  color: #131515;
+  font-size: 18px;
+  line-height: 1.6;
+  max-width: 640px;
+  margin-bottom: 28px;
 }
 
-.hero-button {
-  background-color: #007bff;
-  border: none;
-  margin-left: 70px;
-  padding: 15px 30px;
-  border-radius: 30px;
-  color: #ffffff;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  box-shadow: none;
-}
-
-.hero-button:hover {
-  background-color: #0056b3;
-  box-shadow: none;
-}
-
-.image-section {
+.hero__actions {
   display: flex;
-  justify-content: center;
+  gap: 12px;
+  margin-bottom: 48px;
+}
+
+.hero__stats {
+  display: flex;
+  gap: 48px;
+  padding-top: 32px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 
-.right-image {
-  max-width: 100%;
-  padding-right: 100px;
-  width: 500px;
-  height: auto;
-  border-radius: 0;
-  animation: none;
+.stat__number {
+  font-size: 32px;
+  font-weight: 700;
+  color: #339989;
+  margin-bottom: 4px;
 }
 
-/* Optional: Remove the keyframes if no animations are used */
-@keyframes floatImage {
-  0% {
-    transform: translateY(0);
+.stat__label {
+  font-size: 14px;
+  color: #131515;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.button--primary {
+  background: #339989;
+  color: #fffafb;
+  border-color: #339989;
+}
+
+.button--primary:hover {
+  background: #131515;
+  border-color: #131515;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(51, 153, 137, 0.2);
+}
+
+.button--ghost {
+  background: transparent;
+  color: #2b2c28;
+  border-color: #e5e7eb;
+}
+
+.button--ghost:hover {
+  background: #7de2d1;
+  border-color: #7de2d1;
+  color: #131515;
+  transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .hero__title {
+    font-size: 44px;
   }
-  50% {
-    transform: translateY(-20px);
+  
+  .hero__stats {
+    gap: 32px;
   }
-  100% {
-    transform: translateY(0);
+}
+
+@media (max-width: 700px) {
+  .hero__stats {
+    flex-direction: column;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero__actions {
+    flex-direction: column;
+  }
+  
+  .hero__title {
+    font-size: 36px;
+  }
+  
+  .container {
+    padding: 0 16px;
   }
 }

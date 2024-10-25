@@ -15,7 +15,7 @@ function Navbar() {
   return (
     <nav className={`navbar${scrolled ? " scrolled" : ""}`}>
       <div className="nav-container">
-        <div className="logo">ExpenseFlow</div>
+        <div className="logo">Arthik</div>
         <ul className="nav-links">
           <li>
             <a href="#hero">Home</a>

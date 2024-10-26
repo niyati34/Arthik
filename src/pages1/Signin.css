@@ -76,7 +76,7 @@
     color: #ffffff;
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 10px 30px rgba(0, 198, 255, 0.5);
+    /* box-shadow: 0 10px 30px rgba(0, 198, 255, 0.5); */
     transition: background 0.3s ease, box-shadow 0.3s ease;
   }
   

@@ -45,8 +45,8 @@ function Navbar() {
         </ul>
 
         <div className="nav-actions">
-          <a href="/signin" className="nav-link">Sign In</a>
-          <a href="/signup" className="cta-button">
+          <a href="/sign-in" className="nav-link">Sign In</a>
+          <a href="/sign-in" className="cta-button">
             Start Free Trial
           </a>
         </div>
@@ -61,4 +61,4 @@ function Navbar() {
   );
 }
 
-export default Navbar; 
+export default Navbar;

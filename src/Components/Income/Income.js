@@ -310,6 +310,6 @@ const IncomeStyled = styled.div`
             }
         }
     }
-`;}]}}}
+`;
 
 export default Income;

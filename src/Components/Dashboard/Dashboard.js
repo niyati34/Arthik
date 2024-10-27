@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import History from "../../History/History";
-import { InnerLayout } from "../../styles/Layouts";
-import { dollar } from "../../utils/Icons";
-import Chart from "../Chart/Chart";
-import { useGlobalContext } from "../../context/globalContext";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { useGlobalContext } from '../../context/globalContext';
+import { InnerLayout } from '../../styles/Layouts';
+import Chart from '../Chart/Chart';
+import History from '../../History/History';
+import { dollar } from '../../utils/Icons';
 
 function Dashboard() {
   const {

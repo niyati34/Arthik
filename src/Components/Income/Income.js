@@ -59,7 +59,7 @@ function Income() {
                     <h1>Income Manager</h1>
                     <div className="summary-card">
                         <h2>Total Income</h2>
-                        <p className="amount">${totalIncomes().toFixed(2)}</p>
+                        <p className="amount">${totalIncomes.toFixed(2)}</p>
                         <p className="count">{incomes.length} income source{incomes.length !== 1 ? 's' : ''}</p>
                     </div>
                 </div>

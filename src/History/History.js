@@ -13,7 +13,7 @@ function History({ limit = 5, showAll = false, allowDelete = false }) {
 
     // Get all transactions or limited number based on props
     useEffect(() => {
-        let history = transactionHistory();
+        let history = transactionHistory;
         
         // Apply search filter
         if (searchQuery) {

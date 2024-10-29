@@ -70,7 +70,7 @@ function Dashboard() {
           <div className="summary-card income-card">
             <div className="card-content">
               <h2>Total Income</h2>
-              <p className="amount">{dollar} {totalIncomes().toFixed(2)}</p>
+              <p className="amount">{dollar} {totalIncomes.toFixed(2)}</p>
               <p className="range">Min: ${Math.min(...incomes.map((item) => item.amount)) || 0} | Max: ${Math.max(...incomes.map((item) => item.amount)) || 0}</p>
             </div>
           </div>
@@ -78,7 +78,7 @@ function Dashboard() {
           <div className="summary-card expense-card">
             <div className="card-content">
               <h2>Total Expenses</h2>
-              <p className="amount">{dollar} {totalExpenses().toFixed(2)}</p>
+              <p className="amount">{dollar} {totalExpenses.toFixed(2)}</p>
               <p className="range">Min: ${Math.min(...expenses.map((item) => item.amount)) || 0} | Max: ${Math.max(...expenses.map((item) => item.amount)) || 0}</p>
             </div>
           </div>
@@ -86,8 +86,8 @@ function Dashboard() {
           <div className="summary-card balance-card">
             <div className="card-content">
               <h2>Net Balance</h2>
-              <p className="amount">{dollar} {totalBalance().toFixed(2)}</p>
-              <p className="range">{totalBalance() >= 0 ? '✓ Positive Balance' : '⚠ Negative Balance'}</p>
+              <p className="amount">{dollar} {totalBalance.toFixed(2)}</p>
+              <p className="range">{totalBalance >= 0 ? '✓ Positive Balance' : '⚠ Negative Balance'}</p>
             </div>
           </div>
         </div>

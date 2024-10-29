@@ -71,7 +71,7 @@ function Expenses() {
           <h1>Expense Manager</h1>
           <div className="summary-card">
             <h2>Total Expenses</h2>
-            <p className="amount">${totalExpenses().toFixed(2)}</p>
+            <p className="amount">${totalExpenses.toFixed(2)}</p>
             <p className="count">{expenses.length} expense{expenses.length !== 1 ? 's' : ''}</p>
           </div>
         </div>
@@ -403,6 +403,6 @@ const ExpenseStyled = styled.div`
       }
     }
   }
-`;}]}}}
+`;
 
 export default Expenses;

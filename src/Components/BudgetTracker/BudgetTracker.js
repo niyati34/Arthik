@@ -392,6 +392,6 @@ const BudgetTrackerStyled = styled.div`
         align-items: center;
         margin-top: 1.5rem;
     }
-`;}]}}}
+`;
 
 export default BudgetTracker;

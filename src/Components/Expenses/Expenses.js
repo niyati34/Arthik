@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { InnerLayout } from "../../styles/Layouts";
 import ExpenseForm from "./ExpenseForm";
 import IncomeItem from "../IncomeItem/IncomeItem";
 import { useGlobalContext } from "../../context/globalContext";
@@ -14,16 +13,13 @@ function Expenses() {
   const [sortBy, setSortBy] = useState("date-desc");
   const [dateRange, setDateRange] = useState({ from: "", to: "" });
 
-  // Apply filters, search, and sorting
   useEffect(() => {
     let result = [...expenses];
 
-    // Apply category filter
     if (filter !== "all") {
       result = result.filter((expense) => expense.category === filter);
     }
 
-    // Apply date range filter
     if (dateRange.from) {
       const fromDate = new Date(dateRange.from);
       result = result.filter((expense) => new Date(expense.date) >= fromDate);
@@ -34,7 +30,6 @@ function Expenses() {
       result = result.filter((expense) => new Date(expense.date) <= toDate);
     }
 
-    // Apply search query
     if (searchQuery.trim() !== "") {
       const query = searchQuery.toLowerCase();
       result = result.filter(
@@ -45,7 +40,6 @@ function Expenses() {
       );
     }
 
-    // Apply sorting
     result.sort((a, b) => {
       switch (sortBy) {
         case "amount-asc":
@@ -63,7 +57,6 @@ function Expenses() {
     setFilteredExpenses(result);
   }, [expenses, filter, searchQuery, sortBy, dateRange]);
 
-  // Get unique categories for filter dropdown
   const categories = [
     "all",
     ...new Set(expenses.map((expense) => expense.category)),
@@ -71,29 +64,41 @@ function Expenses() {
 
   return (
     <ExpenseStyled>
-      <InnerLayout>
-        <div className="header">
-          <h1>Expense Manager</h1>
-          <div className="summary-card">
-            <h2>Total Expenses</h2>
-            <p className="amount">${totalExpenses.toFixed(2)}</p>
-            <p className="count">
-              {expenses.length} expense{expenses.length !== 1 ? "s" : ""}
-            </p>
+      <div className="expense-container">
+        {/* Header Section */}
+        <div className="expense-header">
+          <div className="header-content">
+            <h1>Expense Management</h1>
+            <p>Track and categorize all your expenses</p>
+          </div>
+          <div className="expense-summary">
+            <div className="summary-card">
+              <div className="summary-icon">💸</div>
+              <div className="summary-content">
+                <h3>Total Expenses</h3>
+                <span className="amount">${totalExpenses.toFixed(2)}</span>
+                <span className="count">
+                  {expenses.length} expense{expenses.length !== 1 ? "s" : ""}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="controls">
-          <div className="search-container">
+        {/* Controls Section */}
+        <div className="controls-section">
+          <div className="search-control">
+            <div className="search-icon">🔍</div>
             <input
               type="text"
               placeholder="Search expenses..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              className="search-input"
             />
           </div>
 
-          <div className="filter-sort">
+          <div className="filter-controls">
             <select
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
@@ -119,30 +124,35 @@ function Expenses() {
           </div>
         </div>
 
-        <div className="date-range">
-          <div className="date-input">
-            <label>From:</label>
-            <input
-              type="date"
-              value={dateRange.from}
-              onChange={(e) =>
-                setDateRange({ ...dateRange, from: e.target.value })
-              }
-            />
-          </div>
-          <div className="date-input">
-            <label>To:</label>
-            <input
-              type="date"
-              value={dateRange.to}
-              onChange={(e) =>
-                setDateRange({ ...dateRange, to: e.target.value })
-              }
-            />
+        {/* Date Range Filter */}
+        <div className="date-range-section">
+          <div className="date-inputs">
+            <div className="date-input">
+              <label>From Date</label>
+              <input
+                type="date"
+                value={dateRange.from}
+                onChange={(e) =>
+                  setDateRange({ ...dateRange, from: e.target.value })
+                }
+                className="date-field"
+              />
+            </div>
+            <div className="date-input">
+              <label>To Date</label>
+              <input
+                type="date"
+                value={dateRange.to}
+                onChange={(e) =>
+                  setDateRange({ ...dateRange, to: e.target.value })
+                }
+                className="date-field"
+              />
+            </div>
           </div>
           {(dateRange.from || dateRange.to) && (
             <button
-              className="clear-dates"
+              className="clear-dates-btn"
               onClick={() => setDateRange({ from: "", to: "" })}
             >
               Clear Dates
@@ -150,17 +160,29 @@ function Expenses() {
           )}
         </div>
 
+        {/* Main Content */}
         <div className="expense-content">
-          <div className="form-container">
-            <h3>Add New Expense</h3>
-            <ExpenseForm addExpense={addExpense} />
+          <div className="form-section">
+            <div className="section-header">
+              <h2>Add New Expense</h2>
+              <p>Record a new expense</p>
+            </div>
+            <div className="form-container">
+              <ExpenseForm addExpense={addExpense} />
+            </div>
           </div>
 
-          <div className="expenses">
-            <h3>
-              Expense History{" "}
-              {filteredExpenses.length > 0 && `(${filteredExpenses.length})`}
-            </h3>
+          <div className="list-section">
+            <div className="section-header">
+              <h2>Expense History</h2>
+              <p>
+                {filteredExpenses.length > 0
+                  ? `${filteredExpenses.length} expense${
+                      filteredExpenses.length !== 1 ? "s" : ""
+                    } found`
+                  : "No expenses yet"}
+              </p>
+            </div>
 
             {filteredExpenses.length > 0 ? (
               <div className="expense-list">
@@ -185,11 +207,14 @@ function Expenses() {
               </div>
             ) : (
               <div className="empty-state">
-                <p>No matching expenses found.</p>
-                {(filter !== "all" ||
-                  searchQuery ||
-                  dateRange.from ||
-                  dateRange.to) && (
+                <div className="empty-icon">📊</div>
+                <h3>No Expenses Found</h3>
+                <p>
+                  {filter !== "all" || searchQuery || dateRange.from || dateRange.to
+                    ? "No expenses match your current filters."
+                    : "Start by adding your first expense above."}
+                </p>
+                {(filter !== "all" || searchQuery || dateRange.from || dateRange.to) && (
                   <button
                     onClick={() => {
                       setFilter("all");
@@ -198,194 +223,294 @@ function Expenses() {
                     }}
                     className="reset-button"
                   >
-                    Reset Filters
+                    Reset All Filters
                   </button>
                 )}
               </div>
             )}
           </div>
         </div>
-      </InnerLayout>
+      </div>
     </ExpenseStyled>
   );
 }
 
 const ExpenseStyled = styled.div`
-  display: flex;
-  overflow: auto;
   width: 100%;
+  min-height: 100%;
+  background: #fffafb;
 
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-
-    h1 {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #2b2c28;
-    }
+  .expense-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
   }
 
-  .summary-card {
-    background: #fffafb;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(19, 21, 21, 0.08);
-    padding: 1.5rem 2rem;
-    min-width: 200px;
-
-    h2 {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      color: #2b2c28;
-    }
-
-    .amount {
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 0.25rem;
-      color: #d97706;
-    }
-
-    .count {
-      font-size: 0.8rem;
-      color: #131515;
-      opacity: 0.7;
-    }
-  }
-
-  .controls {
+  /* Header Styles */
+  .expense-header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 3rem;
+    gap: 2rem;
 
-    .search-container {
+    .header-content {
       flex: 1;
-      min-width: 200px;
-      max-width: 400px;
 
-      input {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        font-size: 0.9rem;
-        transition: all 0.2s ease;
+      h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #2b2c28;
+        margin-bottom: 0.5rem;
+        line-height: 1.2;
+      }
 
-        &:focus {
-          outline: none;
-          border-color: #f59e0b;
-          box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
-        }
+      p {
+        color: #6e7e85;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        max-width: 500px;
       }
     }
+  }
 
-    .filter-sort {
-      display: flex;
-      gap: 0.75rem;
+  .expense-summary {
+    .summary-card {
+      background: #fffafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 2rem;
+      min-width: 280px;
+      box-shadow: 0 4px 20px rgba(19, 21, 21, 0.03);
+      position: relative;
+      overflow: hidden;
 
-      select {
-        padding: 0.75rem 1rem;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        font-size: 0.9rem;
-        background-color: #f8fafc;
-        cursor: pointer;
-        transition: all 0.2s ease;
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #f59e0b, #fbbf24);
+      }
 
-        &:focus {
-          outline: none;
-          border-color: #f59e0b;
+      .summary-icon {
+        font-size: 2.5rem;
+        width: 60px;
+        height: 60px;
+        background: #fffbeb;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+      }
+
+      .summary-content {
+        h3 {
+          font-size: 1rem;
+          font-weight: 600;
+          color: #2b2c28;
+          margin-bottom: 0.5rem;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+
+        .amount {
+          display: block;
+          font-size: 2rem;
+          font-weight: 700;
+          color: #f59e0b;
+          margin-bottom: 0.5rem;
+        }
+
+        .count {
+          font-size: 0.9rem;
+          color: #6e7e85;
+          font-weight: 500;
         }
       }
     }
   }
 
-  .date-range {
+  /* Controls Section */
+  .controls-section {
     display: flex;
-    gap: 1rem;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
+    justify-content: space-between;
     align-items: center;
+    margin-bottom: 2rem;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
 
-    .date-input {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+  .search-control {
+    position: relative;
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
 
-      label {
-        font-size: 0.9rem;
-        color: #4b5563;
-      }
-
-      input {
-        padding: 0.75rem 1rem;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        font-size: 0.9rem;
-        transition: all 0.2s ease;
-
-        &:focus {
-          outline: none;
-          border-color: #f59e0b;
-        }
-      }
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1rem;
+      color: #9ca3af;
+      pointer-events: none;
     }
 
-    .clear-dates {
-      background: #f59e0b;
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      cursor: pointer;
+    .search-input {
+      width: 100%;
+      padding: 1rem 1rem 1rem 3rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      font-size: 1rem;
+      background: #fffafb;
+      color: #2b2c28;
       transition: all 0.2s ease;
 
-      &:hover {
-        background: #d97706;
+      &::placeholder {
+        color: #9ca3af;
+      }
+
+      &:focus {
+        outline: none;
+        border-color: #f59e0b;
+        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
       }
     }
   }
 
+  .filter-controls {
+    display: flex;
+    gap: 1rem;
+
+    select {
+      padding: 1rem 1.5rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      background: #fffafb;
+      color: #2b2c28;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-width: 140px;
+
+      &:focus {
+        outline: none;
+        border-color: #f59e0b;
+        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+      }
+
+      option {
+        padding: 0.5rem;
+      }
+    }
+  }
+
+  /* Date Range Section */
+  .date-range-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .date-inputs {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .date-input {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    label {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #4b5563;
+    }
+
+    .date-field {
+      padding: 0.75rem 1rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      background: #fffafb;
+      color: #2b2c28;
+      transition: all 0.2s ease;
+      min-width: 150px;
+
+      &:focus {
+        outline: none;
+        border-color: #f59e0b;
+        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+      }
+    }
+  }
+
+  .clear-dates-btn {
+    background: #f59e0b;
+    color: #fffafb;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+
+    &:hover {
+      background: #d97706;
+      transform: translateY(-1px);
+    }
+  }
+
+  /* Main Content */
   .expense-content {
     display: grid;
     grid-template-columns: 1fr;
     gap: 2rem;
 
-    @media (min-width: 968px) {
-      grid-template-columns: 350px 1fr;
+    @media (min-width: 1200px) {
+      grid-template-columns: 400px 1fr;
     }
+  }
 
-    h3 {
-      font-size: 1.2rem;
+  .section-header {
+    margin-bottom: 1.5rem;
+
+    h2 {
+      font-size: 1.5rem;
       font-weight: 600;
-      margin-bottom: 1rem;
       color: #2b2c28;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      color: #6e7e85;
+      font-size: 0.95rem;
     }
   }
 
-  .form-container {
-    background: #fffafb;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 20px rgba(19, 21, 21, 0.05);
+  .form-section {
+    .form-container {
+      background: #fffafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(19, 21, 21, 0.03);
+      height: fit-content;
+    }
   }
 
-  .expenses {
-    background: #fffafb;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 20px rgba(19, 21, 21, 0.05);
-
+  .list-section {
     .expense-list {
       display: flex;
       flex-direction: column;
@@ -393,32 +518,115 @@ const ExpenseStyled = styled.div`
     }
   }
 
+  /* Empty State */
   .empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
+    background: #fffafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 3rem 2rem;
     text-align: center;
+    box-shadow: 0 4px 20px rgba(19, 21, 21, 0.03);
+
+    .empty-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #2b2c28;
+      margin-bottom: 0.5rem;
+    }
 
     p {
-      margin-bottom: 1rem;
-      color: #64748b;
+      color: #6e7e85;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
     }
 
     .reset-button {
       background: #f59e0b;
-      color: white;
+      color: #fffafb;
       border: none;
-      padding: 0.5rem 1rem;
+      padding: 0.75rem 1.5rem;
       border-radius: 8px;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
+      font-weight: 500;
       cursor: pointer;
       transition: all 0.2s ease;
 
       &:hover {
         background: #d97706;
+        transform: translateY(-1px);
       }
+    }
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .expense-container {
+      padding: 1.5rem;
+    }
+
+    .expense-header {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1.5rem;
+
+      .header-content h1 {
+        font-size: 2rem;
+      }
+    }
+
+    .controls-section {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1rem;
+
+      .search-control {
+        min-width: auto;
+        max-width: none;
+      }
+
+      .filter-controls {
+        justify-content: center;
+      }
+    }
+
+    .date-range-section {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1rem;
+
+      .date-inputs {
+        justify-content: center;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .expense-container {
+      padding: 1rem;
+    }
+
+    .expense-header .header-content h1 {
+      font-size: 1.75rem;
+    }
+
+    .summary-card {
+      padding: 1.5rem;
+      min-width: auto;
+    }
+
+    .expense-content {
+      gap: 1.5rem;
+    }
+
+    .date-inputs {
+      flex-direction: column;
+      align-items: center;
     }
   }
 `;

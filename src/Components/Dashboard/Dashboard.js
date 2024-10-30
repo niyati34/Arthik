@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useGlobalContext } from "../../context/globalContext";
-import { InnerLayout } from "../../styles/Layouts";
 import Chart from "../Chart/Chart";
 import History from "../../History/History";
-import { dollar } from "../../utils/Icons";
 
 function Dashboard() {
   const {
@@ -13,7 +11,6 @@ function Dashboard() {
     totalExpenses,
     totalIncomes,
     totalBalance,
-    transactionHistory,
   } = useGlobalContext();
 
   const [timeframe, setTimeframe] = useState("all");

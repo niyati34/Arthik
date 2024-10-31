@@ -1,7 +1,5 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { MainLayout } from "./styles/Layouts";
-import Orb from "./Components/Orb/Orb";
 import Navigation from "./Components/Navigation/Navigation";
 import Dashboard from "./Components/Dashboard/Dashboard";
 import Income from "./Components/Income/Income";
@@ -29,24 +27,22 @@ function App() {
     }
   };
 
-  const orbMemo = useMemo(() => <Orb />, []);
-
   return (
     <AppStyled className="App" role="main" aria-label="Main content">
-      {orbMemo}
-      <MainLayout>
+      <div className="dashboard-layout">
         <Navigation active={active} setActive={setActive} />
-        <main className="main-content">{displayData()}</main>
-      </MainLayout>
+        <main className="main-content">
+          {displayData()}
+        </main>
+      </div>
     </AppStyled>
   );
 }
 
 const AppStyled = styled.div`
-  height: 100vh;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  min-height: 100vh;
+  background: linear-gradient(135deg, #fafbfc 0%, #f1f5f9 100%);
   position: relative;
-  overflow: hidden;
 
   &::before {
     content: '';
@@ -56,46 +52,45 @@ const AppStyled = styled.div`
     right: 0;
     bottom: 0;
     background: 
-      radial-gradient(circle at 20% 80%, rgba(51, 153, 137, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(125, 226, 209, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 40% 40%, rgba(43, 44, 40, 0.05) 0%, transparent 50%);
+      radial-gradient(circle at 10% 90%, rgba(51, 153, 137, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 90% 10%, rgba(125, 226, 209, 0.03) 0%, transparent 50%);
     pointer-events: none;
+  }
+
+  .dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
   }
 
   .main-content {
     flex: 1;
-    background: rgba(255, 250, 251, 0.95);
-    border: 1px solid #e5e7eb;
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
+    background: transparent;
     overflow-x: hidden;
     overflow-y: auto;
-    margin: 1rem;
-    box-shadow: 0 8px 32px rgba(19, 21, 21, 0.08);
     
     &::-webkit-scrollbar {
-      width: 8px;
+      width: 6px;
     }
     
     &::-webkit-scrollbar-track {
-      background: #f1f5f9;
-      border-radius: 4px;
+      background: transparent;
     }
     
     &::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 4px;
+      background: rgba(203, 213, 225, 0.5);
+      border-radius: 3px;
       
       &:hover {
-        background: #94a3b8;
+        background: rgba(148, 163, 184, 0.7);
       }
     }
   }
 
   @media (max-width: 768px) {
-    .main-content {
-      margin: 0.5rem;
-      border-radius: 16px;
+    .dashboard-layout {
+      flex-direction: column;
     }
   }
 `;

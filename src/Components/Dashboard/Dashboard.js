@@ -35,113 +35,134 @@ function Dashboard() {
   return (
     <DashboardStyled>
       <div className="dashboard-container">
-        {/* Header Section */}
-        <div className="dashboard-header">
-          <div className="header-content">
-            <h1>Financial Dashboard</h1>
-            <p>Monitor your financial health and track your progress</p>
-          </div>
-          <div className="timeframe-selector">
-            <button
-              className={timeframe === "all" ? "active" : ""}
-              onClick={() => setTimeframe("all")}
-            >
-              All Time
-            </button>
-            <button
-              className={timeframe === "90days" ? "active" : ""}
-              onClick={() => setTimeframe("90days")}
-            >
-              90 Days
-            </button>
-            <button
-              className={timeframe === "30days" ? "active" : ""}
-              onClick={() => setTimeframe("30days")}
-            >
-              30 Days
-            </button>
+        {/* Hero Section */}
+        <div className="hero-section">
+          <div className="hero-content">
+            <div className="welcome-message">
+              <h1>Welcome back! 👋</h1>
+              <p>Here's your financial overview for today</p>
+            </div>
+            <div className="timeframe-selector">
+              <button
+                className={timeframe === "all" ? "active" : ""}
+                onClick={() => setTimeframe("all")}
+              >
+                All Time
+              </button>
+              <button
+                className={timeframe === "90days" ? "active" : ""}
+                onClick={() => setTimeframe("90days")}
+              >
+                90 Days
+              </button>
+              <button
+                className={timeframe === "30days" ? "active" : ""}
+                onClick={() => setTimeframe("30days")}
+              >
+                30 Days
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Summary Cards */}
-        <div className="summary-grid">
-          <div className="summary-card income">
-            <div className="card-header">
-              <div className="card-icon">💰</div>
-              <div className="card-title">
-                <h3>Total Income</h3>
-                <span className="card-subtitle">This period</span>
+        {/* Financial Summary Cards */}
+        <div className="summary-section">
+          <div className="summary-grid">
+            <div className="summary-card income">
+              <div className="card-content">
+                <div className="card-header">
+                  <div className="card-icon">💰</div>
+                  <div className="card-info">
+                    <h3>Total Income</h3>
+                    <span className="period">This period</span>
+                  </div>
+                </div>
+                <div className="card-amount">
+                  <span className="currency">$</span>
+                  <span className="amount">{totalIncomes.toFixed(2)}</span>
+                </div>
+                <div className="card-footer">
+                  <span className="transaction-count">
+                    {incomes.length} transaction{incomes.length !== 1 ? 's' : ''}
+                  </span>
+                </div>
               </div>
+              <div className="card-decoration"></div>
             </div>
-            <div className="card-amount">
-              <span className="currency">$</span>
-              <span className="amount">{totalIncomes.toFixed(2)}</span>
-            </div>
-            <div className="card-footer">
-              <span className="transaction-count">
-                {incomes.length} transaction{incomes.length !== 1 ? 's' : ''}
-              </span>
-            </div>
-          </div>
 
-          <div className="summary-card expense">
-            <div className="card-header">
-              <div className="card-icon">💸</div>
-              <div className="card-title">
-                <h3>Total Expenses</h3>
-                <span className="card-subtitle">This period</span>
+            <div className="summary-card expense">
+              <div className="card-content">
+                <div className="card-header">
+                  <div className="card-icon">💸</div>
+                  <div className="card-info">
+                    <h3>Total Expenses</h3>
+                    <span className="period">This period</span>
+                  </div>
+                </div>
+                <div className="card-amount">
+                  <span className="currency">$</span>
+                  <span className="amount">{totalExpenses.toFixed(2)}</span>
+                </div>
+                <div className="card-footer">
+                  <span className="transaction-count">
+                    {expenses.length} transaction{expenses.length !== 1 ? 's' : ''}
+                  </span>
+                </div>
               </div>
+              <div className="card-decoration"></div>
             </div>
-            <div className="card-amount">
-              <span className="currency">$</span>
-              <span className="amount">{totalExpenses.toFixed(2)}</span>
-            </div>
-            <div className="card-footer">
-              <span className="transaction-count">
-                {expenses.length} transaction{expenses.length !== 1 ? 's' : ''}
-              </span>
-            </div>
-          </div>
 
-          <div className="summary-card balance">
-            <div className="card-header">
-              <div className="card-icon">⚖️</div>
-              <div className="card-title">
-                <h3>Net Balance</h3>
-                <span className="card-subtitle">Current status</span>
+            <div className="summary-card balance">
+              <div className="card-content">
+                <div className="card-header">
+                  <div className="card-icon">⚖️</div>
+                  <div className="card-info">
+                    <h3>Net Balance</h3>
+                    <span className="period">Current status</span>
+                  </div>
+                </div>
+                <div className={`card-amount ${totalBalance >= 0 ? 'positive' : 'negative'}`}>
+                  <span className="currency">$</span>
+                  <span className="amount">{totalBalance.toFixed(2)}</span>
+                </div>
+                <div className="card-footer">
+                  <span className={`status ${totalBalance >= 0 ? 'positive' : 'negative'}`}>
+                    {totalBalance >= 0 ? '✓ In Good Standing' : '⚠ Needs Attention'}
+                  </span>
+                </div>
               </div>
-            </div>
-            <div className={`card-amount ${totalBalance >= 0 ? 'positive' : 'negative'}`}>
-              <span className="currency">$</span>
-              <span className="amount">{totalBalance.toFixed(2)}</span>
-            </div>
-            <div className="card-footer">
-              <span className={`status ${totalBalance >= 0 ? 'positive' : 'negative'}`}>
-                {totalBalance >= 0 ? '✓ In Good Standing' : '⚠ Needs Attention'}
-              </span>
+              <div className="card-decoration"></div>
             </div>
           </div>
         </div>
 
         {/* Main Content Grid */}
-        <div className="dashboard-content">
-          <div className="chart-section">
-            <div className="section-header">
-              <h2>Financial Overview</h2>
-              <p>Income vs. Expenses visualization</p>
+        <div className="content-section">
+          <div className="content-grid">
+            <div className="chart-section">
+              <div className="section-header">
+                <div className="header-content">
+                  <h2>Financial Overview</h2>
+                  <p>Visual representation of your income vs. expenses</p>
+                </div>
+                <div className="header-decoration"></div>
+              </div>
+              <div className="chart-container">
+                <Chart incomes={filteredIncomes} expenses={filteredExpenses} />
+              </div>
             </div>
-            <div className="chart-container">
-              <Chart incomes={filteredIncomes} expenses={filteredExpenses} />
-            </div>
-          </div>
 
-          <div className="history-section">
-            <div className="section-header">
-              <h2>Recent Activity</h2>
-              <p>Latest transactions</p>
-            </div>
-            <div className="history-container">
-              <History />
+            <div className="history-section">
+              <div className="section-header">
+                <div className="header-content">
+                  <h2>Recent Activity</h2>
+                  <p>Latest financial transactions</p>
+                </div>
+                <div className="header-decoration"></div>
+              </div>
+              <div className="history-container">
+                <History />
+              </div>
             </div>
           </div>
         </div>
@@ -153,151 +174,189 @@ function Dashboard() {
 const DashboardStyled = styled.div`
   width: 100%;
   min-height: 100%;
-  background: #fffafb;
-  
+  background: transparent;
+
   .dashboard-container {
     max-width: 1400px;
     margin: 0 auto;
     padding: 2rem;
   }
 
-  /* Header Styles */
-  .dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+  /* Hero Section */
+  .hero-section {
     margin-bottom: 3rem;
-    gap: 2rem;
 
-    .header-content {
-      flex: 1;
+    .hero-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
 
-      h1 {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #2b2c28;
-        margin-bottom: 0.5rem;
-        line-height: 1.2;
-      }
+      .welcome-message {
+        h1 {
+          font-size: 2.75rem;
+          font-weight: 700;
+          color: #1f2937;
+          margin-bottom: 0.5rem;
+          line-height: 1.1;
+          background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
 
-      p {
-        color: #6e7e85;
-        font-size: 1.1rem;
-        line-height: 1.6;
-        max-width: 500px;
+        p {
+          color: #6b7280;
+          font-size: 1.125rem;
+          line-height: 1.6;
+          font-weight: 500;
+        }
       }
     }
   }
 
   .timeframe-selector {
     display: flex;
-    background: #f8fafc;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(229, 231, 235, 0.5);
+    border-radius: 16px;
     padding: 0.5rem;
     gap: 0.25rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 
     button {
       background: transparent;
       border: 1px solid transparent;
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
-      font-size: 0.9rem;
+      padding: 0.875rem 1.75rem;
+      border-radius: 12px;
+      font-size: 0.95rem;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s ease;
-      color: #6e7e85;
+      transition: all 0.3s ease;
+      color: #6b7280;
       white-space: nowrap;
+      position: relative;
+      overflow: hidden;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, #339989, #7de2d1);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+      }
 
       &:hover {
-        background: rgba(51, 153, 137, 0.1);
         color: #339989;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(51, 153, 137, 0.15);
       }
 
       &.active {
-        background: #339989;
-        color: #fffafb;
-        border-color: #339989;
-        box-shadow: 0 2px 8px rgba(51, 153, 137, 0.2);
+        color: white;
+        border-color: transparent;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(51, 153, 137, 0.25);
+
+        &::before {
+          opacity: 1;
+        }
       }
     }
   }
 
-  /* Summary Cards */
-  .summary-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 1.5rem;
+  /* Summary Section */
+  .summary-section {
     margin-bottom: 3rem;
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+    }
   }
 
   .summary-card {
-    background: #fffafb;
-    border: 1px solid #e5e7eb;
-    border-radius: 16px;
-    padding: 2rem;
-    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(229, 231, 235, 0.3);
+    border-radius: 24px;
+    padding: 2.5rem;
     position: relative;
     overflow: hidden;
+    transition: all 0.4s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 
-    &::before {
-      content: '';
+    &:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      border-color: rgba(51, 153, 137, 0.2);
+    }
+
+    .card-decoration {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      height: 3px;
+      height: 4px;
       background: linear-gradient(90deg, #339989, #7de2d1);
+      opacity: 0.8;
     }
 
-    &:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(19, 21, 21, 0.08);
-      border-color: #7de2d1;
-    }
-
-    &.income::before {
+    &.income .card-decoration {
       background: linear-gradient(90deg, #10b981, #34d399);
     }
 
-    &.expense::before {
+    &.expense .card-decoration {
       background: linear-gradient(90deg, #f59e0b, #fbbf24);
     }
 
-    &.balance::before {
+    &.balance .card-decoration {
       background: linear-gradient(90deg, #8b5cf6, #a78bfa);
     }
+  }
+
+  .card-content {
+    position: relative;
+    z-index: 1;
   }
 
   .card-header {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
 
     .card-icon {
-      font-size: 2.5rem;
-      width: 60px;
-      height: 60px;
-      background: #f8fafc;
-      border-radius: 12px;
+      font-size: 2.75rem;
+      width: 70px;
+      height: 70px;
+      background: rgba(249, 250, 251, 0.8);
+      border-radius: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
     }
 
-    .card-title {
+    .card-info {
       h3 {
-        font-size: 1.1rem;
+        font-size: 1.125rem;
         font-weight: 600;
-        color: #2b2c28;
-        margin-bottom: 0.25rem;
+        color: #374151;
+        margin-bottom: 0.375rem;
         text-transform: uppercase;
         letter-spacing: 0.05em;
       }
 
-      .card-subtitle {
-        font-size: 0.85rem;
+      .period {
+        font-size: 0.875rem;
         color: #9ca3af;
         font-weight: 500;
       }
@@ -305,19 +364,20 @@ const DashboardStyled = styled.div`
   }
 
   .card-amount {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 
     .currency {
-      font-size: 1.5rem;
+      font-size: 1.75rem;
       font-weight: 600;
-      color: #6e7e85;
-      margin-right: 0.25rem;
+      color: #9ca3af;
+      margin-right: 0.375rem;
     }
 
     .amount {
-      font-size: 2.5rem;
+      font-size: 3rem;
       font-weight: 700;
-      color: #2b2c28;
+      color: #1f2937;
+      line-height: 1;
     }
 
     &.positive .amount {
@@ -332,9 +392,9 @@ const DashboardStyled = styled.div`
   .card-footer {
     .transaction-count,
     .status {
-      font-size: 0.85rem;
+      font-size: 0.875rem;
       font-weight: 500;
-      color: #6e7e85;
+      color: #6b7280;
     }
 
     .status.positive {
@@ -346,40 +406,64 @@ const DashboardStyled = styled.div`
     }
   }
 
-  /* Main Content */
-  .dashboard-content {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
+  /* Content Section */
+  .content-section {
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
 
-    @media (min-width: 1200px) {
-      grid-template-columns: 1.5fr 1fr;
+      @media (min-width: 1200px) {
+        grid-template-columns: 1.5fr 1fr;
+      }
     }
   }
 
   .section-header {
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 
-    h2 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: #2b2c28;
-      margin-bottom: 0.5rem;
+    .header-content {
+      flex: 1;
+
+      h2 {
+        font-size: 1.75rem;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 0.5rem;
+      }
+
+      p {
+        color: #6b7280;
+        font-size: 1rem;
+        font-weight: 500;
+      }
     }
 
-    p {
-      color: #6e7e85;
-      font-size: 0.95rem;
+    .header-decoration {
+      width: 40px;
+      height: 3px;
+      background: linear-gradient(90deg, #339989, #7de2d1);
+      border-radius: 2px;
     }
   }
 
   .chart-container,
   .history-container {
-    background: #fffafb;
-    border: 1px solid #e5e7eb;
-    border-radius: 16px;
-    padding: 2rem;
-    box-shadow: 0 4px 20px rgba(19, 21, 21, 0.03);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(229, 231, 235, 0.3);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+      border-color: rgba(51, 153, 137, 0.1);
+    }
   }
 
   /* Responsive Design */
@@ -388,19 +472,23 @@ const DashboardStyled = styled.div`
       padding: 1.5rem;
     }
 
-    .dashboard-header {
+    .hero-content {
       flex-direction: column;
       align-items: stretch;
       gap: 1.5rem;
 
-      .header-content h1 {
-        font-size: 2rem;
+      .welcome-message h1 {
+        font-size: 2.25rem;
       }
     }
 
     .summary-grid {
       grid-template-columns: 1fr;
-      gap: 1rem;
+      gap: 1.5rem;
+    }
+
+    .content-grid {
+      gap: 2rem;
     }
   }
 
@@ -409,25 +497,30 @@ const DashboardStyled = styled.div`
       padding: 1rem;
     }
 
-    .dashboard-header .header-content h1 {
-      font-size: 1.75rem;
+    .hero-content .welcome-message h1 {
+      font-size: 2rem;
     }
 
     .summary-card {
-      padding: 1.5rem;
+      padding: 2rem;
     }
 
     .card-amount .amount {
-      font-size: 2rem;
+      font-size: 2.5rem;
     }
 
     .timeframe-selector {
       justify-content: center;
       
       button {
-        padding: 0.5rem 1rem;
-        font-size: 0.8rem;
+        padding: 0.75rem 1.25rem;
+        font-size: 0.875rem;
       }
+    }
+
+    .chart-container,
+    .history-container {
+      padding: 2rem;
     }
   }
 `;

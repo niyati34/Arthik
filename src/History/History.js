@@ -203,29 +203,29 @@ function History({ limit = 5, showAll = false, allowDelete = false }) {
 }
 
 const HistoryStyled = styled.div`
-  background: #fcf6f9;
-  border: 2px solid #ffffff;
-  box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
-  border-radius: 20px;
-  padding: 1.5rem;
-  margin-bottom: 1rem;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  margin-bottom: 0;
   width: 100%;
 
   .history-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 
     h3 {
-      font-size: 1.5rem;
+      font-size: 1.125rem;
       font-weight: 600;
-      color: var(--primary-color);
+      color: #0f172a;
     }
 
     .history-controls {
       display: flex;
-      gap: 1rem;
+      gap: 0.75rem;
 
       @media (max-width: 768px) {
         flex-direction: column;
@@ -234,34 +234,34 @@ const HistoryStyled = styled.div`
 
       .search-container {
         input {
-          padding: 0.5rem 1rem;
-          border-radius: 10px;
-          border: 2px solid #ffffff;
-          font-size: 0.9rem;
+          padding: 0.375rem 0.75rem;
+          border-radius: 6px;
+          border: 1px solid #e2e8f0;
+          font-size: 0.75rem;
           outline: none;
-          width: 200px;
+          width: 150px;
 
           &:focus {
-            border-color: var(--primary-color);
+            border-color: #0f172a;
           }
         }
       }
 
       .filter-container {
         display: flex;
-        gap: 0.5rem;
+        gap: 0.375rem;
 
         select {
-          padding: 0.5rem;
-          border-radius: 10px;
-          border: 2px solid #ffffff;
-          font-size: 0.9rem;
+          padding: 0.375rem;
+          border-radius: 6px;
+          border: 1px solid #e2e8f0;
+          font-size: 0.75rem;
           outline: none;
           background: #ffffff;
           cursor: pointer;
 
           &:focus {
-            border-color: var(--primary-color);
+            border-color: #0f172a;
           }
         }
       }
@@ -271,34 +271,36 @@ const HistoryStyled = styled.div`
   .transaction-list {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.75rem;
 
     .transaction-item {
       display: flex;
       align-items: center;
       background: #ffffff;
-      border-radius: 10px;
-      padding: 1rem;
-      box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.03);
-      transition: all 0.3s ease;
+      border-radius: 8px;
+      padding: 0.75rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      transition: all 0.2s ease;
+      border: 1px solid #f1f5f9;
 
       &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.08);
+        transform: translateY(-1px);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        border-color: #e2e8f0;
       }
 
       .transaction-type {
-        width: 40px;
-        height: 40px;
+        width: 32px;
+        height: 32px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-right: 1rem;
+        margin-right: 0.75rem;
 
         span {
           color: #ffffff;
-          font-size: 1.2rem;
+          font-size: 1rem;
           font-weight: 600;
         }
       }
@@ -310,80 +312,81 @@ const HistoryStyled = styled.div`
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 0.3rem;
+          margin-bottom: 0.25rem;
 
           @media (max-width: 576px) {
             flex-direction: column;
             align-items: flex-start;
-            gap: 0.3rem;
+            gap: 0.25rem;
           }
 
           h4 {
-            font-size: 1.1rem;
+            font-size: 0.875rem;
             font-weight: 500;
-            color: #222;
+            color: #0f172a;
           }
 
           .transaction-date {
-            font-size: 0.85rem;
-            color: #777;
+            font-size: 0.75rem;
+            color: #64748b;
             display: flex;
             align-items: center;
-            gap: 0.3rem;
+            gap: 0.25rem;
           }
         }
 
         .transaction-description {
-          font-size: 0.9rem;
-          color: #555;
-          margin: 0.3rem 0;
+          font-size: 0.75rem;
+          color: #64748b;
+          margin: 0.25rem 0;
           display: flex;
           align-items: center;
-          gap: 0.3rem;
+          gap: 0.25rem;
         }
 
         .transaction-category {
           span {
-            font-size: 0.8rem;
-            background: #f0f0f0;
-            padding: 0.2rem 0.5rem;
-            border-radius: 5px;
-            color: #555;
+            font-size: 0.625rem;
+            background: #f1f5f9;
+            padding: 0.125rem 0.375rem;
+            border-radius: 4px;
+            color: #64748b;
           }
         }
       }
 
       .transaction-amount {
-        font-size: 1.2rem;
+        font-size: 1rem;
         font-weight: 600;
-        margin-left: 1rem;
+        margin-left: 0.75rem;
         display: flex;
         align-items: center;
-        gap: 0.3rem;
+        gap: 0.25rem;
       }
 
       .delete-btn {
         background: none;
         border: none;
         cursor: pointer;
-        margin-left: 0.5rem;
-        color: #777;
-        transition: color 0.3s ease;
+        margin-left: 0.375rem;
+        color: #64748b;
+        transition: color 0.2s ease;
 
         &:hover {
-          color: #ef476f;
+          color: #dc2626;
         }
       }
     }
 
     .view-all {
       text-align: center;
-      margin-top: 1rem;
+      margin-top: 0.75rem;
 
       a {
-        color: var(--primary-color);
+        color: #0f172a;
         text-decoration: none;
         font-weight: 500;
+        font-size: 0.875rem;
 
         &:hover {
           text-decoration: underline;
@@ -394,51 +397,34 @@ const HistoryStyled = styled.div`
 
   .empty-state {
     text-align: center;
-    padding: 2rem 0;
+    padding: 1.5rem 0;
 
     p {
-      color: #777;
-      font-size: 1rem;
-    }
-  }
-  color: #222260;
-
-  h2 {
-    margin-bottom: 1rem;
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
-  }
-
-  li {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    align-items: center;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #ccc;
-
-    span {
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-
-    p {
-      text-align: center;
-      padding: 1rem 0;
-      color: rgba(34, 34, 96, 0.6);
+      color: #64748b;
+      font-size: 0.875rem;
     }
   }
 
-  p {
-    text-align: center;
-    padding: 1rem 0;
-    color: rgba(34, 34, 96, 0.6);
+  @media (max-width: 768px) {
+    .transaction-list .transaction-item {
+      padding: 0.625rem;
+
+      .transaction-type {
+        width: 28px;
+        height: 28px;
+        margin-right: 0.5rem;
+      }
+
+      .transaction-details .transaction-title h4 {
+        font-size: 0.8rem;
+      }
+
+      .transaction-amount {
+        font-size: 0.875rem;
+      }
+    }
   }
 `;
 
 export default History;
+

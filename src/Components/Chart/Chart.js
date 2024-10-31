@@ -358,52 +358,52 @@ function Chart() {
 }
 
 const ChartStyled = styled.div`
-  background: #fffafb;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(19, 21, 21, 0.05);
-  padding: 1.5rem;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
 
   .chart-header {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.75rem;
     margin-bottom: 0.5rem;
 
     h3 {
-      font-size: 1.3rem;
+      font-size: 1.125rem;
       font-weight: 600;
-      color: #2b2c28;
+      color: #0f172a;
       margin: 0;
     }
 
     .chart-controls {
       display: flex;
       flex-wrap: wrap;
-      gap: 1rem;
+      gap: 0.5rem;
       justify-content: space-between;
 
       @media (max-width: 768px) {
         flex-direction: column;
-        gap: 0.75rem;
+        gap: 0.5rem;
       }
 
       .time-filter,
       .chart-type {
         display: flex;
-        gap: 0.5rem;
+        gap: 0.25rem;
         flex-wrap: wrap;
 
         button {
           background: #f8fafc;
-          border: 1px solid #e5e7eb;
-          border-radius: 6px;
-          padding: 0.5rem 0.75rem;
-          font-size: 0.85rem;
-          color: #4b5563;
+          border: 1px solid #e2e8f0;
+          border-radius: 4px;
+          padding: 0.375rem 0.5rem;
+          font-size: 0.75rem;
+          color: #64748b;
           cursor: pointer;
           transition: all 0.2s ease;
 
@@ -412,9 +412,9 @@ const ChartStyled = styled.div`
           }
 
           &.active {
-            background: #339989;
+            background: #0f172a;
             color: white;
-            border-color: #339989;
+            border-color: #0f172a;
           }
         }
       }
@@ -422,25 +422,25 @@ const ChartStyled = styled.div`
   }
 
   .chart-container {
-    background: white;
-    border-radius: 10px;
-    padding: 1.25rem;
-    box-shadow: 0 2px 10px rgba(19, 21, 21, 0.03);
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
 
     h4 {
-      font-size: 1rem;
+      font-size: 0.875rem;
       font-weight: 500;
-      color: #4b5563;
-      margin: 0 0 1rem 0;
+      color: #374151;
+      margin: 0 0 0.75rem 0;
     }
 
     .time-chart {
-      height: 300px;
+      height: 200px;
       position: relative;
     }
 
     .category-chart {
-      height: 300px;
+      height: 200px;
       position: relative;
       display: flex;
       align-items: center;
@@ -457,44 +457,46 @@ const ChartStyled = styled.div`
       color: #94a3b8;
 
       p {
-        margin: 0 0 0.5rem 0;
+        margin: 0 0 0.25rem 0;
         font-weight: 500;
+        font-size: 0.875rem;
       }
 
       small {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
       }
     }
   }
 
   .no-data-message {
     background: #f8fafc;
-    border-radius: 10px;
-    padding: 2rem;
+    border-radius: 6px;
+    padding: 1rem;
     text-align: center;
     color: #64748b;
     margin-top: auto;
 
     p {
-      margin: 0 0 0.5rem 0;
+      margin: 0 0 0.25rem 0;
       font-weight: 500;
+      font-size: 0.875rem;
     }
 
     small {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
     }
   }
 
   @media (max-width: 768px) {
-    padding: 1rem;
-    gap: 1.5rem;
+    padding: 0;
+    gap: 0.75rem;
 
     .chart-container {
-      padding: 1rem;
+      padding: 0;
 
       .time-chart,
       .category-chart {
-        height: 250px;
+        height: 180px;
       }
     }
   }

@@ -155,7 +155,7 @@ const DashboardStyled = styled.div`
   .dashboard-container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 1.5rem;
+    padding: 1rem;
   }
 
   /* Header Section */
@@ -163,22 +163,22 @@ const DashboardStyled = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
-    gap: 2rem;
+    margin-bottom: 1.5rem;
+    gap: 1.5rem;
 
     .header-content {
       h1 {
-        font-size: 2rem;
+        font-size: 1.75rem;
         font-weight: 700;
         color: #0f172a;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.25rem;
         line-height: 1.2;
       }
 
       p {
         color: #64748b;
-        font-size: 1rem;
-        line-height: 1.5;
+        font-size: 0.875rem;
+        line-height: 1.4;
         margin: 0;
       }
     }
@@ -188,17 +188,17 @@ const DashboardStyled = styled.div`
     display: flex;
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 0.25rem;
+    border-radius: 6px;
+    padding: 0.125rem;
     gap: 0.125rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 
     button {
       background: transparent;
       border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      font-size: 0.875rem;
+      padding: 0.375rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -213,44 +213,44 @@ const DashboardStyled = styled.div`
       &.active {
         background: #0f172a;
         color: white;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
       }
     }
   }
 
   /* Summary Section */
   .summary-section {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 
     .summary-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
     }
   }
 
   .summary-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 1.5rem;
+    border-radius: 8px;
+    padding: 1.25rem;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
     transition: all 0.2s ease;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 
     &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       border-color: #cbd5e1;
     }
 
     .card-icon {
-      width: 48px;
-      height: 48px;
+      width: 40px;
+      height: 40px;
       background: #f8fafc;
-      border-radius: 8px;
+      border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -262,19 +262,19 @@ const DashboardStyled = styled.div`
       flex: 1;
 
       h3 {
-        font-size: 0.875rem;
+        font-size: 0.75rem;
         font-weight: 600;
         color: #64748b;
-        margin: 0 0 0.5rem 0;
+        margin: 0 0 0.375rem 0;
         text-transform: uppercase;
         letter-spacing: 0.05em;
       }
 
       .amount {
-        font-size: 1.75rem;
+        font-size: 1.5rem;
         font-weight: 700;
         color: #0f172a;
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.125rem;
         line-height: 1;
 
         &.positive {
@@ -288,7 +288,7 @@ const DashboardStyled = styled.div`
 
       .count,
       .status {
-        font-size: 0.75rem;
+        font-size: 0.625rem;
         color: #94a3b8;
         font-weight: 500;
       }
@@ -308,27 +308,27 @@ const DashboardStyled = styled.div`
     .content-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 2rem;
+      gap: 1.5rem;
 
       @media (min-width: 1200px) {
-        grid-template-columns: 1.5fr 1fr;
+        grid-template-columns: 1.2fr 1fr;
       }
     }
   }
 
   .section-header {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 
     h2 {
-      font-size: 1.25rem;
+      font-size: 1.125rem;
       font-weight: 600;
       color: #0f172a;
-      margin-bottom: 0.375rem;
+      margin-bottom: 0.25rem;
     }
 
     p {
       color: #64748b;
-      font-size: 0.875rem;
+      font-size: 0.75rem;
       margin: 0;
     }
   }
@@ -337,13 +337,35 @@ const DashboardStyled = styled.div`
   .history-container {
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    padding: 1.25rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     transition: all 0.2s ease;
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    /* Custom scrollbar styling */
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+      
+      &:hover {
+        background: #94a3b8;
+      }
+    }
 
     &:hover {
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
       border-color: #cbd5e1;
     }
   }
@@ -351,54 +373,60 @@ const DashboardStyled = styled.div`
   /* Responsive Design */
   @media (max-width: 1024px) {
     .dashboard-container {
-      padding: 1.25rem;
+      padding: 0.875rem;
     }
 
     .header-section {
       flex-direction: column;
       align-items: stretch;
-      gap: 1.5rem;
+      gap: 1rem;
 
       .header-content h1 {
-        font-size: 1.75rem;
+        font-size: 1.5rem;
       }
     }
 
     .summary-grid {
       grid-template-columns: 1fr;
-      gap: 1rem;
+      gap: 0.875rem;
     }
 
     .content-grid {
-      gap: 1.5rem;
+      gap: 1.25rem;
+    }
+
+    .chart-container,
+    .history-container {
+      max-height: 350px;
     }
   }
 
   @media (max-width: 768px) {
     .dashboard-container {
-      padding: 1rem;
+      padding: 0.75rem;
     }
 
     .header-section .header-content h1 {
-      font-size: 1.5rem;
+      font-size: 1.375rem;
     }
 
     .summary-card {
-      padding: 1.25rem;
+      padding: 1rem;
 
       .card-icon {
-        width: 40px;
-        height: 40px;
+        width: 36px;
+        height: 36px;
       }
 
       .card-content .amount {
-        font-size: 1.5rem;
+        font-size: 1.375rem;
       }
     }
 
     .chart-container,
     .history-container {
-      padding: 1.25rem;
+      padding: 1rem;
+      max-height: 300px;
     }
   }
 `;

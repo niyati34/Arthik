@@ -35,117 +35,96 @@ function Dashboard() {
   return (
     <DashboardStyled>
       <div className="dashboard-container">
-        {/* Hero Section */}
-        <div className="hero-section">
-          <div className="hero-content">
-            <div className="welcome-message">
-              <h1>Welcome back! 👋</h1>
-              <p>Here's your financial overview for today</p>
-            </div>
-            <div className="timeframe-selector">
-              <button
-                className={timeframe === "all" ? "active" : ""}
-                onClick={() => setTimeframe("all")}
-              >
-                All Time
-              </button>
-              <button
-                className={timeframe === "90days" ? "active" : ""}
-                onClick={() => setTimeframe("90days")}
-              >
-                90 Days
-              </button>
-              <button
-                className={timeframe === "30days" ? "active" : ""}
-                onClick={() => setTimeframe("30days")}
-              >
-                30 Days
-              </button>
-            </div>
+        {/* Header Section */}
+        <div className="header-section">
+          <div className="header-content">
+            <h1>Financial Dashboard</h1>
+            <p>Monitor your financial health and track progress</p>
+          </div>
+          <div className="timeframe-selector">
+            <button
+              className={timeframe === "all" ? "active" : ""}
+              onClick={() => setTimeframe("all")}
+            >
+              All Time
+            </button>
+            <button
+              className={timeframe === "90days" ? "active" : ""}
+              onClick={() => setTimeframe("90days")}
+            >
+              90 Days
+            </button>
+            <button
+              className={timeframe === "30days" ? "active" : ""}
+              onClick={() => setTimeframe("30days")}
+            >
+              30 Days
+            </button>
           </div>
         </div>
 
-        {/* Financial Summary Cards */}
+        {/* Summary Cards */}
         <div className="summary-section">
           <div className="summary-grid">
             <div className="summary-card income">
-              <div className="card-content">
-                <div className="card-header">
-                  <div className="card-icon">💰</div>
-                  <div className="card-info">
-                    <h3>Total Income</h3>
-                    <span className="period">This period</span>
-                  </div>
-                </div>
-                <div className="card-amount">
-                  <span className="currency">$</span>
-                  <span className="amount">{totalIncomes.toFixed(2)}</span>
-                </div>
-                <div className="card-footer">
-                  <span className="transaction-count">
-                    {incomes.length} transaction{incomes.length !== 1 ? 's' : ''}
-                  </span>
-                </div>
+              <div className="card-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 1V23" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M17 5H9.5A3.5 3.5 0 0 0 6 8.5A3.5 3.5 0 0 0 9.5 12H14.5A3.5 3.5 0 0 1 18 15.5A3.5 3.5 0 0 1 14.5 19H6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </div>
-              <div className="card-decoration"></div>
+              <div className="card-content">
+                <h3>Total Income</h3>
+                <div className="amount">${totalIncomes.toFixed(2)}</div>
+                <span className="count">{incomes.length} transactions</span>
+              </div>
             </div>
 
             <div className="summary-card expense">
-              <div className="card-content">
-                <div className="card-header">
-                  <div className="card-icon">💸</div>
-                  <div className="card-info">
-                    <h3>Total Expenses</h3>
-                    <span className="period">This period</span>
-                  </div>
-                </div>
-                <div className="card-amount">
-                  <span className="currency">$</span>
-                  <span className="amount">{totalExpenses.toFixed(2)}</span>
-                </div>
-                <div className="card-footer">
-                  <span className="transaction-count">
-                    {expenses.length} transaction{expenses.length !== 1 ? 's' : ''}
-                  </span>
-                </div>
+              <div className="card-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </div>
-              <div className="card-decoration"></div>
+              <div className="card-content">
+                <h3>Total Expenses</h3>
+                <div className="amount">${totalExpenses.toFixed(2)}</div>
+                <span className="count">{expenses.length} transactions</span>
+              </div>
             </div>
 
             <div className="summary-card balance">
-              <div className="card-content">
-                <div className="card-header">
-                  <div className="card-icon">⚖️</div>
-                  <div className="card-info">
-                    <h3>Net Balance</h3>
-                    <span className="period">Current status</span>
-                  </div>
-                </div>
-                <div className={`card-amount ${totalBalance >= 0 ? 'positive' : 'negative'}`}>
-                  <span className="currency">$</span>
-                  <span className="amount">{totalBalance.toFixed(2)}</span>
-                </div>
-                <div className="card-footer">
-                  <span className={`status ${totalBalance >= 0 ? 'positive' : 'negative'}`}>
-                    {totalBalance >= 0 ? '✓ In Good Standing' : '⚠ Needs Attention'}
-                  </span>
-                </div>
+              <div className="card-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M3 6H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M19 6V20A2 2 0 0 1 17 22H7A2 2 0 0 1 5 20V6A2 2 0 0 1 7 4H9M9 4V2H15V4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M10 11H14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M10 15H14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M10 19H14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </div>
-              <div className="card-decoration"></div>
+              <div className="card-content">
+                <h3>Net Balance</h3>
+                <div className={`amount ${totalBalance >= 0 ? 'positive' : 'negative'}`}>
+                  ${totalBalance.toFixed(2)}
+                </div>
+                <span className={`status ${totalBalance >= 0 ? 'positive' : 'negative'}`}>
+                  {totalBalance >= 0 ? 'In Good Standing' : 'Needs Attention'}
+                </span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Main Content Grid */}
+        {/* Main Content */}
         <div className="content-section">
           <div className="content-grid">
             <div className="chart-section">
               <div className="section-header">
-                <div className="header-content">
-                  <h2>Financial Overview</h2>
-                  <p>Visual representation of your income vs. expenses</p>
-                </div>
-                <div className="header-decoration"></div>
+                <h2>Financial Overview</h2>
+                <p>Income vs. Expenses visualization</p>
               </div>
               <div className="chart-container">
                 <Chart incomes={filteredIncomes} expenses={filteredExpenses} />
@@ -154,11 +133,8 @@ function Dashboard() {
 
             <div className="history-section">
               <div className="section-header">
-                <div className="header-content">
-                  <h2>Recent Activity</h2>
-                  <p>Latest financial transactions</p>
-                </div>
-                <div className="header-decoration"></div>
+                <h2>Recent Activity</h2>
+                <p>Latest transactions</p>
               </div>
               <div className="history-container">
                 <History />
@@ -179,230 +155,151 @@ const DashboardStyled = styled.div`
   .dashboard-container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 1.5rem;
   }
 
-  /* Hero Section */
-  .hero-section {
-    margin-bottom: 3rem;
+  /* Header Section */
+  .header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    gap: 2rem;
 
-    .hero-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 2rem;
+    .header-content {
+      h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 0.5rem;
+        line-height: 1.2;
+      }
 
-      .welcome-message {
-        h1 {
-          font-size: 2.75rem;
-          font-weight: 700;
-          color: #1f2937;
-          margin-bottom: 0.5rem;
-          line-height: 1.1;
-          background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-
-        p {
-          color: #6b7280;
-          font-size: 1.125rem;
-          line-height: 1.6;
-          font-weight: 500;
-        }
+      p {
+        color: #64748b;
+        font-size: 1rem;
+        line-height: 1.5;
+        margin: 0;
       }
     }
   }
 
   .timeframe-selector {
     display: flex;
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(229, 231, 235, 0.5);
-    border-radius: 16px;
-    padding: 0.5rem;
-    gap: 0.25rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0.25rem;
+    gap: 0.125rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 
     button {
       background: transparent;
-      border: 1px solid transparent;
-      padding: 0.875rem 1.75rem;
-      border-radius: 12px;
-      font-size: 0.95rem;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.3s ease;
-      color: #6b7280;
+      transition: all 0.2s ease;
+      color: #64748b;
       white-space: nowrap;
-      position: relative;
-      overflow: hidden;
-
-      &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, #339989, #7de2d1);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        z-index: -1;
-      }
 
       &:hover {
-        color: #339989;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 16px rgba(51, 153, 137, 0.15);
+        background: #f1f5f9;
+        color: #0f172a;
       }
 
       &.active {
+        background: #0f172a;
         color: white;
-        border-color: transparent;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(51, 153, 137, 0.25);
-
-        &::before {
-          opacity: 1;
-        }
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
       }
     }
   }
 
   /* Summary Section */
   .summary-section {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
 
     .summary-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
     }
   }
 
   .summary-card {
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(229, 231, 235, 0.3);
-    border-radius: 24px;
-    padding: 2.5rem;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s ease;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-
-    &:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-      border-color: rgba(51, 153, 137, 0.2);
-    }
-
-    .card-decoration {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, #339989, #7de2d1);
-      opacity: 0.8;
-    }
-
-    &.income .card-decoration {
-      background: linear-gradient(90deg, #10b981, #34d399);
-    }
-
-    &.expense .card-decoration {
-      background: linear-gradient(90deg, #f59e0b, #fbbf24);
-    }
-
-    &.balance .card-decoration {
-      background: linear-gradient(90deg, #8b5cf6, #a78bfa);
-    }
-  }
-
-  .card-content {
-    position: relative;
-    z-index: 1;
-  }
-
-  .card-header {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
     display: flex;
     align-items: center;
-    gap: 1.25rem;
-    margin-bottom: 2rem;
+    gap: 1rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border-color: #cbd5e1;
+    }
 
     .card-icon {
-      font-size: 2.75rem;
-      width: 70px;
-      height: 70px;
-      background: rgba(249, 250, 251, 0.8);
-      border-radius: 18px;
+      width: 48px;
+      height: 48px;
+      background: #f8fafc;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+      color: #64748b;
+      flex-shrink: 0;
     }
 
-    .card-info {
+    .card-content {
+      flex: 1;
+
       h3 {
-        font-size: 1.125rem;
+        font-size: 0.875rem;
         font-weight: 600;
-        color: #374151;
-        margin-bottom: 0.375rem;
+        color: #64748b;
+        margin: 0 0 0.5rem 0;
         text-transform: uppercase;
         letter-spacing: 0.05em;
       }
 
-      .period {
-        font-size: 0.875rem;
-        color: #9ca3af;
+      .amount {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 0.25rem;
+        line-height: 1;
+
+        &.positive {
+          color: #059669;
+        }
+
+        &.negative {
+          color: #dc2626;
+        }
+      }
+
+      .count,
+      .status {
+        font-size: 0.75rem;
+        color: #94a3b8;
         font-weight: 500;
       }
-    }
-  }
 
-  .card-amount {
-    margin-bottom: 1.5rem;
+      .status.positive {
+        color: #059669;
+      }
 
-    .currency {
-      font-size: 1.75rem;
-      font-weight: 600;
-      color: #9ca3af;
-      margin-right: 0.375rem;
-    }
-
-    .amount {
-      font-size: 3rem;
-      font-weight: 700;
-      color: #1f2937;
-      line-height: 1;
-    }
-
-    &.positive .amount {
-      color: #10b981;
-    }
-
-    &.negative .amount {
-      color: #ef4444;
-    }
-  }
-
-  .card-footer {
-    .transaction-count,
-    .status {
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: #6b7280;
-    }
-
-    .status.positive {
-      color: #10b981;
-    }
-
-    .status.negative {
-      color: #ef4444;
+      .status.negative {
+        color: #dc2626;
+      }
     }
   }
 
@@ -411,7 +308,7 @@ const DashboardStyled = styled.div`
     .content-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 2.5rem;
+      gap: 2rem;
 
       @media (min-width: 1200px) {
         grid-template-columns: 1.5fr 1fr;
@@ -420,75 +317,60 @@ const DashboardStyled = styled.div`
   }
 
   .section-header {
-    margin-bottom: 2rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+    margin-bottom: 1.5rem;
 
-    .header-content {
-      flex: 1;
-
-      h2 {
-        font-size: 1.75rem;
-        font-weight: 600;
-        color: #1f2937;
-        margin-bottom: 0.5rem;
-      }
-
-      p {
-        color: #6b7280;
-        font-size: 1rem;
-        font-weight: 500;
-      }
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #0f172a;
+      margin-bottom: 0.375rem;
     }
 
-    .header-decoration {
-      width: 40px;
-      height: 3px;
-      background: linear-gradient(90deg, #339989, #7de2d1);
-      border-radius: 2px;
+    p {
+      color: #64748b;
+      font-size: 0.875rem;
+      margin: 0;
     }
   }
 
   .chart-container,
   .history-container {
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(229, 231, 235, 0.3);
-    border-radius: 20px;
-    padding: 2.5rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
 
     &:hover {
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-      border-color: rgba(51, 153, 137, 0.1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      border-color: #cbd5e1;
     }
   }
 
   /* Responsive Design */
   @media (max-width: 1024px) {
     .dashboard-container {
-      padding: 1.5rem;
+      padding: 1.25rem;
     }
 
-    .hero-content {
+    .header-section {
       flex-direction: column;
       align-items: stretch;
       gap: 1.5rem;
 
-      .welcome-message h1 {
-        font-size: 2.25rem;
+      .header-content h1 {
+        font-size: 1.75rem;
       }
     }
 
     .summary-grid {
       grid-template-columns: 1fr;
-      gap: 1.5rem;
+      gap: 1rem;
     }
 
     .content-grid {
-      gap: 2rem;
+      gap: 1.5rem;
     }
   }
 
@@ -497,30 +379,26 @@ const DashboardStyled = styled.div`
       padding: 1rem;
     }
 
-    .hero-content .welcome-message h1 {
-      font-size: 2rem;
+    .header-section .header-content h1 {
+      font-size: 1.5rem;
     }
 
     .summary-card {
-      padding: 2rem;
-    }
+      padding: 1.25rem;
 
-    .card-amount .amount {
-      font-size: 2.5rem;
-    }
+      .card-icon {
+        width: 40px;
+        height: 40px;
+      }
 
-    .timeframe-selector {
-      justify-content: center;
-      
-      button {
-        padding: 0.75rem 1.25rem;
-        font-size: 0.875rem;
+      .card-content .amount {
+        font-size: 1.5rem;
       }
     }
 
     .chart-container,
     .history-container {
-      padding: 2rem;
+      padding: 1.25rem;
     }
   }
 `;

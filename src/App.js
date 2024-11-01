@@ -41,8 +41,10 @@ function App() {
 
 const AppStyled = styled.div`
   min-height: 100vh;
+  height: 100vh;
   background: linear-gradient(135deg, #fafbfc 0%, #f1f5f9 100%);
   position: relative;
+  overflow: hidden;
 
   &::before {
     content: '';
@@ -59,33 +61,17 @@ const AppStyled = styled.div`
 
   .dashboard-layout {
     display: flex;
-    min-height: 100vh;
+    height: 100vh;
     position: relative;
     z-index: 1;
+    overflow: hidden;
   }
 
   .main-content {
     flex: 1;
     background: transparent;
-    overflow-x: hidden;
-    overflow-y: auto;
-    
-    &::-webkit-scrollbar {
-      width: 6px;
-    }
-    
-    &::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    
-    &::-webkit-scrollbar-thumb {
-      background: rgba(203, 213, 225, 0.5);
-      border-radius: 3px;
-      
-      &:hover {
-        background: rgba(148, 163, 184, 0.7);
-      }
-    }
+    overflow: hidden;
+    height: 100vh;
   }
 
   @media (max-width: 768px) {

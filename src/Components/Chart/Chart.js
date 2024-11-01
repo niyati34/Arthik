@@ -426,6 +426,7 @@ const ChartStyled = styled.div`
     border-radius: 0;
     padding: 0;
     box-shadow: none;
+    overflow: visible;
 
     h4 {
       font-size: 0.875rem;
@@ -437,6 +438,7 @@ const ChartStyled = styled.div`
     .time-chart {
       height: 200px;
       position: relative;
+      overflow: visible;
     }
 
     .category-chart {
@@ -445,6 +447,7 @@ const ChartStyled = styled.div`
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: visible;
     }
 
     .no-data {

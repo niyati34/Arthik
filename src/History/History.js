@@ -272,6 +272,28 @@ const HistoryStyled = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    /* Custom scrollbar styling */
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 2px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 2px;
+      
+      &:hover {
+        background: #94a3b8;
+      }
+    }
 
     .transaction-item {
       display: flex;

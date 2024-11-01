@@ -125,73 +125,77 @@ function Form({ addIncome, isExpense = false }) {
         <div className="error-message form-error">{errors.form}</div>
       )}
 
-      <div className="form-group">
-        <label htmlFor="title">Title</label>
-        <input
-          id="title"
-          type="text"
-          value={title}
-          placeholder={
-            isExpense ? "e.g. Grocery shopping" : "e.g. Monthly salary"
-          }
-          onChange={handleInput("title")}
-          className={errors.title ? "error" : ""}
-        />
-        {errors.title && <div className="error-message">{errors.title}</div>}
+      <div className="form-row">
+        <div className="form-group">
+          <label htmlFor="title">Title</label>
+          <input
+            id="title"
+            type="text"
+            value={title}
+            placeholder={
+              isExpense ? "e.g. Grocery shopping" : "e.g. Monthly salary"
+            }
+            onChange={handleInput("title")}
+            className={errors.title ? "error" : ""}
+          />
+          {errors.title && <div className="error-message">{errors.title}</div>}
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="amount">Amount ($)</label>
+          <input
+            id="amount"
+            type="number"
+            step="0.01"
+            min="0.01"
+            value={amount}
+            placeholder="0.00"
+            onChange={handleInput("amount")}
+            className={errors.amount ? "error" : ""}
+          />
+          {errors.amount && <div className="error-message">{errors.amount}</div>}
+        </div>
       </div>
 
-      <div className="form-group">
-        <label htmlFor="amount">Amount ($)</label>
-        <input
-          id="amount"
-          type="number"
-          step="0.01"
-          min="0.01"
-          value={amount}
-          placeholder="0.00"
-          onChange={handleInput("amount")}
-          className={errors.amount ? "error" : ""}
-        />
-        {errors.amount && <div className="error-message">{errors.amount}</div>}
-      </div>
+      <div className="form-row">
+        <div className="form-group">
+          <label htmlFor="date">Date</label>
+          <DatePicker
+            id="date"
+            selected={date}
+            onChange={(date) => {
+              setInputState({ ...inputState, date });
+              if (errors.date) setErrors((prev) => ({ ...prev, date: "" }));
+            }}
+            placeholderText="Select date"
+            dateFormat="MM/dd/yyyy"
+            maxDate={new Date()}
+            className={errors.date ? "error" : ""}
+          />
+          {errors.date && <div className="error-message">{errors.date}</div>}
+        </div>
 
-      <div className="form-group">
-        <label htmlFor="date">Date</label>
-        <DatePicker
-          id="date"
-          selected={date}
-          onChange={(date) => {
-            setInputState({ ...inputState, date });
-            if (errors.date) setErrors((prev) => ({ ...prev, date: "" }));
-          }}
-          placeholderText="Select date"
-          dateFormat="MM/dd/yyyy"
-          maxDate={new Date()}
-          className={errors.date ? "error" : ""}
-        />
-        {errors.date && <div className="error-message">{errors.date}</div>}
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="category">Category</label>
-        <select
-          id="category"
-          value={category}
-          onChange={handleInput("category")}
-          className={errors.category ? "error" : ""}
-        >
-          <option value="" disabled>
-            Select a category
-          </option>
-          {getCategoryOptions().map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
+        <div className="form-group">
+          <label htmlFor="category">Category</label>
+          <select
+            id="category"
+            value={category}
+            onChange={handleInput("category")}
+            className={errors.category ? "error" : ""}
+          >
+            <option value="" disabled>
+              Select a category
             </option>
-          ))}
-        </select>
-        {errors.category && (
-          <div className="error-message">{errors.category}</div>
-        )}
+            {getCategoryOptions().map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          {errors.category && (
+            <div className="error-message">{errors.category}</div>
+          )}
+        </div>
       </div>
 
       <div className="form-group">

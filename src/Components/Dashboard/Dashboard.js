@@ -149,13 +149,17 @@ function Dashboard() {
 
 const DashboardStyled = styled.div`
   width: 100%;
-  min-height: 100%;
+  height: 100%;
   background: transparent;
+  overflow: hidden;
 
   .dashboard-container {
     max-width: 1400px;
     margin: 0 auto;
     padding: 1rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
   /* Header Section */

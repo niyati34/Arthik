@@ -224,14 +224,15 @@ const FormStyled = styled.form`
   width: 100%;
   background: #ffffff;
   border-radius: 8px;
-  padding: 1.25rem;
+  padding: 1.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  min-height: fit-content;
 
   .form-title {
     font-size: 1.125rem;
     font-weight: 600;
     color: #0f172a;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
     text-align: center;
   }
 
@@ -239,7 +240,7 @@ const FormStyled = styled.form`
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
 
     @media (max-width: 768px) {
       grid-template-columns: 1fr;
@@ -250,13 +251,13 @@ const FormStyled = styled.form`
   .form-group {
     display: flex;
     flex-direction: column;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
 
     label {
       font-size: 0.875rem;
       font-weight: 500;
       color: #374151;
-      margin-bottom: 0.375rem;
+      margin-bottom: 0.5rem;
     }
 
     input,
@@ -264,17 +265,19 @@ const FormStyled = styled.form`
     select {
       font-family: inherit;
       font-size: 0.875rem;
-      padding: 0.625rem 0.75rem;
+      padding: 0.75rem;
       border: 1px solid #e2e8f0;
-      border-radius: 6px;
+      border-radius: 8px;
       background-color: #ffffff;
       color: #0f172a;
       transition: all 0.2s ease;
+      width: 100%;
+      box-sizing: border-box;
 
       &:focus {
         outline: none;
         border-color: #10b981;
-        box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
       }
 
       &::placeholder {
@@ -284,6 +287,26 @@ const FormStyled = styled.form`
       &.error {
         border-color: #dc2626;
         background-color: rgba(220, 38, 38, 0.05);
+      }
+    }
+
+    /* Minimalistic category select styling */
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 0.75rem center;
+      background-repeat: no-repeat;
+      background-size: 1.5em 1.5em;
+      padding-right: 2.5rem;
+      cursor: pointer;
+
+      &:hover {
+        border-color: #cbd5e1;
+        background-color: #f8fafc;
+      }
+
+      &:focus {
+        background-color: #ffffff;
       }
     }
 
@@ -309,24 +332,28 @@ const FormStyled = styled.form`
 
   .submit-btn {
     width: 100%;
-    padding: 0.75rem 1.5rem;
+    padding: 0.875rem 1.5rem;
     background: #10b981;
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 0.875rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
-    margin-top: 0.5rem;
+    margin-top: 0.75rem;
 
     &:hover {
       background: #059669;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
     }
 
     &:disabled {
       background: #94a3b8;
       cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
     }
   }
 

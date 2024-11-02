@@ -178,17 +178,18 @@ function Income() {
 
 const IncomeStyled = styled.div`
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   background: transparent;
-  overflow: hidden;
+  overflow: visible;
 
   .income-container {
     max-width: 1400px;
     margin: 0 auto;
     padding: 1rem;
-    height: 100%;
+    min-height: 100%;
     display: flex;
     flex-direction: column;
+    overflow: visible;
   }
 
   /* Compact Header */
@@ -330,21 +331,21 @@ const IncomeStyled = styled.div`
   .income-content {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 1.5rem;
     flex: 1;
-    overflow: hidden;
+    overflow: visible;
     align-items: start;
 
     @media (min-width: 1200px) {
-      grid-template-columns: 500px 1fr;
+      grid-template-columns: 600px 1fr;
     }
   }
 
   .section-header {
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
 
     h2 {
-      font-size: 1.125rem;
+      font-size: 1rem;
       font-weight: 600;
       color: #0f172a;
       margin-bottom: 0.25rem;
@@ -358,7 +359,8 @@ const IncomeStyled = styled.div`
   }
 
   .form-section {
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
+    height: fit-content;
     
     .form-container {
       background: #ffffff;
@@ -369,13 +371,15 @@ const IncomeStyled = styled.div`
       height: fit-content;
       min-width: 0;
       overflow: visible;
+      margin-bottom: 0.75rem;
     }
   }
 
   .list-section {
-    overflow: hidden;
+    overflow: visible;
     display: flex;
     flex-direction: column;
+    height: fit-content;
 
     .income-list {
       display: flex;
@@ -384,6 +388,7 @@ const IncomeStyled = styled.div`
       overflow-y: auto;
       flex: 1;
       padding-right: 0.5rem;
+      max-height: 600px;
 
       /* Custom scrollbar */
       &::-webkit-scrollbar {

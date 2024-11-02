@@ -222,47 +222,59 @@ function Form({ addIncome, isExpense = false }) {
 
 const FormStyled = styled.form`
   width: 100%;
-  background: #fffafb;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 20px rgba(19, 21, 21, 0.05);
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 
   .form-title {
-    font-size: 1.2rem;
+    font-size: 1.125rem;
     font-weight: 600;
-    color: #2b2c28;
-    margin-bottom: 1.5rem;
+    color: #0f172a;
+    margin-bottom: 1.25rem;
     text-align: center;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
   }
 
   .form-group {
     display: flex;
     flex-direction: column;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
 
     label {
-      font-size: 0.9rem;
+      font-size: 0.875rem;
       font-weight: 500;
-      color: #4b5563;
-      margin-bottom: 0.5rem;
+      color: #374151;
+      margin-bottom: 0.375rem;
     }
 
     input,
     textarea,
     select {
       font-family: inherit;
-      font-size: 0.95rem;
-      padding: 0.75rem;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      background-color: #f8fafc;
-      color: #2b2c28;
+      font-size: 0.875rem;
+      padding: 0.625rem 0.75rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      background-color: #ffffff;
+      color: #0f172a;
       transition: all 0.2s ease;
 
       &:focus {
         outline: none;
-        border-color: #7de2d1;
-        box-shadow: 0 0 0 3px rgba(125, 226, 209, 0.2);
+        border-color: #10b981;
+        box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
       }
 
       &::placeholder {
@@ -270,8 +282,8 @@ const FormStyled = styled.form`
       }
 
       &.error {
-        border-color: #ef4444;
-        background-color: rgba(239, 68, 68, 0.05);
+        border-color: #dc2626;
+        background-color: rgba(220, 38, 38, 0.05);
       }
     }
 
@@ -282,15 +294,15 @@ const FormStyled = styled.form`
   }
 
   .error-message {
-    color: #ef4444;
-    font-size: 0.8rem;
+    color: #dc2626;
+    font-size: 0.75rem;
     margin-top: 0.25rem;
   }
 
   .form-error {
-    background-color: rgba(239, 68, 68, 0.1);
+    background-color: rgba(220, 38, 38, 0.1);
     padding: 0.75rem;
-    border-radius: 8px;
+    border-radius: 6px;
     margin-bottom: 1rem;
     text-align: center;
   }
@@ -298,18 +310,18 @@ const FormStyled = styled.form`
   .submit-btn {
     width: 100%;
     padding: 0.75rem 1.5rem;
-    background: #339989;
+    background: #10b981;
     color: white;
     border: none;
-    border-radius: 8px;
-    font-size: 1rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
     margin-top: 0.5rem;
 
     &:hover {
-      background: #2a7d6f;
+      background: #059669;
     }
 
     &:disabled {

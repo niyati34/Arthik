@@ -197,12 +197,12 @@ const IncomeStyled = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
-    gap: 1.5rem;
+    margin-bottom: 1rem;
+    gap: 1rem;
 
     .header-content {
       h1 {
-        font-size: 1.5rem;
+        font-size: 1.375rem;
         font-weight: 700;
         color: #0f172a;
         margin-bottom: 0.25rem;
@@ -222,16 +222,16 @@ const IncomeStyled = styled.div`
       background: #ffffff;
       border: 1px solid #e2e8f0;
       border-radius: 8px;
-      padding: 1rem;
-      min-width: 200px;
+      padding: 0.75rem;
+      min-width: 180px;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
       display: flex;
       align-items: center;
       gap: 0.75rem;
 
       .summary-icon {
-        width: 32px;
-        height: 32px;
+        width: 28px;
+        height: 28px;
         background: #f0fdf4;
         border-radius: 6px;
         display: flex;
@@ -252,7 +252,7 @@ const IncomeStyled = styled.div`
 
         .amount {
           display: block;
-          font-size: 1.25rem;
+          font-size: 1.125rem;
           font-weight: 700;
           color: #10b981;
           margin-bottom: 0.125rem;
@@ -273,8 +273,8 @@ const IncomeStyled = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
-    gap: 1rem;
+    margin-bottom: 0.75rem;
+    gap: 0.75rem;
     flex-wrap: wrap;
   }
 

@@ -224,23 +224,23 @@ const FormStyled = styled.form`
   width: 100%;
   background: #ffffff;
   border-radius: 8px;
-  padding: 1.5rem;
+  padding: 1.25rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   min-height: fit-content;
 
   .form-title {
-    font-size: 1.125rem;
+    font-size: 1rem;
     font-weight: 600;
     color: #0f172a;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
     text-align: center;
   }
 
   .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-bottom: 1.25rem;
+    gap: 0.875rem;
+    margin-bottom: 1rem;
 
     @media (max-width: 768px) {
       grid-template-columns: 1fr;
@@ -251,23 +251,23 @@ const FormStyled = styled.form`
   .form-group {
     display: flex;
     flex-direction: column;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
 
     label {
-      font-size: 0.875rem;
+      font-size: 0.8125rem;
       font-weight: 500;
       color: #374151;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.375rem;
     }
 
     input,
     textarea,
     select {
       font-family: inherit;
-      font-size: 0.875rem;
-      padding: 0.75rem;
+      font-size: 0.8125rem;
+      padding: 0.625rem 0.75rem;
       border: 1px solid #e2e8f0;
-      border-radius: 8px;
+      border-radius: 6px;
       background-color: #ffffff;
       color: #0f172a;
       transition: all 0.2s ease;
@@ -277,7 +277,7 @@ const FormStyled = styled.form`
       &:focus {
         outline: none;
         border-color: #10b981;
-        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
       }
 
       &::placeholder {
@@ -312,7 +312,7 @@ const FormStyled = styled.form`
 
     textarea {
       resize: vertical;
-      min-height: 80px;
+      min-height: 70px;
     }
   }
 
@@ -332,16 +332,16 @@ const FormStyled = styled.form`
 
   .submit-btn {
     width: 100%;
-    padding: 0.875rem 1.5rem;
+    padding: 0.75rem 1.5rem;
     background: #10b981;
     color: white;
     border: none;
-    border-radius: 8px;
-    font-size: 0.875rem;
+    border-radius: 6px;
+    font-size: 0.8125rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
-    margin-top: 0.75rem;
+    margin-top: 0.5rem;
 
     &:hover {
       background: #059669;

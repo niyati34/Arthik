@@ -299,6 +299,7 @@ const FormStyled = styled.form`
       background-size: 1.5em 1.5em;
       padding-right: 2.5rem;
       cursor: pointer;
+      transition: all 0.2s ease;
 
       &:hover {
         border-color: #cbd5e1;
@@ -307,6 +308,23 @@ const FormStyled = styled.form`
 
       &:focus {
         background-color: #ffffff;
+        border-color: #10b981;
+        box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
+      }
+
+      option {
+        padding: 0.5rem;
+        background: #ffffff;
+        color: #0f172a;
+        
+        &:hover {
+          background: #f1f5f9;
+        }
+
+        &:checked {
+          background: #10b981;
+          color: #ffffff;
+        }
       }
     }
 

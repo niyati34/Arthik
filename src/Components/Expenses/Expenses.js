@@ -238,96 +238,90 @@ function Expenses() {
 const ExpenseStyled = styled.div`
   width: 100%;
   min-height: 100%;
-  background: #fffafb;
+  background: transparent;
+  overflow: visible;
 
   .expense-container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 0.75rem;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
   }
 
   /* Header Styles */
   .expense-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 3rem;
-    gap: 2rem;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    gap: 0.75rem;
 
     .header-content {
-      flex: 1;
-
       h1 {
-        font-size: 2.5rem;
+        font-size: 1.25rem;
         font-weight: 700;
-        color: #2b2c28;
-        margin-bottom: 0.5rem;
+        color: #0f172a;
+        margin-bottom: 0.25rem;
         line-height: 1.2;
       }
 
       p {
-        color: #6e7e85;
-        font-size: 1.1rem;
-        line-height: 1.6;
-        max-width: 500px;
+        color: #64748b;
+        font-size: 0.75rem;
+        margin: 0;
       }
     }
   }
 
   .expense-summary {
     .summary-card {
-      background: #fffafb;
-      border: 1px solid #e5e7eb;
-      border-radius: 16px;
-      padding: 2rem;
-      min-width: 280px;
-      box-shadow: 0 4px 20px rgba(19, 21, 21, 0.03);
-      position: relative;
-      overflow: hidden;
-
-      &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: linear-gradient(90deg, #f59e0b, #fbbf24);
-      }
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 0.625rem;
+      min-width: 160px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
 
       .summary-icon {
-        font-size: 2.5rem;
-        width: 60px;
-        height: 60px;
-        background: #fffbeb;
-        border-radius: 12px;
+        width: 24px;
+        height: 24px;
+        background: #f0fdf4;
+        border-radius: 6px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 1rem;
+        color: #10b981;
+        font-size: 0.875rem;
       }
 
       .summary-content {
         h3 {
-          font-size: 1rem;
+          font-size: 0.625rem;
           font-weight: 600;
-          color: #2b2c28;
-          margin-bottom: 0.5rem;
+          color: #64748b;
+          margin: 0 0 0.125rem 0;
           text-transform: uppercase;
           letter-spacing: 0.05em;
         }
 
         .amount {
           display: block;
-          font-size: 2rem;
+          font-size: 1rem;
           font-weight: 700;
-          color: #f59e0b;
-          margin-bottom: 0.5rem;
+          color: #10b981;
+          margin-bottom: 0.125rem;
+          line-height: 1;
         }
 
         .count {
-          font-size: 0.9rem;
-          color: #6e7e85;
+          font-size: 0.5rem;
+          color: #94a3b8;
           font-weight: 500;
         }
       }
@@ -339,72 +333,95 @@ const ExpenseStyled = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
-    gap: 1.5rem;
+    margin-bottom: 0.625rem;
+    gap: 0.625rem;
     flex-wrap: wrap;
   }
 
   .search-control {
     position: relative;
     flex: 1;
-    min-width: 300px;
-    max-width: 500px;
+    min-width: 180px;
+    max-width: 280px;
 
     .search-icon {
       position: absolute;
-      left: 1rem;
+      left: 0.625rem;
       top: 50%;
       transform: translateY(-50%);
-      font-size: 1.1rem;
-      color: #9ca3af;
+      font-size: 0.75rem;
+      color: #94a3b8;
       pointer-events: none;
     }
 
     .search-input {
       width: 100%;
-      padding: 1rem 1rem 1rem 3rem;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      font-size: 1rem;
-      background: #fffafb;
-      color: #2b2c28;
+      padding: 0.5rem 0.625rem 0.5rem 2.25rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      background: #ffffff;
+      color: #0f172a;
       transition: all 0.2s ease;
 
       &::placeholder {
-        color: #9ca3af;
+        color: #94a3b8;
       }
 
       &:focus {
         outline: none;
-        border-color: #f59e0b;
-        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        border-color: #10b981;
+        box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
       }
     }
   }
 
   .filter-controls {
     display: flex;
-    gap: 1rem;
+    gap: 0.5rem;
 
     select {
-      padding: 1rem 1.5rem;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      background: #fffafb;
-      color: #2b2c28;
+      padding: 0.5rem 0.625rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      background: #ffffff;
+      color: #0f172a;
       cursor: pointer;
       transition: all 0.2s ease;
-      min-width: 140px;
+      min-width: 110px;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 0.625rem center;
+      background-repeat: no-repeat;
+      background-size: 1.5em 1.5em;
+      padding-right: 2.25rem;
+
+      &:hover {
+        border-color: #cbd5e1;
+        background-color: #f8fafc;
+      }
 
       &:focus {
         outline: none;
-        border-color: #f59e0b;
-        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        border-color: #10b981;
+        box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
+        background-color: #ffffff;
       }
 
       option {
         padding: 0.5rem;
+        background: #ffffff;
+        color: #0f172a;
+        
+        &:hover {
+          background: #f1f5f9;
+        }
+
+        &:checked {
+          background: #10b981;
+          color: #ffffff;
+        }
       }
     }
   }
@@ -414,61 +431,60 @@ const ExpenseStyled = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
-    gap: 1.5rem;
+    margin-bottom: 0.625rem;
+    gap: 0.625rem;
     flex-wrap: wrap;
   }
 
   .date-inputs {
     display: flex;
-    gap: 1.5rem;
+    gap: 0.625rem;
     flex-wrap: wrap;
   }
 
   .date-input {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.25rem;
 
     label {
-      font-size: 0.9rem;
+      font-size: 0.625rem;
       font-weight: 500;
-      color: #4b5563;
+      color: #64748b;
     }
 
     .date-field {
-      padding: 0.75rem 1rem;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      background: #fffafb;
-      color: #2b2c28;
+      padding: 0.375rem 0.625rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      background: #ffffff;
+      color: #0f172a;
       transition: all 0.2s ease;
-      min-width: 150px;
+      min-width: 110px;
 
       &:focus {
         outline: none;
-        border-color: #f59e0b;
-        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        border-color: #10b981;
+        box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
       }
     }
   }
 
   .clear-dates-btn {
-    background: #f59e0b;
-    color: #fffafb;
+    background: #10b981;
+    color: #ffffff;
     border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    font-size: 0.95rem;
+    padding: 0.375rem 0.875rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
     white-space: nowrap;
 
     &:hover {
-      background: #d97706;
-      transform: translateY(-1px);
+      background: #059669;
     }
   }
 
@@ -476,90 +492,128 @@ const ExpenseStyled = styled.div`
   .expense-content {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 1.25rem;
+    flex: 1;
+    overflow: visible;
+    align-items: start;
 
     @media (min-width: 1200px) {
-      grid-template-columns: 400px 1fr;
+      grid-template-columns: 700px 1fr;
     }
   }
 
   .section-header {
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.625rem;
 
     h2 {
-      font-size: 1.5rem;
+      font-size: 0.875rem;
       font-weight: 600;
-      color: #2b2c28;
-      margin-bottom: 0.5rem;
+      color: #0f172a;
+      margin-bottom: 0.25rem;
     }
 
     p {
-      color: #6e7e85;
-      font-size: 0.95rem;
+      color: #64748b;
+      font-size: 0.625rem;
+      margin: 0;
     }
   }
 
   .form-section {
+    margin-bottom: 0.625rem;
+    height: fit-content;
+    
     .form-container {
-      background: #fffafb;
-      border: 1px solid #e5e7eb;
-      border-radius: 16px;
-      padding: 2rem;
-      box-shadow: 0 4px 20px rgba(19, 21, 21, 0.03);
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
       height: fit-content;
+      min-width: 0;
+      overflow: visible;
+      margin-bottom: 0.625rem;
     }
   }
 
   .list-section {
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+
     .expense-list {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 0.625rem;
+      overflow-y: auto;
+      flex: 1;
+      padding-right: 0.5rem;
+      max-height: 500px;
+
+      /* Custom scrollbar */
+      &::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 2px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 2px;
+        
+        &:hover {
+          background: #94a3b8;
+        }
+      }
     }
   }
 
   /* Empty State */
   .empty-state {
-    background: #fffafb;
-    border: 1px solid #e5e7eb;
-    border-radius: 16px;
-    padding: 3rem 2rem;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1.5rem 1.25rem;
     text-align: center;
-    box-shadow: 0 4px 20px rgba(19, 21, 21, 0.03);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 
     .empty-icon {
-      font-size: 4rem;
-      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      margin-bottom: 0.625rem;
       opacity: 0.5;
     }
 
     h3 {
-      font-size: 1.25rem;
+      font-size: 0.875rem;
       font-weight: 600;
-      color: #2b2c28;
-      margin-bottom: 0.5rem;
+      color: #0f172a;
+      margin-bottom: 0.375rem;
     }
 
     p {
-      color: #6e7e85;
-      margin-bottom: 1.5rem;
-      line-height: 1.6;
+      color: #64748b;
+      margin-bottom: 0.75rem;
+      font-size: 0.75rem;
+      line-height: 1.4;
     }
 
     .reset-button {
-      background: #f59e0b;
-      color: #fffafb;
+      background: #10b981;
+      color: #ffffff;
       border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
-      font-size: 0.95rem;
+      padding: 0.375rem 0.875rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s ease;
 
       &:hover {
-        background: #d97706;
-        transform: translateY(-1px);
+        background: #059669;
       }
     }
   }
@@ -567,23 +621,23 @@ const ExpenseStyled = styled.div`
   /* Responsive Design */
   @media (max-width: 1024px) {
     .expense-container {
-      padding: 1.5rem;
+      padding: 0.625rem;
     }
 
     .expense-header {
       flex-direction: column;
       align-items: stretch;
-      gap: 1.5rem;
+      gap: 0.75rem;
 
       .header-content h1 {
-        font-size: 2rem;
+        font-size: 1.125rem;
       }
     }
 
     .controls-section {
       flex-direction: column;
       align-items: stretch;
-      gap: 1rem;
+      gap: 0.625rem;
 
       .search-control {
         min-width: auto;
@@ -598,7 +652,7 @@ const ExpenseStyled = styled.div`
     .date-range-section {
       flex-direction: column;
       align-items: stretch;
-      gap: 1rem;
+      gap: 0.625rem;
 
       .date-inputs {
         justify-content: center;
@@ -608,20 +662,20 @@ const ExpenseStyled = styled.div`
 
   @media (max-width: 768px) {
     .expense-container {
-      padding: 1rem;
+      padding: 0.5rem;
     }
 
     .expense-header .header-content h1 {
-      font-size: 1.75rem;
+      font-size: 1rem;
     }
 
     .summary-card {
-      padding: 1.5rem;
+      padding: 0.5rem;
       min-width: auto;
     }
 
     .expense-content {
-      gap: 1.5rem;
+      gap: 0.875rem;
     }
 
     .date-inputs {

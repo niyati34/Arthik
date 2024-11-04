@@ -319,10 +319,38 @@ const IncomeStyled = styled.div`
       cursor: pointer;
       transition: all 0.2s ease;
       min-width: 120px;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 0.75rem center;
+      background-repeat: no-repeat;
+      background-size: 1.5em 1.5em;
+      padding-right: 2.5rem;
+
+      &:hover {
+        border-color: #cbd5e1;
+        background-color: #f8fafc;
+      }
 
       &:focus {
         outline: none;
         border-color: #10b981;
+        box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
+        background-color: #ffffff;
+      }
+
+      option {
+        padding: 0.5rem;
+        background: #ffffff;
+        color: #0f172a;
+        
+        &:hover {
+          background: #f1f5f9;
+        }
+
+        &:checked {
+          background: #10b981;
+          color: #ffffff;
+        }
       }
     }
   }
@@ -337,7 +365,7 @@ const IncomeStyled = styled.div`
     align-items: start;
 
     @media (min-width: 1200px) {
-      grid-template-columns: 600px 1fr;
+      grid-template-columns: 700px 1fr;
     }
   }
 

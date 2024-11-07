@@ -116,12 +116,12 @@ const BudgetPageStyled = styled.div`
             .summary-icon {
                 width: 24px;
                 height: 24px;
-                background: #f0f9ff;
+                background: #f0fdf4;
                 border-radius: 6px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                color: #0ea5e9;
+                color: #10b981;
             }
 
             .summary-content {
@@ -138,7 +138,7 @@ const BudgetPageStyled = styled.div`
                     display: block;
                     font-size: 1rem;
                     font-weight: 700;
-                    color: #0ea5e9;
+                    color: #10b981;
                     margin-bottom: 0.125rem;
                     line-height: 1;
                 }

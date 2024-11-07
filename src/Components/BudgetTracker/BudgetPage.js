@@ -15,7 +15,15 @@ const BudgetPage = () => {
                     </div>
                     <div className="budget-summary">
                         <div className="summary-card">
-                            <div className="summary-icon">📋</div>
+                            <div className="summary-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                    <path d="M14 2H6A2 2 0 0 0 4 4V20A2 2 0 0 0 6 22H18A2 2 0 0 0 20 20V8L14 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M14 2V8H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M16 13H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M16 17H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M10 9H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+                            </div>
                             <div className="summary-content">
                                 <h3>Active Budgets</h3>
                                 <span className="count">3 Categories</span>
@@ -55,100 +63,93 @@ const BudgetPage = () => {
 const BudgetPageStyled = styled.div`
     width: 100%;
     min-height: 100%;
-    background: #fffafb;
+    background: transparent;
+    overflow: visible;
 
     .budget-container {
         max-width: 1400px;
         margin: 0 auto;
-        padding: 2rem;
+        padding: 0.75rem;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: visible;
     }
 
     /* Header Styles */
     .budget-header {
         display: flex;
         justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 3rem;
-        gap: 2rem;
+        align-items: center;
+        margin-bottom: 0.75rem;
+        gap: 0.75rem;
 
         .header-content {
-            flex: 1;
-
             h1 {
-                font-size: 2.5rem;
+                font-size: 1.25rem;
                 font-weight: 700;
-                color: #2b2c28;
-                margin-bottom: 0.5rem;
+                color: #0f172a;
+                margin-bottom: 0.25rem;
                 line-height: 1.2;
             }
 
             p {
-                color: #6e7e85;
-                font-size: 1.1rem;
-                line-height: 1.6;
-                max-width: 500px;
+                color: #64748b;
+                font-size: 0.75rem;
+                margin: 0;
             }
         }
     }
 
     .budget-summary {
         .summary-card {
-            background: #fffafb;
-            border: 1px solid #e5e7eb;
-            border-radius: 16px;
-            padding: 2rem;
-            min-width: 280px;
-            box-shadow: 0 4px 20px rgba(19, 21, 21, 0.03);
-            position: relative;
-            overflow: hidden;
-
-            &::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: 3px;
-                background: linear-gradient(90deg, #8b5cf6, #a78bfa);
-            }
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 0.625rem;
+            min-width: 160px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
 
             .summary-icon {
-                font-size: 2.5rem;
-                width: 60px;
-                height: 60px;
-                background: #f3f4f6;
-                border-radius: 12px;
+                width: 24px;
+                height: 24px;
+                background: #f0f9ff;
+                border-radius: 6px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                margin-bottom: 1rem;
+                color: #0ea5e9;
             }
 
             .summary-content {
                 h3 {
-                    font-size: 1rem;
+                    font-size: 0.625rem;
                     font-weight: 600;
-                    color: #2b2c28;
-                    margin-bottom: 0.5rem;
+                    color: #64748b;
+                    margin: 0 0 0.125rem 0;
                     text-transform: uppercase;
                     letter-spacing: 0.05em;
                 }
 
                 .count {
                     display: block;
-                    font-size: 1.5rem;
+                    font-size: 1rem;
                     font-weight: 700;
-                    color: #8b5cf6;
-                    margin-bottom: 0.5rem;
+                    color: #0ea5e9;
+                    margin-bottom: 0.125rem;
+                    line-height: 1;
                 }
 
                 .status {
-                    font-size: 0.9rem;
+                    font-size: 0.5rem;
                     color: #10b981;
                     font-weight: 500;
                     background: #f0fdf4;
-                    padding: 0.25rem 0.75rem;
-                    border-radius: 6px;
+                    padding: 0.125rem 0.5rem;
+                    border-radius: 4px;
                     display: inline-block;
                 }
             }
@@ -159,83 +160,126 @@ const BudgetPageStyled = styled.div`
     .budget-content {
         display: grid;
         grid-template-columns: 1fr;
-        gap: 3rem;
+        gap: 1.25rem;
+        flex: 1;
+        overflow: visible;
+        align-items: start;
 
         @media (min-width: 1200px) {
-            grid-template-columns: 400px 1fr;
+            grid-template-columns: 700px 1fr;
         }
     }
 
     .section-header {
-        margin-bottom: 1.5rem;
+        margin-bottom: 0.625rem;
 
         h2 {
-            font-size: 1.5rem;
+            font-size: 0.875rem;
             font-weight: 600;
-            color: #2b2c28;
-            margin-bottom: 0.5rem;
+            color: #0f172a;
+            margin-bottom: 0.25rem;
         }
 
         p {
-            color: #6e7e85;
-            font-size: 0.95rem;
+            color: #64748b;
+            font-size: 0.625rem;
+            margin: 0;
         }
     }
 
     .form-section {
+        margin-bottom: 0.625rem;
+        height: fit-content;
+        
         .form-container {
-            background: #fffafb;
-            border: 1px solid #e5e7eb;
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 4px 20px rgba(19, 21, 21, 0.03);
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             height: fit-content;
+            min-width: 0;
+            overflow: visible;
+            margin-bottom: 0.625rem;
         }
     }
 
     .tracker-section {
+        overflow: visible;
+        display: flex;
+        flex-direction: column;
+        height: fit-content;
+
         .tracker-container {
-            background: #fffafb;
-            border: 1px solid #e5e7eb;
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 4px 20px rgba(19, 21, 21, 0.03);
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            height: fit-content;
+            min-width: 0;
+            overflow: visible;
+            max-height: 500px;
+            overflow-y: auto;
+
+            /* Custom scrollbar */
+            &::-webkit-scrollbar {
+                width: 4px;
+            }
+
+            &::-webkit-scrollbar-track {
+                background: #f1f5f9;
+                border-radius: 2px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: #cbd5e1;
+                border-radius: 2px;
+                
+                &:hover {
+                    background: #94a3b8;
+                }
+            }
         }
     }
 
     /* Responsive Design */
     @media (max-width: 1024px) {
         .budget-container {
-            padding: 1.5rem;
+            padding: 0.625rem;
         }
 
         .budget-header {
             flex-direction: column;
             align-items: stretch;
-            gap: 1.5rem;
+            gap: 0.75rem;
 
             .header-content h1 {
-                font-size: 2rem;
+                font-size: 1.125rem;
             }
         }
 
         .budget-content {
-            gap: 2rem;
+            gap: 1rem;
         }
     }
 
     @media (max-width: 768px) {
         .budget-container {
-            padding: 1rem;
+            padding: 0.5rem;
         }
 
         .budget-header .header-content h1 {
-            font-size: 1.75rem;
+            font-size: 1rem;
         }
 
         .summary-card {
-            padding: 1.5rem;
+            padding: 0.5rem;
             min-width: auto;
+        }
+
+        .budget-content {
+            gap: 0.875rem;
         }
     }
 `;

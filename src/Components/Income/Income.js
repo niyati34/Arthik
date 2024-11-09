@@ -4,7 +4,7 @@ import styled from "styled-components";
 import IncomeForm from "../Form/Form";
 import IncomeItem from "../IncomeItem/IncomeItem";
 import { useGlobalContext } from "../../context/globalContext";
-import { useDataFiltering } from "../../hooks/useDataFiltering"; // 👈 IMPORT THE HOOK
+import { useDataFiltering } from "../../utils/useDataFiltering"; // 👈 IMPORT THE HOOK
 
 function Income() {
   const { incomes, addIncome, deleteIncome, totalIncomes } = useGlobalContext();

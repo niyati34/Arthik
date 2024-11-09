@@ -10,30 +10,20 @@ import GoalSetter from "./Components/GoalSetter/GoalSetter";
 function App() {
   const [active, setActive] = useState(1);
 
-  const displayData = () => {
-    switch (active) {
-      case 1:
-        return <Dashboard />;
-      case 2:
-        return <Income />;
-      case 3:
-        return <Expenses />;
-      case 4:
-        return <BudgetPage />;
-      case 5:
-        return <GoalSetter />;
-      default:
-        return <Dashboard />;
-    }
+  const components = {
+    1: <Dashboard />,
+    2: <Income />,
+    3: <Expenses />,
+    4: <BudgetPage />,
+    5: <GoalSetter />,
   };
+  const displayData = () => components[active] || <Dashboard />;
 
   return (
     <AppStyled className="App" role="main" aria-label="Main content">
       <div className="dashboard-layout">
         <Navigation active={active} setActive={setActive} />
-        <main className="main-content">
-          {displayData()}
-        </main>
+        <main className="main-content">{displayData()}</main>
       </div>
     </AppStyled>
   );
@@ -47,15 +37,22 @@ const AppStyled = styled.div`
   overflow: hidden;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: 
-      radial-gradient(circle at 10% 90%, rgba(51, 153, 137, 0.03) 0%, transparent 50%),
-      radial-gradient(circle at 90% 10%, rgba(125, 226, 209, 0.03) 0%, transparent 50%);
+    background: radial-gradient(
+        circle at 10% 90%,
+        rgba(51, 153, 137, 0.03) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 90% 10%,
+        rgba(125, 226, 209, 0.03) 0%,
+        transparent 50%
+      );
     pointer-events: none;
   }
 

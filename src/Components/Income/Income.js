@@ -1,54 +1,25 @@
-import React, { useState, useEffect } from "react";
+// src/components/Income/Income.js
+import React from "react";
 import styled from "styled-components";
 import IncomeForm from "../Form/Form";
 import IncomeItem from "../IncomeItem/IncomeItem";
 import { useGlobalContext } from "../../context/globalContext";
+import { useDataFiltering } from "../../hooks/useDataFiltering"; // 👈 IMPORT THE HOOK
 
 function Income() {
   const { incomes, addIncome, deleteIncome, totalIncomes } = useGlobalContext();
-  const [filteredIncomes, setFilteredIncomes] = useState([]);
-  const [filter, setFilter] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState("date-desc");
 
-  useEffect(() => {
-    let result = [...incomes];
-
-    if (filter !== "all") {
-      result = result.filter((income) => income.category === filter);
-    }
-
-    if (searchQuery.trim() !== "") {
-      const query = searchQuery.toLowerCase();
-      result = result.filter(
-        (income) =>
-          income.title?.toLowerCase().includes(query) ||
-          income.description?.toLowerCase().includes(query) ||
-          income.category?.toLowerCase().includes(query)
-      );
-    }
-
-    result.sort((a, b) => {
-      switch (sortBy) {
-        case "amount-asc":
-          return a.amount - b.amount;
-        case "amount-desc":
-          return b.amount - a.amount;
-        case "date-asc":
-          return new Date(a.date) - new Date(b.date);
-        case "date-desc":
-        default:
-          return new Date(b.date) - new Date(a.date);
-      }
-    });
-
-    setFilteredIncomes(result);
-  }, [incomes, filter, searchQuery, sortBy]);
-
-  const categories = [
-    "all",
-    ...new Set(incomes.map((income) => income.category)),
-  ];
+  // 👇 USE THE CUSTOM HOOK
+  const {
+    filteredData: filteredIncomes, // Rename for clarity
+    searchQuery,
+    setSearchQuery,
+    filter,
+    setFilter,
+    sortBy,
+    setSortBy,
+    categories,
+  } = useDataFiltering(incomes);
 
   return (
     <IncomeStyled>
@@ -63,8 +34,20 @@ function Income() {
             <div className="summary-card">
               <div className="summary-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 1V23" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M17 5H9.5A3.5 3.5 0 0 0 6 8.5A3.5 3.5 0 0 0 9.5 12H14.5A3.5 3.5 0 0 1 18 15.5A3.5 3.5 0 0 1 14.5 19H6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path
+                    d="M12 1V23"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M17 5H9.5A3.5 3.5 0 0 0 6 8.5A3.5 3.5 0 0 0 9.5 12H14.5A3.5 3.5 0 0 1 18 15.5A3.5 3.5 0 0 1 14.5 19H6"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </div>
               <div className="summary-content">
@@ -128,13 +111,17 @@ function Income() {
           <div className="list-section">
             <div className="section-header">
               <h2>Income History</h2>
-              <p>{filteredIncomes.length} source{filteredIncomes.length !== 1 ? 's' : ''} found</p>
+              <p>
+                {filteredIncomes.length} source
+                {filteredIncomes.length !== 1 ? "s" : ""} found
+              </p>
             </div>
 
             {filteredIncomes.length > 0 ? (
               <div className="income-list">
                 {filteredIncomes.map((income) => {
-                  const { id, title, amount, date, category, description } = income;
+                  const { id, title, amount, date, category, description } =
+                    income;
                   return (
                     <IncomeItem
                       key={id}
@@ -155,13 +142,16 @@ function Income() {
               <div className="empty-state">
                 <h3>No Income Sources Found</h3>
                 <p>
-                  {filter !== "all"
+                  {filter !== "all" || searchQuery
                     ? "No income sources match your current filters."
                     : "Start by adding your first income source above."}
                 </p>
-                {filter !== "all" && (
+                {(filter !== "all" || searchQuery) && (
                   <button
-                    onClick={() => setFilter("all")}
+                    onClick={() => {
+                      setFilter("all");
+                      setSearchQuery("");
+                    }}
                     className="reset-button"
                   >
                     Reset Filters
@@ -342,7 +332,7 @@ const IncomeStyled = styled.div`
         padding: 0.5rem;
         background: #ffffff;
         color: #0f172a;
-        
+
         &:hover {
           background: #f1f5f9;
         }
@@ -389,7 +379,7 @@ const IncomeStyled = styled.div`
   .form-section {
     margin-bottom: 0.75rem;
     height: fit-content;
-    
+
     .form-container {
       background: #ffffff;
       border: 1px solid #e2e8f0;
@@ -431,7 +421,7 @@ const IncomeStyled = styled.div`
       &::-webkit-scrollbar-thumb {
         background: #cbd5e1;
         border-radius: 2px;
-        
+
         &:hover {
           background: #94a3b8;
         }

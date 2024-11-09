@@ -1,8 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./SigninSignup.css";
 
 function SignInSignUp() {
+  const navigate = useNavigate();
   const [isSignUp, setIsSignUp] = useState(false);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -47,13 +51,6 @@ function SignInSignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setGeneralError("");
-
-    if (!validateForm()) {
-      return;
-    }
-
-    setIsLoading(true);
-
     try {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -61,9 +58,20 @@ function SignInSignUp() {
       if (isSignUp) {
         console.log("Sign up successful:", formData);
         // Handle sign up logic
+        navigate("/dashboard");
       } else {
         console.log("Sign in successful:", formData);
         // Handle sign in logic
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      setGeneralError("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+        console.log("Sign in successful:", formData);
+        // Handle sign in logic - redirect to dashboard
+        navigate("/dashboard");
       }
     } catch (error) {
       setGeneralError("An error occurred. Please try again.");

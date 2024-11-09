@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./Navbar.css";
 
 function Navbar() {
@@ -45,10 +46,10 @@ function Navbar() {
         </ul>
 
         <div className="nav-actions">
-          <a href="/signin" className="nav-link">Sign In</a>
-          <a href="/signup" className="cta-button">
+          <Link to="/signin" className="nav-link" onClick={closeMenu}>Sign In</Link>
+          <Link to="/signup" className="cta-button" onClick={closeMenu}>
             Start Free Trial
-          </a>
+          </Link>
         </div>
 
         <div className="mobile-menu-toggle" onClick={toggleMenu}>

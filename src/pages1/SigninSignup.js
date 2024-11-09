@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import "./SigninSignup.css";
 
 function SignInSignUp() {
   const navigate = useNavigate();
   const [isSignUp, setIsSignUp] = useState(false);
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -51,24 +49,22 @@ function SignInSignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setGeneralError("");
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsLoading(true);
+
     try {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       if (isSignUp) {
         console.log("Sign up successful:", formData);
-        // Handle sign up logic
+        // Handle sign up logic - redirect to dashboard
         navigate("/dashboard");
       } else {
-        console.log("Sign in successful:", formData);
-        // Handle sign in logic
-        navigate("/dashboard");
-      }
-    } catch (error) {
-      setGeneralError("An error occurred. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
         console.log("Sign in successful:", formData);
         // Handle sign in logic - redirect to dashboard
         navigate("/dashboard");
@@ -143,7 +139,9 @@ function SignInSignUp() {
                 className={errors.confirmPassword ? "error" : ""}
               />
               {errors.confirmPassword && (
-                <span className="auth-error-message">{errors.confirmPassword}</span>
+                <span className="auth-error-message">
+                  {errors.confirmPassword}
+                </span>
               )}
             </div>
           )}
@@ -155,8 +153,10 @@ function SignInSignUp() {
           >
             {isLoading ? (
               <span className="auth-loading-spinner">Processing...</span>
+            ) : isSignUp ? (
+              "Create Account"
             ) : (
-              isSignUp ? "Create Account" : "Sign In"
+              "Sign In"
             )}
           </button>
         </form>

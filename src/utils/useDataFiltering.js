@@ -1,52 +1,67 @@
 // src/hooks/useDataFiltering.js
-import { useMemo, useState } from "react";
+import { useState, useEffect, useMemo } from 'react';
 
-export const useDataFiltering = (initialData = []) => {
-  const [filter, setFilter] = useState("all");
+export const useDataFiltering = (data, options = {}) => {
+  const [filteredData, setFilteredData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [filter, setFilter] = useState("all");
   const [sortBy, setSortBy] = useState("date-desc");
 
+  const {
+    searchFields = ['title', 'description', 'category'],
+    filterField = 'category',
+    dateField = 'date',
+    amountField = 'amount'
+  } = options;
+
+  // Get unique categories for filter dropdown
   const categories = useMemo(() => {
-    if (!initialData) return ["all"];
-    return ["all", ...new Set(initialData.map((item) => item.category))];
-  }, [initialData]);
+    const uniqueCategories = [...new Set(data.map(item => item[filterField]))];
+    return ["all", ...uniqueCategories.filter(Boolean)];
+  }, [data, filterField]);
 
-  const filteredData = useMemo(() => {
-    let result = [...initialData];
+  // Filter and sort data
+  useEffect(() => {
+    let result = [...data];
 
-    // Filter by category
+    // Apply category filter
     if (filter !== "all") {
-      result = result.filter((item) => item.category === filter);
+      result = result.filter(item => item[filterField] === filter);
     }
 
-    // Filter by search query
+    // Apply search filter
     if (searchQuery.trim() !== "") {
       const query = searchQuery.toLowerCase();
-      result = result.filter(
-        (item) =>
-          item.title?.toLowerCase().includes(query) ||
-          item.description?.toLowerCase().includes(query) ||
-          item.category?.toLowerCase().includes(query)
+      result = result.filter(item =>
+        searchFields.some(field => 
+          item[field]?.toLowerCase().includes(query)
+        )
       );
     }
 
-    // Sort the results
+    // Apply sorting
     result.sort((a, b) => {
       switch (sortBy) {
         case "amount-asc":
-          return a.amount - b.amount;
+          return (a[amountField] || 0) - (b[amountField] || 0);
         case "amount-desc":
-          return b.amount - a.amount;
+          return (b[amountField] || 0) - (a[amountField] || 0);
         case "date-asc":
-          return new Date(a.date) - new Date(b.date);
+          return new Date(a[dateField] || 0) - new Date(b[dateField] || 0);
         case "date-desc":
         default:
-          return new Date(b.date) - new Date(a.date);
+          return new Date(b[dateField] || 0) - new Date(a[dateField] || 0);
       }
     });
 
-    return result;
-  }, [initialData, filter, searchQuery, sortBy]);
+    setFilteredData(result);
+  }, [data, filter, searchQuery, sortBy, filterField, searchFields, dateField, amountField]);
+
+  const resetFilters = () => {
+    setFilter("all");
+    setSearchQuery("");
+    setSortBy("date-desc");
+  };
 
   return {
     filteredData,
@@ -57,5 +72,6 @@ export const useDataFiltering = (initialData = []) => {
     sortBy,
     setSortBy,
     categories,
+    resetFilters
   };
 };

@@ -1,17 +1,17 @@
 // src/components/Income/Income.js
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import IncomeForm from "../Form/Form";
 import IncomeItem from "../IncomeItem/IncomeItem";
 import { useGlobalContext } from "../../context/globalContext";
-import { useDataFiltering } from "../../utils/useDataFiltering"; // 👈 IMPORT THE HOOK
+import { useDataFiltering } from "../../utils/useDataFiltering";
 
 function Income() {
   const { incomes, addIncome, deleteIncome, totalIncomes } = useGlobalContext();
-
-  // 👇 USE THE CUSTOM HOOK
+  
+  // Use the custom filtering hook
   const {
-    filteredData: filteredIncomes, // Rename for clarity
+    filteredData: filteredIncomes,
     searchQuery,
     setSearchQuery,
     filter,
@@ -19,6 +19,7 @@ function Income() {
     sortBy,
     setSortBy,
     categories,
+    resetFilters
   } = useDataFiltering(incomes);
 
   return (
@@ -148,10 +149,7 @@ function Income() {
                 </p>
                 {(filter !== "all" || searchQuery) && (
                   <button
-                    onClick={() => {
-                      setFilter("all");
-                      setSearchQuery("");
-                    }}
+                    onClick={resetFilters}
                     className="reset-button"
                   >
                     Reset Filters

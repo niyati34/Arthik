@@ -130,7 +130,6 @@ function History({ limit = 5, showAll = false, allowDelete = false }) {
             </div>
           </div>
         )}
-        }
       </div>
 
       {transactions.length > 0 ? (
@@ -289,7 +288,7 @@ const HistoryStyled = styled.div`
     &::-webkit-scrollbar-thumb {
       background: #cbd5e1;
       border-radius: 2px;
-      
+
       &:hover {
         background: #94a3b8;
       }
@@ -449,4 +448,3 @@ const HistoryStyled = styled.div`
 `;
 
 export default History;
-

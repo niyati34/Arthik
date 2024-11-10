@@ -1,24 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import ExpenseForm from "./ExpenseForm";
 import IncomeItem from "../IncomeItem/IncomeItem";
 import { useGlobalContext } from "../../context/globalContext";
+import { useDataFiltering } from "../../utils/useDataFiltering";
 
 function Expenses() {
   const { expenses, addExpense, deleteExpense, totalExpenses } =
     useGlobalContext();
-  const [filteredExpenses, setFilteredExpenses] = useState([]);
-  const [filter, setFilter] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState("date-desc");
+  
+  // Use the custom filtering hook
+  const {
+    filteredData: filteredExpenses,
+    searchQuery,
+    setSearchQuery,
+    filter,
+    setFilter,
+    sortBy,
+    setSortBy,
+    categories,
+    resetFilters
+  } = useDataFiltering(expenses);
+
   const [dateRange, setDateRange] = useState({ from: "", to: "" });
 
-  useEffect(() => {
-    let result = [...expenses];
-
-    if (filter !== "all") {
-      result = result.filter((expense) => expense.category === filter);
-    }
+  // Apply date range filtering
+  const finalFilteredExpenses = React.useMemo(() => {
+    let result = [...filteredExpenses];
 
     if (dateRange.from) {
       const fromDate = new Date(dateRange.from);
@@ -30,37 +38,12 @@ function Expenses() {
       result = result.filter((expense) => new Date(expense.date) <= toDate);
     }
 
-    if (searchQuery.trim() !== "") {
-      const query = searchQuery.toLowerCase();
-      result = result.filter(
-        (expense) =>
-          expense.title?.toLowerCase().includes(query) ||
-          expense.description?.toLowerCase().includes(query) ||
-          expense.category?.toLowerCase().includes(query)
-      );
-    }
+    return result;
+  }, [filteredExpenses, dateRange]);
 
-    result.sort((a, b) => {
-      switch (sortBy) {
-        case "amount-asc":
-          return a.amount - b.amount;
-        case "amount-desc":
-          return b.amount - a.amount;
-        case "date-asc":
-          return new Date(a.date) - new Date(b.date);
-        case "date-desc":
-        default:
-          return new Date(b.date) - new Date(a.date);
-      }
-    });
-
-    setFilteredExpenses(result);
-  }, [expenses, filter, searchQuery, sortBy, dateRange]);
-
-  const categories = [
-    "all",
-    ...new Set(expenses.map((expense) => expense.category)),
-  ];
+  const clearDateRange = () => {
+    setDateRange({ from: "", to: "" });
+  };
 
   return (
     <ExpenseStyled>
@@ -73,7 +56,13 @@ function Expenses() {
           </div>
           <div className="expense-summary">
             <div className="summary-card">
-              <div className="summary-icon">💸</div>
+              <div className="summary-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
               <div className="summary-content">
                 <h3>Total Expenses</h3>
                 <span className="amount">${totalExpenses.toFixed(2)}</span>
@@ -88,7 +77,12 @@ function Expenses() {
         {/* Controls Section */}
         <div className="controls-section">
           <div className="search-control">
-            <div className="search-icon">🔍</div>
+            <div className="search-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2"/>
+                <path d="m21 21-4.35-4.35" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
             <input
               type="text"
               placeholder="Search expenses..."
@@ -153,7 +147,7 @@ function Expenses() {
           {(dateRange.from || dateRange.to) && (
             <button
               className="clear-dates-btn"
-              onClick={() => setDateRange({ from: "", to: "" })}
+              onClick={clearDateRange}
             >
               Clear Dates
             </button>
@@ -176,17 +170,17 @@ function Expenses() {
             <div className="section-header">
               <h2>Expense History</h2>
               <p>
-                {filteredExpenses.length > 0
-                  ? `${filteredExpenses.length} expense${
-                      filteredExpenses.length !== 1 ? "s" : ""
+                {finalFilteredExpenses.length > 0
+                  ? `${finalFilteredExpenses.length} expense${
+                      finalFilteredExpenses.length !== 1 ? "s" : ""
                     } found`
                   : "No expenses yet"}
               </p>
             </div>
 
-            {filteredExpenses.length > 0 ? (
+            {finalFilteredExpenses.length > 0 ? (
               <div className="expense-list">
-                {filteredExpenses.map((expense) => {
+                {finalFilteredExpenses.map((expense) => {
                   const { id, title, amount, date, category, description } =
                     expense;
                   return (
@@ -200,26 +194,24 @@ function Expenses() {
                       category={category || "N/A"}
                       type="expense"
                       deleteItem={deleteExpense}
-                      indicatorColor="var(--color-red)"
+                      indicatorColor="#ef4444"
                     />
                   );
                 })}
               </div>
             ) : (
               <div className="empty-state">
-                <div className="empty-icon">📊</div>
                 <h3>No Expenses Found</h3>
                 <p>
-                  {filter !== "all" || searchQuery || dateRange.from || dateRange.to
+                  {(filter !== "all" || searchQuery || dateRange.from || dateRange.to)
                     ? "No expenses match your current filters."
                     : "Start by adding your first expense above."}
                 </p>
                 {(filter !== "all" || searchQuery || dateRange.from || dateRange.to) && (
                   <button
                     onClick={() => {
-                      setFilter("all");
-                      setSearchQuery("");
-                      setDateRange({ from: "", to: "" });
+                      resetFilters();
+                      clearDateRange();
                     }}
                     className="reset-button"
                   >

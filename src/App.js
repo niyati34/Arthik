@@ -6,7 +6,8 @@ import Income from "./Components/Income/Income";
 import Expenses from "./Components/Expenses/Expenses";
 import BudgetPage from "./Components/BudgetTracker/BudgetPage";
 import GoalSetter from "./Components/GoalSetter/GoalSetter";
-import { GlobalStyle } from "./styles/GlobalStyle"; // <-- Import GlobalStyle
+import ErrorBoundary from "./Components/ErrorBoundary/ErrorBoundary";
+import { GlobalStyle } from "./styles/GlobalStyle";
 
 function App() {
   const [active, setActive] = useState(1);
@@ -29,13 +30,15 @@ function App() {
   };
 
   return (
-    <AppStyled className="App" role="main" aria-label="Main content">
-      <GlobalStyle /> {/* <-- Add GlobalStyle here */}
-      <div className="dashboard-layout">
-        <Navigation active={active} setActive={setActive} />
-        <main className="main-content">{displayData()}</main>
-      </div>
-    </AppStyled>
+    <ErrorBoundary>
+      <AppStyled className="App" role="main" aria-label="Main content">
+        <GlobalStyle />
+        <div className="dashboard-layout">
+          <Navigation active={active} setActive={setActive} />
+          <main className="main-content">{displayData()}</main>
+        </div>
+      </AppStyled>
+    </ErrorBoundary>
   );
 }
 

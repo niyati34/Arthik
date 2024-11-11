@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useGlobalContext } from "../../context/globalContext";
 import Chart from "../Chart/Chart";
 import History from "../../History/History";
+import Skeleton, { SkeletonCard, SkeletonList } from "../Skeleton/Skeleton";
 
 function Dashboard() {
   const {
@@ -14,6 +15,16 @@ function Dashboard() {
   } = useGlobalContext();
 
   const [timeframe, setTimeframe] = useState("all");
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simulate loading state for demo purposes
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const filterDataByTimeframe = (data) => {
     if (timeframe === "all") return data;
@@ -31,6 +42,61 @@ function Dashboard() {
 
   const filteredIncomes = filterDataByTimeframe(incomes);
   const filteredExpenses = filterDataByTimeframe(expenses);
+
+  if (isLoading) {
+    return (
+      <DashboardStyled>
+        <div className="dashboard-container">
+          {/* Loading Header */}
+          <div className="header-section">
+            <div className="header-content">
+              <Skeleton type="title" style={{ width: '60%', marginBottom: '0.5rem' }} />
+              <Skeleton type="text" style={{ width: '80%' }} />
+            </div>
+            <div className="timeframe-selector">
+              <Skeleton type="button" style={{ width: '80px', height: '32px' }} />
+              <Skeleton type="button" style={{ width: '80px', height: '32px' }} />
+              <Skeleton type="button" style={{ width: '80px', height: '32px' }} />
+            </div>
+          </div>
+
+          {/* Loading Summary Cards */}
+          <div className="summary-section">
+            <div className="summary-grid">
+              {Array.from({ length: 3 }).map((_, index) => (
+                <SkeletonCard key={index} />
+              ))}
+            </div>
+          </div>
+
+          {/* Loading Content */}
+          <div className="content-section">
+            <div className="content-grid">
+              <div className="chart-section">
+                <div className="section-header">
+                  <Skeleton type="title" style={{ width: '60%' }} />
+                  <Skeleton type="text" style={{ width: '40%' }} />
+                </div>
+                <div className="chart-container">
+                  <SkeletonCard />
+                </div>
+              </div>
+
+              <div className="history-section">
+                <div className="section-header">
+                  <Skeleton type="title" style={{ width: '50%' }} />
+                  <Skeleton type="text" style={{ width: '30%' }} />
+                </div>
+                <div className="history-container">
+                  <SkeletonList count={3} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </DashboardStyled>
+    );
+  }
 
   return (
     <DashboardStyled>

@@ -1,278 +1,240 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Button from "../Button/Button";
-import { plus } from "../../utils/Icons";
+import { useFormValidation, COMMON_VALIDATIONS } from "../../utils/useFormValidation";
 
-function Form({ addIncome, isExpense = false }) {
-  const [inputState, setInputState] = useState({
+const Form = ({ addIncome, addExpense, type = "income" }) => {
+  const initialValues = {
     title: "",
     amount: "",
-    date: "",
+    date: new Date(),
     category: "",
     description: "",
-  });
-  const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const { title, amount, date, category, description } = inputState;
-
-  const handleInput = (name) => (e) => {
-    setInputState({ ...inputState, [name]: e.target.value });
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
-    }
   };
 
-  // Validate form inputs
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!title.trim()) newErrors.title = "Title is required";
-
-    if (!amount) {
-      newErrors.amount = "Amount is required";
-    } else if (isNaN(amount) || parseFloat(amount) <= 0) {
-      newErrors.amount = "Please enter a valid amount";
-    }
-
-    if (!date) newErrors.date = "Date is required";
-    if (!category) newErrors.category = "Category is required";
-
-    return newErrors;
+  const validationSchema = {
+    title: COMMON_VALIDATIONS.title,
+    amount: COMMON_VALIDATIONS.amount,
+    date: ['required'],
+    category: ['required'],
+    description: COMMON_VALIDATIONS.description,
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const formErrors = validateForm();
+  const {
+    values,
+    errors,
+    touched,
+    isSubmitting,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    resetForm,
+    setFieldValue,
+  } = useFormValidation(initialValues, validationSchema);
 
-    if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors);
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    // Process form data
+  const onSubmit = async (formValues) => {
     try {
-      addIncome({
-        title,
-        amount: parseFloat(amount),
-        date,
-        category,
-        description,
-      });
-
-      // Reset form after successful submission
-      setInputState({
-        title: "",
-        amount: "",
-        date: "",
-        category: "",
-        description: "",
-      });
-      setErrors({});
+      if (type === "income") {
+        await addIncome(formValues);
+      } else {
+        await addExpense(formValues);
+      }
+      resetForm();
     } catch (error) {
-      console.error("Error submitting form:", error);
-      setErrors({ form: "Failed to submit. Please try again." });
-    } finally {
-      setIsSubmitting(false);
+      console.error("Error adding item:", error);
     }
   };
 
-  // Get category options based on type (income or expense)
-  const getCategoryOptions = () => {
-    if (isExpense) {
-      return [
-        { value: "groceries", label: "Groceries" },
-        { value: "housing", label: "Housing" },
-        { value: "transportation", label: "Transportation" },
-        { value: "utilities", label: "Utilities" },
-        { value: "healthcare", label: "Healthcare" },
-        { value: "entertainment", label: "Entertainment" },
-        { value: "dining", label: "Dining Out" },
-        { value: "education", label: "Education" },
-        { value: "shopping", label: "Shopping" },
-        { value: "travel", label: "Travel" },
-        { value: "subscription", label: "Subscriptions" },
-        { value: "other", label: "Other" },
-      ];
-    } else {
-      return [
-        { value: "salary", label: "Salary" },
-        { value: "freelancing", label: "Freelancing" },
-        { value: "investments", label: "Investments" },
-        { value: "stocks", label: "Stocks" },
-        { value: "crypto", label: "Cryptocurrency" },
-        { value: "bank", label: "Bank Transfer" },
-        { value: "gifts", label: "Gifts" },
-        { value: "refunds", label: "Refunds" },
-        { value: "rental", label: "Rental Income" },
-        { value: "other", label: "Other" },
-      ];
-    }
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    await handleSubmit(onSubmit);
   };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    handleChange(name, value);
+  };
+
+  const handleDateChange = (date) => {
+    setFieldValue("date", date);
+  };
+
+  const categories = type === "income" 
+    ? ["Salary", "Freelance", "Investment", "Business", "Other"]
+    : ["Food", "Transport", "Entertainment", "Shopping", "Bills", "Other"];
 
   return (
-    <FormStyled onSubmit={handleSubmit}>
-      <h3 className="form-title">
-        {isExpense ? "Add New Expense" : "Add New Income"}
-      </h3>
-
-      {errors.form && (
-        <div className="error-message form-error">{errors.form}</div>
-      )}
-
+    <FormStyled onSubmit={handleFormSubmit}>
+      <div className="form-title">
+        Add New {type === "income" ? "Income" : "Expense"}
+      </div>
+      
+      {/* First Row: Title and Amount */}
       <div className="form-row">
         <div className="form-group">
           <label htmlFor="title">Title</label>
           <input
             id="title"
             type="text"
-            value={title}
-            placeholder={
-              isExpense ? "e.g. Grocery shopping" : "e.g. Monthly salary"
-            }
-            onChange={handleInput("title")}
-            className={errors.title ? "error" : ""}
+            name="title"
+            placeholder={`${type === "income" ? "Income" : "Expense"} title`}
+            value={values.title}
+            onChange={handleInputChange}
+            onBlur={() => handleBlur("title")}
+            className={touched.title && errors.title ? "error" : ""}
           />
-          {errors.title && <div className="error-message">{errors.title}</div>}
+          {touched.title && errors.title && (
+            <span className="error-message">{errors.title}</span>
+          )}
         </div>
-
         <div className="form-group">
-          <label htmlFor="amount">Amount ($)</label>
+          <label htmlFor="amount">Amount</label>
           <input
             id="amount"
             type="number"
-            step="0.01"
-            min="0.01"
-            value={amount}
+            name="amount"
             placeholder="0.00"
-            onChange={handleInput("amount")}
-            className={errors.amount ? "error" : ""}
+            step="0.01"
+            min="0"
+            value={values.amount}
+            onChange={handleInputChange}
+            onBlur={() => handleBlur("amount")}
+            className={touched.amount && errors.amount ? "error" : ""}
           />
-          {errors.amount && <div className="error-message">{errors.amount}</div>}
+          {touched.amount && errors.amount && (
+            <span className="error-message">{errors.amount}</span>
+          )}
         </div>
       </div>
 
+      {/* Second Row: Date and Category */}
       <div className="form-row">
         <div className="form-group">
           <label htmlFor="date">Date</label>
           <DatePicker
             id="date"
-            selected={date}
-            onChange={(date) => {
-              setInputState({ ...inputState, date });
-              if (errors.date) setErrors((prev) => ({ ...prev, date: "" }));
-            }}
-            placeholderText="Select date"
-            dateFormat="MM/dd/yyyy"
-            maxDate={new Date()}
-            className={errors.date ? "error" : ""}
+            selected={values.date}
+            onChange={handleDateChange}
+            dateFormat="dd/MM/yyyy"
+            placeholderText="Select Date"
+            onBlur={() => handleBlur("date")}
+            className={touched.date && errors.date ? "error" : ""}
           />
-          {errors.date && <div className="error-message">{errors.date}</div>}
+          {touched.date && errors.date && (
+            <span className="error-message">{errors.date}</span>
+          )}
         </div>
-
         <div className="form-group">
           <label htmlFor="category">Category</label>
           <select
             id="category"
-            value={category}
-            onChange={handleInput("category")}
-            className={errors.category ? "error" : ""}
+            name="category"
+            value={values.category}
+            onChange={handleInputChange}
+            onBlur={() => handleBlur("category")}
+            className={touched.category && errors.category ? "error" : ""}
           >
-            <option value="" disabled>
-              Select a category
-            </option>
-            {getCategoryOptions().map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
+            <option value="">Select Category</option>
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
               </option>
             ))}
           </select>
-          {errors.category && (
-            <div className="error-message">{errors.category}</div>
+          {touched.category && errors.category && (
+            <span className="error-message">{errors.category}</span>
           )}
         </div>
       </div>
 
-      <div className="form-group">
+      {/* Third Row: Description (full width) */}
+      <div className="form-group full-width">
         <label htmlFor="description">Description (Optional)</label>
         <textarea
           id="description"
-          value={description}
-          placeholder="Add additional details"
+          name="description"
+          placeholder={`Add details about this ${type === "income" ? "income" : "expense"}...`}
+          value={values.description}
+          onChange={handleInputChange}
+          onBlur={() => handleBlur("description")}
+          className={touched.description && errors.description ? "error" : ""}
           rows="3"
-          onChange={handleInput("description")}
         />
+        {touched.description && errors.description && (
+          <span className="error-message">{errors.description}</span>
+        )}
       </div>
 
-      <button type="submit" className="submit-btn" disabled={isSubmitting}>
-        {isSubmitting
-          ? "Processing..."
-          : isExpense
-          ? "Add Expense"
-          : "Add Income"}
+      <button 
+        type="submit" 
+        className="submit-btn"
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? (
+          <span className="loading-spinner">Adding...</span>
+        ) : (
+          `Add ${type === "income" ? "Income" : "Expense"}`
+        )}
       </button>
     </FormStyled>
   );
-}
+};
 
 const FormStyled = styled.form`
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
   padding: 1.25rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  width: 100%;
   min-height: fit-content;
 
   .form-title {
     font-size: 1rem;
     font-weight: 600;
     color: #0f172a;
-    margin-bottom: 1.25rem;
+    margin-bottom: 0.5rem;
     text-align: center;
   }
 
   .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.875rem;
-    margin-bottom: 1rem;
-
-    @media (max-width: 768px) {
-      grid-template-columns: 1fr;
-      gap: 0.75rem;
-    }
+    gap: 0.75rem;
   }
 
   .form-group {
     display: flex;
     flex-direction: column;
-    margin-bottom: 1rem;
+    gap: 0.375rem;
+
+    &.full-width {
+      grid-column: 1 / -1;
+    }
 
     label {
-      font-size: 0.8125rem;
+      font-size: 0.75rem;
       font-weight: 500;
-      color: #374151;
-      margin-bottom: 0.375rem;
+      color: #64748b;
     }
 
     input,
+    select,
     textarea,
-    select {
-      font-family: inherit;
-      font-size: 0.8125rem;
-      padding: 0.625rem 0.75rem;
-      border: 1px solid #e2e8f0;
-      border-radius: 6px;
-      background-color: #ffffff;
-      color: #0f172a;
-      transition: all 0.2s ease;
+    .react-datepicker-wrapper,
+    .react-datepicker__input-container input {
       width: 100%;
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid #e2e8f0;
+      font-size: 0.8125rem;
+      background: #ffffff;
+      color: #0f172a;
       box-sizing: border-box;
+      transition: all 0.2s ease;
 
       &:focus {
         outline: none;
@@ -285,12 +247,22 @@ const FormStyled = styled.form`
       }
 
       &.error {
-        border-color: #dc2626;
-        background-color: rgba(220, 38, 38, 0.05);
+        border-color: #ef4444;
+        box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1);
+
+        &:focus {
+          border-color: #ef4444;
+          box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1);
+        }
       }
     }
 
-    /* Minimalistic category select styling */
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+      font-family: inherit;
+    }
+
     select {
       appearance: none;
       background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
@@ -299,7 +271,6 @@ const FormStyled = styled.form`
       background-size: 1.5em 1.5em;
       padding-right: 2.5rem;
       cursor: pointer;
-      transition: all 0.2s ease;
 
       &:hover {
         border-color: #cbd5e1;
@@ -308,8 +279,6 @@ const FormStyled = styled.form`
 
       &:focus {
         background-color: #ffffff;
-        border-color: #10b981;
-        box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
       }
 
       option {
@@ -328,40 +297,28 @@ const FormStyled = styled.form`
       }
     }
 
-    textarea {
-      resize: vertical;
-      min-height: 70px;
+    .error-message {
+      color: #ef4444;
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+      display: block;
     }
-  }
-
-  .error-message {
-    color: #dc2626;
-    font-size: 0.75rem;
-    margin-top: 0.25rem;
-  }
-
-  .form-error {
-    background-color: rgba(220, 38, 38, 0.1);
-    padding: 0.75rem;
-    border-radius: 6px;
-    margin-bottom: 1rem;
-    text-align: center;
   }
 
   .submit-btn {
     width: 100%;
     padding: 0.75rem 1.5rem;
     background: #10b981;
-    color: white;
+    color: #ffffff;
     border: none;
     border-radius: 6px;
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
     margin-top: 0.5rem;
 
-    &:hover {
+    &:hover:not(:disabled) {
       background: #059669;
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
@@ -375,6 +332,12 @@ const FormStyled = styled.form`
     }
   }
 
+  .loading-spinner {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
   /* React DatePicker custom styling */
   .react-datepicker-wrapper {
     width: 100%;
@@ -382,6 +345,18 @@ const FormStyled = styled.form`
 
   .react-datepicker__input-container input {
     width: 100%;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .form-row {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+
+    .form-group.full-width {
+      grid-column: 1;
+    }
   }
 `;
 

@@ -1,5 +1,5 @@
 // src/components/IncomeItem/IncomeItem.js
-import React from "react";
+import React, { useMemo, useCallback } from "react";
 import styled from "styled-components";
 import { dateFormat } from "../../utils/dateFormat";
 import {
@@ -26,7 +26,7 @@ import {
 import Button from "../Button/Button";
 import PropTypes from "prop-types"; // For type checking
 
-function IncomeItem({
+const IncomeItem = React.memo(function IncomeItem({
   id,
   title,
   amount,
@@ -38,7 +38,8 @@ function IncomeItem({
   type,
   showDelete = true, // Default to true
 }) {
-  const categoryIcon = () => {
+  // Memoize category icons to prevent unnecessary recalculations
+  const categoryIcon = useMemo(() => {
     switch (category) {
       case "salary":
         return money;
@@ -59,9 +60,9 @@ function IncomeItem({
       default:
         return "";
     }
-  };
+  }, [category]);
 
-  const expenseCatIcon = () => {
+  const expenseCatIcon = useMemo(() => {
     switch (category) {
       case "education":
         return book;
@@ -82,12 +83,25 @@ function IncomeItem({
       default:
         return "";
     }
-  };
+  }, [category]);
+
+  // Memoize the formatted date to prevent unnecessary recalculations
+  const formattedDate = useMemo(() => dateFormat(date), [date]);
+
+  // Memoize the delete handler to prevent unnecessary re-renders
+  const handleDelete = useCallback(() => {
+    deleteItem(id);
+  }, [deleteItem, id]);
+
+  // Memoize the current icon based on type
+  const currentIcon = useMemo(() => {
+    return type === "expense" ? expenseCatIcon : categoryIcon;
+  }, [type, expenseCatIcon, categoryIcon]);
 
   return (
     <IncomeItemStyled indicatorColor={indicatorColor}>
       <div className="icon">
-        {type === "expense" ? expenseCatIcon() : categoryIcon()}
+        {currentIcon}
       </div>
       <div className="content">
         <h5>{title}</h5>
@@ -97,7 +111,7 @@ function IncomeItem({
               {dollar} {amount}
             </p>
             <p>
-              {calender} {dateFormat(date)}
+              {calender} {formattedDate}
             </p>
             <p>
               {comment}
@@ -114,7 +128,7 @@ function IncomeItem({
                 color={"#000000"}
                 iColor={"#fff"}
                 hColor={"var(--color-green)"}
-                onClick={() => deleteItem(id)}
+                onClick={handleDelete}
               />
             </div>
           )}
@@ -122,7 +136,7 @@ function IncomeItem({
       </div>
     </IncomeItemStyled>
   );
-}
+});
 
 // Type Checking with PropTypes
 IncomeItem.propTypes = {

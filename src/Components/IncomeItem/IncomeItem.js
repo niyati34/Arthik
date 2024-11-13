@@ -26,6 +26,44 @@ import {
 import Button from "../Button/Button";
 import PropTypes from "prop-types"; // For type checking
 
+/**
+ * IncomeItem Component
+ * 
+ * @description
+ * A reusable component for displaying individual income or expense items in a list.
+ * Supports both income and expense types with appropriate icons, formatting, and actions.
+ * 
+ * @component
+ * @example
+ * ```jsx
+ * <IncomeItem
+ *   id="income-1"
+ *   title="Monthly Salary"
+ *   amount={5000}
+ *   date="2024-01-15"
+ *   category="Salary"
+ *   description="Monthly salary from employer"
+ *   type="income"
+ *   deleteItem={handleDelete}
+ *   indicatorColor="#10b981"
+ * />
+ * ```
+ * 
+ * @example
+ * ```jsx
+ * <IncomeItem
+ *   id="expense-1"
+ *   title="Grocery Shopping"
+ *   amount={150.50}
+ *   date="2024-01-16"
+ *   category="Food"
+ *   description="Weekly grocery shopping"
+ *   type="expense"
+ *   deleteItem={handleDelete}
+ *   indicatorColor="#ef4444"
+ * />
+ * ```
+ */
 const IncomeItem = React.memo(function IncomeItem({
   id,
   title,
@@ -38,7 +76,12 @@ const IncomeItem = React.memo(function IncomeItem({
   type,
   showDelete = true, // Default to true
 }) {
-  // Memoize category icons to prevent unnecessary recalculations
+  /**
+   * Memoized category icon for income items.
+   * Prevents unnecessary recalculations when component re-renders.
+   * 
+   * @type {JSX.Element}
+   */
   const categoryIcon = useMemo(() => {
     switch (category) {
       case "salary":
@@ -62,6 +105,12 @@ const IncomeItem = React.memo(function IncomeItem({
     }
   }, [category]);
 
+  /**
+   * Memoized category icon for expense items.
+   * Prevents unnecessary recalculations when component re-renders.
+   * 
+   * @type {JSX.Element}
+   */
   const expenseCatIcon = useMemo(() => {
     switch (category) {
       case "education":
@@ -85,15 +134,30 @@ const IncomeItem = React.memo(function IncomeItem({
     }
   }, [category]);
 
-  // Memoize the formatted date to prevent unnecessary recalculations
+  /**
+   * Memoized formatted date string.
+   * Prevents unnecessary date formatting on every render.
+   * 
+   * @type {string}
+   */
   const formattedDate = useMemo(() => dateFormat(date), [date]);
 
-  // Memoize the delete handler to prevent unnecessary re-renders
+  /**
+   * Memoized delete handler function.
+   * Prevents unnecessary re-renders of child components.
+   * 
+   * @type {Function}
+   */
   const handleDelete = useCallback(() => {
     deleteItem(id);
   }, [deleteItem, id]);
 
-  // Memoize the current icon based on type
+  /**
+   * Memoized current icon based on item type.
+   * Determines whether to show income or expense icon.
+   * 
+   * @type {JSX.Element}
+   */
   const currentIcon = useMemo(() => {
     return type === "expense" ? expenseCatIcon : categoryIcon;
   }, [type, expenseCatIcon, categoryIcon]);
@@ -140,16 +204,26 @@ const IncomeItem = React.memo(function IncomeItem({
 
 // Type Checking with PropTypes
 IncomeItem.propTypes = {
+  /** Unique identifier for the item */
   id: PropTypes.string.isRequired,
+  /** Title or name of the income/expense */
   title: PropTypes.string.isRequired,
+  /** Amount of money (can be string or number) */
   amount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  /** Date of the transaction (string or Date object) */
   date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)])
     .isRequired,
+  /** Category classification of the item */
   category: PropTypes.string.isRequired,
+  /** Optional description or notes */
   description: PropTypes.string,
+  /** Function to handle item deletion */
   deleteItem: PropTypes.func.isRequired,
+  /** Color for visual indicators */
   indicatorColor: PropTypes.string.isRequired,
+  /** Type of financial item: 'income' or 'expense' */
   type: PropTypes.oneOf(["income", "expense"]).isRequired,
+  /** Whether to show the delete button */
   showDelete: PropTypes.bool, // Optional prop
 };
 

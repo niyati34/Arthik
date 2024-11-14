@@ -211,52 +211,58 @@ const NavigationStyled = styled.nav`
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   overflow-y: auto;
 
-  .nav-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
-    padding: 1.5rem 1rem;
-  }
-
   /* Header Section */
   .nav-header {
     margin-bottom: 2rem;
-    padding-bottom: 1.5rem;
+    padding: 1.5rem 1rem 1.5rem 1rem;
     border-bottom: 1px solid #f1f5f9;
     flex-shrink: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-
-      .logo-icon {
-        width: 40px;
-        height: 40px;
-        background: linear-gradient(135deg, #0f172a, #1e293b);
-        border-radius: 10px;
+    .logo-section {
+      .logo {
         display: flex;
         align-items: center;
-        justify-content: center;
-        color: white;
-        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15);
-      }
+        gap: 0.75rem;
 
-      .logo-text {
-        h1 {
-          font-size: 1.5rem;
+        svg {
+          width: 24px;
+          height: 24px;
+          color: #10b981;
+        }
+
+        .logo-text {
+          font-size: 1.25rem;
           font-weight: 700;
           color: #0f172a;
           margin: 0;
           line-height: 1.2;
         }
+      }
+    }
 
-        p {
-          font-size: 0.75rem;
-          color: #64748b;
-          margin: 0;
-          font-weight: 500;
-        }
+    .collapse-toggle {
+      background: transparent;
+      border: none;
+      padding: 0.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      color: #64748b;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        background: #f1f5f9;
+        color: #0f172a;
+      }
+
+      svg {
+        width: 16px;
+        height: 16px;
       }
     }
   }
@@ -264,6 +270,7 @@ const NavigationStyled = styled.nav`
   /* Navigation Menu */
   .nav-menu {
     flex: 1;
+    padding: 0 1rem;
 
     .nav-list {
       list-style: none;
@@ -275,7 +282,7 @@ const NavigationStyled = styled.nav`
     }
 
     .nav-item {
-      .nav-button {
+      .nav-item {
         width: 100%;
         background: transparent;
         border: none;
@@ -301,7 +308,7 @@ const NavigationStyled = styled.nav`
           border: 1px solid #e2e8f0;
 
           .nav-icon {
-            background: #0f172a;
+            background: #10b981;
             color: white;
           }
         }
@@ -316,6 +323,7 @@ const NavigationStyled = styled.nav`
           justify-content: center;
           transition: all 0.2s ease;
           color: #64748b;
+          flex-shrink: 0;
         }
 
         .nav-content {
@@ -324,7 +332,7 @@ const NavigationStyled = styled.nav`
           flex-direction: column;
           gap: 0.125rem;
 
-          .nav-name {
+          .nav-title {
             font-size: 0.875rem;
             font-weight: 600;
             color: inherit;
@@ -336,15 +344,6 @@ const NavigationStyled = styled.nav`
             font-weight: 500;
           }
         }
-
-        .active-indicator {
-          position: absolute;
-          right: 0.75rem;
-          width: 4px;
-          height: 4px;
-          background: #0f172a;
-          border-radius: 50%;
-        }
       }
     }
   }
@@ -352,7 +351,7 @@ const NavigationStyled = styled.nav`
   /* Footer Section */
   .nav-footer {
     margin-top: auto;
-    padding-top: 1.5rem;
+    padding: 1.5rem 1rem;
     border-top: 1px solid #f1f5f9;
     flex-shrink: 0;
 
@@ -364,6 +363,7 @@ const NavigationStyled = styled.nav`
       background: #f8fafc;
       border-radius: 8px;
       border: 1px solid #e2e8f0;
+      margin-bottom: 1rem;
 
       .user-avatar {
         width: 32px;
@@ -374,6 +374,7 @@ const NavigationStyled = styled.nav`
         align-items: center;
         justify-content: center;
         color: #64748b;
+        flex-shrink: 0;
       }
 
       .user-details {
@@ -388,11 +389,104 @@ const NavigationStyled = styled.nav`
           color: #0f172a;
         }
 
-        .user-status {
+        .user-role {
           font-size: 0.625rem;
           color: #64748b;
           font-weight: 500;
         }
+      }
+    }
+
+    .quick-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .stat-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0.75rem;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        font-size: 0.75rem;
+
+        .stat-label {
+          color: #64748b;
+          font-weight: 500;
+        }
+
+        .stat-value {
+          font-weight: 600;
+          color: #0f172a;
+
+          &.positive {
+            color: #10b981;
+          }
+
+          &.negative {
+            color: #ef4444;
+          }
+        }
+      }
+    }
+  }
+
+  /* Collapsed State */
+  &.collapsed {
+    width: 80px;
+
+    .nav-header {
+      padding: 1rem 0.5rem;
+      justify-content: center;
+
+      .logo-section .logo .logo-text {
+        display: none;
+      }
+
+      .collapse-toggle {
+        display: none;
+      }
+    }
+
+    .nav-menu {
+      padding: 0 0.5rem;
+
+      .nav-item .nav-item {
+        padding: 0.75rem 0.5rem;
+        justify-content: center;
+
+        .nav-content {
+          display: none;
+        }
+
+        .nav-icon {
+          width: 28px;
+          height: 28px;
+        }
+      }
+    }
+
+    .nav-footer {
+      padding: 1rem 0.5rem;
+
+      .user-info {
+        padding: 0.5rem;
+        justify-content: center;
+
+        .user-details {
+          display: none;
+        }
+
+        .user-avatar {
+          width: 28px;
+          height: 28px;
+        }
+      }
+
+      .quick-stats {
+        display: none;
       }
     }
   }
@@ -401,12 +495,15 @@ const NavigationStyled = styled.nav`
   @media (max-width: 1024px) {
     width: 220px;
 
-    .nav-container {
-      padding: 1.25rem 0.75rem;
+    .nav-header,
+    .nav-footer {
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
     }
 
-    .nav-header .logo .logo-text h1 {
-      font-size: 1.25rem;
+    .nav-menu {
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
     }
   }
 
@@ -418,37 +515,43 @@ const NavigationStyled = styled.nav`
     border-bottom: 1px solid #f1f5f9;
     overflow-y: visible;
 
-    .nav-container {
-      padding: 1rem;
-      flex-direction: row;
-      align-items: center;
-      gap: 1.5rem;
-    }
-
     .nav-header {
       margin-bottom: 0;
-      padding-bottom: 0;
+      padding: 1rem;
       border-bottom: none;
-
-      .logo .logo-icon {
-        width: 32px;
-        height: 32px;
-      }
     }
 
     .nav-menu {
-      flex: 1;
+      padding: 0 1rem;
 
       .nav-list {
         flex-direction: row;
         gap: 0.125rem;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+
+        &::-webkit-scrollbar {
+          height: 4px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: #f1f5f9;
+          border-radius: 2px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: #cbd5e1;
+          border-radius: 2px;
+        }
       }
 
-      .nav-item .nav-button {
+      .nav-item .nav-item {
         padding: 0.5rem 0.75rem;
         flex-direction: column;
         gap: 0.375rem;
         text-align: center;
+        min-width: 80px;
+        white-space: nowrap;
 
         .nav-content .nav-description {
           display: none;
@@ -462,15 +565,48 @@ const NavigationStyled = styled.nav`
 
     .nav-footer {
       margin-top: 0;
-      padding-top: 0;
+      padding: 1rem;
       border-top: none;
 
       .user-info {
         padding: 0.5rem;
+        margin-bottom: 0.75rem;
         
-        .user-details .user-status {
+        .user-details .user-role {
           display: none;
         }
+      }
+
+      .quick-stats {
+        flex-direction: row;
+        gap: 0.5rem;
+
+        .stat-item {
+          flex: 1;
+          flex-direction: column;
+          gap: 0.25rem;
+          text-align: center;
+        }
+      }
+    }
+
+    &.collapsed {
+      width: 100%;
+      height: auto;
+
+      .nav-header,
+      .nav-menu,
+      .nav-footer {
+        padding: 1rem;
+      }
+
+      .nav-menu .nav-list {
+        flex-direction: row;
+      }
+
+      .nav-item .nav-item {
+        flex-direction: column;
+        min-width: 60px;
       }
     }
   }

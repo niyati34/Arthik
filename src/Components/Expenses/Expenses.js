@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import ExpenseForm from "./ExpenseForm";
 import IncomeItem from "../IncomeItem/IncomeItem";
+import AnalyticsDashboard from "../Analytics/AnalyticsDashboard";
 import { useGlobalContext } from "../../context/globalContext";
 import { useDataFiltering } from "../../utils/useDataFiltering";
 
@@ -23,6 +24,7 @@ function Expenses() {
   } = useDataFiltering(expenses);
 
   const [dateRange, setDateRange] = useState({ from: "", to: "" });
+  const [viewMode, setViewMode] = useState("expenses"); // "expenses" or "analytics"
 
   // Apply date range filtering
   const finalFilteredExpenses = React.useMemo(() => {
@@ -74,49 +76,82 @@ function Expenses() {
           </div>
         </div>
 
-        {/* Controls Section */}
-        <div className="controls-section">
-          <div className="search-control">
-            <div className="search-icon">
+        {/* View Mode Toggle */}
+        <div className="view-toggle-section">
+          <div className="view-toggle">
+            <button
+              className={`toggle-button ${viewMode === "expenses" ? "active" : ""}`}
+              onClick={() => setViewMode("expenses")}
+            >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2"/>
-                <path d="m21 21-4.35-4.35" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M9 11H1l8-8v6h8l-8 8v-6z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
-            </div>
-            <input
-              type="text"
-              placeholder="Search expenses..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="search-input"
-            />
-          </div>
-
-          <div className="filter-controls">
-            <select
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-              className="filter-select"
+              Expenses
+            </button>
+            <button
+              className={`toggle-button ${viewMode === "analytics" ? "active" : ""}`}
+              onClick={() => setViewMode("analytics")}
             >
-              {categories.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat === "all" ? "All Categories" : cat}
-                </option>
-              ))}
-            </select>
-
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="sort-select"
-            >
-              <option value="date-desc">Newest First</option>
-              <option value="date-asc">Oldest First</option>
-              <option value="amount-desc">Highest Amount</option>
-              <option value="amount-asc">Lowest Amount</option>
-            </select>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M3 3v18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              Analytics
+            </button>
           </div>
         </div>
+
+        {/* Analytics View */}
+        {viewMode === "analytics" && (
+          <AnalyticsDashboard expenses={expenses} />
+        )}
+
+        {/* Expenses View */}
+        {viewMode === "expenses" && (
+          <>
+            {/* Controls Section */}
+            <div className="controls-section">
+              <div className="search-control">
+                <div className="search-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2"/>
+                    <path d="m21 21-4.35-4.35" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search expenses..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="search-input"
+                />
+              </div>
+
+              <div className="filter-controls">
+                <select
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                  className="filter-select"
+                >
+                  {categories.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat === "all" ? "All Categories" : cat}
+                    </option>
+                  ))}
+                </select>
+
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="sort-select"
+                >
+                  <option value="date-desc">Newest First</option>
+                  <option value="date-asc">Oldest First</option>
+                  <option value="amount-desc">Highest Amount</option>
+                  <option value="amount-asc">Lowest Amount</option>
+                </select>
+              </div>
+            </div>
 
         {/* Date Range Filter */}
         <div className="date-range-section">
@@ -222,6 +257,8 @@ function Expenses() {
             )}
           </div>
         </div>
+          </>
+        )}
       </div>
     </ExpenseStyled>
   );
@@ -241,6 +278,50 @@ const ExpenseStyled = styled.div`
     display: flex;
     flex-direction: column;
     overflow: visible;
+  }
+
+  /* View Toggle Styles */
+  .view-toggle-section {
+    margin-bottom: 1rem;
+
+    .view-toggle {
+      display: flex;
+      background: #f1f5f9;
+      border-radius: 8px;
+      padding: 0.25rem;
+      gap: 0.25rem;
+
+      .toggle-button {
+        background: none;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #64748b;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        &:hover {
+          background: #e2e8f0;
+          color: #0f172a;
+        }
+
+        &.active {
+          background: #ffffff;
+          color: #0f172a;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        svg {
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
   }
 
   /* Header Styles */

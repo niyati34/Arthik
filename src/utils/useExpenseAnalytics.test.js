@@ -120,8 +120,8 @@ describe('useExpenseAnalytics', () => {
   it('should calculate spending patterns correctly', () => {
     const { result } = renderHook(() => useExpenseAnalytics(mockExpenses));
     
-    expect(result.current.spendingPatterns.byAmountRange.small).toBe(1); // $15 movie
-    expect(result.current.spendingPatterns.byAmountRange.medium).toBe(3); // $25, $30, $50
+    expect(result.current.spendingPatterns.byAmountRange.small).toBe(3); // $15, $25, $30 (all < 50)
+    expect(result.current.spendingPatterns.byAmountRange.medium).toBe(1); // $50 (>= 50 and <= 200)
     expect(result.current.spendingPatterns.byAmountRange.large).toBe(0);
   });
 

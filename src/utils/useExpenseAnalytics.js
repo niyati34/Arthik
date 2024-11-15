@@ -8,16 +8,55 @@ import { useMemo } from 'react';
 export const useExpenseAnalytics = (expenses) => {
   const analytics = useMemo(() => {
     if (!expenses || expenses.length === 0) {
+      // Generate empty monthly trends (12 months)
+      const emptyMonthlyTrends = [];
+      const currentDate = new Date();
+      for (let i = 11; i >= 0; i--) {
+        const date = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1);
+        emptyMonthlyTrends.push({
+          month: date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+          total: 0,
+          count: 0,
+          average: 0
+        });
+      }
+
+      // Generate empty yearly trends (3 years)
+      const emptyYearlyTrends = [];
+      const currentYear = currentDate.getFullYear();
+      for (let year = currentYear - 2; year <= currentYear; year++) {
+        emptyYearlyTrends.push({
+          year: year.toString(),
+          total: 0,
+          count: 0,
+          average: 0
+        });
+      }
+
       return {
         totalExpenses: 0,
         averageExpense: 0,
         categoryBreakdown: [],
-        monthlyTrends: [],
-        yearlyTrends: [],
+        monthlyTrends: emptyMonthlyTrends,
+        yearlyTrends: emptyYearlyTrends,
         topCategories: [],
-        recentTrends: [],
+        recentTrends: {
+          currentPeriod: 0,
+          previousPeriod: 0,
+          trendPercentage: 0,
+          trendDirection: 'stable',
+          averagePerDay: 0
+        },
         insights: [],
-        spendingPatterns: {}
+        spendingPatterns: {
+          byDayOfWeek: {},
+          byTimeOfDay: {},
+          byAmountRange: {
+            small: 0,
+            medium: 0,
+            large: 0
+          }
+        }
       };
     }
 
@@ -198,7 +237,7 @@ export const useExpenseAnalytics = (expenses) => {
 
       // Amount range pattern
       if (expense.amount < 50) spendingPatterns.byAmountRange.small += 1;
-      else if (expense.amount <= 200) spendingPatterns.byAmountRange.medium += 1;
+      else if (expense.amount >= 50 && expense.amount <= 200) spendingPatterns.byAmountRange.medium += 1;
       else spendingPatterns.byAmountRange.large += 1;
     });
 

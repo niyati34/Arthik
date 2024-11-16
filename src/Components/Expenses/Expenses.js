@@ -3,8 +3,10 @@ import styled from "styled-components";
 import ExpenseForm from "./ExpenseForm";
 import IncomeItem from "../IncomeItem/IncomeItem";
 import AnalyticsDashboard from "../Analytics/AnalyticsDashboard";
+import ExportModal from "../Export/ExportModal";
 import { useGlobalContext } from "../../context/globalContext";
 import { useDataFiltering } from "../../utils/useDataFiltering";
+import { useExpenseAnalytics } from "../../utils/useExpenseAnalytics";
 
 function Expenses() {
   const { expenses, addExpense, deleteExpense, totalExpenses } =
@@ -25,6 +27,10 @@ function Expenses() {
 
   const [dateRange, setDateRange] = useState({ from: "", to: "" });
   const [viewMode, setViewMode] = useState("expenses"); // "expenses" or "analytics"
+  const [showExportModal, setShowExportModal] = useState(false);
+
+  // Get analytics data
+  const analytics = useExpenseAnalytics(expenses);
 
   // Apply date range filtering
   const finalFilteredExpenses = React.useMemo(() => {
@@ -179,14 +185,28 @@ function Expenses() {
               />
             </div>
           </div>
-          {(dateRange.from || dateRange.to) && (
+          <div className="date-actions">
+            {(dateRange.from || dateRange.to) && (
+              <button
+                className="clear-dates-btn"
+                onClick={clearDateRange}
+              >
+                Clear Dates
+              </button>
+            )}
             <button
-              className="clear-dates-btn"
-              onClick={clearDateRange}
+              className="export-button"
+              onClick={() => setShowExportModal(true)}
+              title="Export data"
             >
-              Clear Dates
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" strokeWidth="2"/>
+                <polyline points="7,10 12,15 17,10" stroke="currentColor" strokeWidth="2"/>
+                <line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" strokeWidth="2"/>
+              </svg>
+              Export
             </button>
-          )}
+          </div>
         </div>
 
         {/* Main Content */}
@@ -260,6 +280,14 @@ function Expenses() {
           </>
         )}
       </div>
+
+      {/* Export Modal */}
+      <ExportModal
+        isOpen={showExportModal}
+        onClose={() => setShowExportModal(false)}
+        expenses={expenses}
+        analytics={analytics}
+      />
     </ExpenseStyled>
   );
 }
@@ -544,6 +572,12 @@ const ExpenseStyled = styled.div`
     }
   }
 
+  .date-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
   .clear-dates-btn {
     background: #10b981;
     color: #ffffff;
@@ -558,6 +592,32 @@ const ExpenseStyled = styled.div`
 
     &:hover {
       background: #059669;
+    }
+  }
+
+  .export-button {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    background: #3b82f6;
+    color: #ffffff;
+    border: none;
+    padding: 0.375rem 0.875rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+
+    &:hover {
+      background: #2563eb;
+      transform: translateY(-1px);
+    }
+
+    svg {
+      width: 14px;
+      height: 14px;
     }
   }
 

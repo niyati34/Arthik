@@ -1,9 +1,20 @@
 import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { useGlobalContext } from "../../context/globalContext";
+import NotificationCenter from "../Notifications/NotificationCenter";
+import { useNotifications } from "../../utils/useNotifications";
 
 const Navigation = ({ active, setActive }) => {
   const { totalIncomes, totalExpenses, totalBalance } = useGlobalContext();
+  
+  // Initialize notifications
+  const {
+    notifications,
+    markAsRead,
+    removeNotification,
+    markAllAsRead,
+    clearAll
+  } = useNotifications();
 
   // Navigation items with proper structure
   const navItems = [
@@ -123,6 +134,15 @@ const Navigation = ({ active, setActive }) => {
             <div className="user-details">
               <span className="user-name">Welcome Back</span>
               <span className="user-status">Ready to manage finances</span>
+            </div>
+            <div className="user-actions">
+              <NotificationCenter
+                notifications={notifications}
+                onMarkAsRead={markAsRead}
+                onRemove={removeNotification}
+                onMarkAllAsRead={markAllAsRead}
+                onClearAll={clearAll}
+              />
             </div>
           </div>
         </div>
@@ -330,6 +350,13 @@ const NavigationStyled = styled.nav`
           color: #64748b;
           font-weight: 500;
         }
+      }
+
+      .user-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-shrink: 0;
       }
     }
   }

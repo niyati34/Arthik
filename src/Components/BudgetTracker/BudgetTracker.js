@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useGlobalContext } from "../../context/globalContext";
+import { useNotifications } from "../../utils/useNotifications";
 
 const BudgetTracker = () => {
   const { savingsPerBudget, expenses } = useGlobalContext();
   const [sortBy, setSortBy] = useState("name");
   const [filterStatus, setFilterStatus] = useState("all");
+  
+  // Initialize notifications
+  const { createBudgetAlert } = useNotifications();
 
   // Sort and filter budgets
   const sortedAndFilteredBudgets = [...savingsPerBudget]
@@ -42,6 +46,15 @@ const BudgetTracker = () => {
     (total, budget) => total + budget.spent,
     0
   );
+
+  // Check for budget alerts
+  useEffect(() => {
+    savingsPerBudget.forEach((budget) => {
+      if (budget.amount > 0) {
+        createBudgetAlert(budget, budget.spent, 80); // Alert at 80% threshold
+      }
+    });
+  }, [savingsPerBudget, createBudgetAlert]);
 
   return (
     <BudgetTrackerStyled>

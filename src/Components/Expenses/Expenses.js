@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import ExpenseForm from "./ExpenseForm";
 import IncomeItem from "../IncomeItem/IncomeItem";
@@ -7,6 +7,7 @@ import ExportModal from "../Export/ExportModal";
 import { useGlobalContext } from "../../context/globalContext";
 import { useDataFiltering } from "../../utils/useDataFiltering";
 import { useExpenseAnalytics } from "../../utils/useExpenseAnalytics";
+import { useNotifications } from "../../utils/useNotifications";
 
 function Expenses() {
   const { expenses, addExpense, deleteExpense, totalExpenses } =
@@ -31,6 +32,23 @@ function Expenses() {
 
   // Get analytics data
   const analytics = useExpenseAnalytics(expenses);
+  
+  // Initialize notifications
+  const { createSpendingReminder } = useNotifications();
+
+  // Send spending reminders for new expenses
+  useEffect(() => {
+    if (expenses.length > 0) {
+      const latestExpense = expenses[0]; // Assuming expenses are sorted by date desc
+      const dailyAverage = analytics.averageExpense || 0;
+      
+      // Only send reminder for expenses added in the last 5 minutes
+      const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
+      if (new Date(latestExpense.date) > fiveMinutesAgo) {
+        createSpendingReminder(latestExpense, dailyAverage);
+      }
+    }
+  }, [expenses, analytics.averageExpense, createSpendingReminder]);
 
   // Apply date range filtering
   const finalFilteredExpenses = React.useMemo(() => {

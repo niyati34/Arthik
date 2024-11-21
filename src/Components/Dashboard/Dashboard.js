@@ -4,6 +4,7 @@ import { useGlobalContext } from "../../context/globalContext";
 import Chart from "../Chart/Chart";
 import History from "../../History/History";
 import Skeleton, { SkeletonCard, SkeletonList } from "../Skeleton/Skeleton";
+import { useNotifications } from "../../utils/useNotifications";
 
 function Dashboard() {
   const {
@@ -16,6 +17,9 @@ function Dashboard() {
 
   const [timeframe, setTimeframe] = useState("all");
   const [isLoading, setIsLoading] = useState(true);
+  
+  // Initialize notifications
+  const { createAchievementNotification } = useNotifications();
 
   // Simulate loading state for demo purposes
   useEffect(() => {
@@ -42,6 +46,59 @@ function Dashboard() {
 
   const filteredIncomes = filterDataByTimeframe(incomes);
   const filteredExpenses = filterDataByTimeframe(expenses);
+
+  // Check for achievements
+  useEffect(() => {
+    // Budget saved achievement
+    if (totalBalance > 0 && totalExpenses > 0) {
+      const savingsRate = (totalBalance / totalExpenses) * 100;
+      if (savingsRate >= 20) { // 20% savings rate
+        createAchievementNotification('budget_saved', {
+          savedAmount: totalBalance.toFixed(2),
+          savingsRate: savingsRate.toFixed(1)
+        });
+      }
+    }
+
+    // Consistency streak achievement
+    const today = new Date();
+    const lastExpenseDate = expenses.length > 0 ? new Date(expenses[0].date) : null;
+    if (lastExpenseDate) {
+      const daysSinceLastExpense = Math.floor((today - lastExpenseDate) / (1000 * 60 * 60 * 24));
+      if (daysSinceLastExpense <= 1) { // Tracked today or yesterday
+        createAchievementNotification('streak_maintained', {
+          days: 1,
+          lastTracked: lastExpenseDate.toLocaleDateString()
+        });
+      }
+    }
+
+    // Spending reduced achievement (compare with previous period)
+    const currentMonthExpenses = filteredExpenses.filter(expense => {
+      const expenseDate = new Date(expense.date);
+      const currentMonth = new Date().getMonth();
+      return expenseDate.getMonth() === currentMonth;
+    });
+    
+    const previousMonthExpenses = expenses.filter(expense => {
+      const expenseDate = new Date(expense.date);
+      const previousMonth = new Date().getMonth() - 1;
+      return expenseDate.getMonth() === previousMonth;
+    });
+
+    if (currentMonthExpenses.length > 0 && previousMonthExpenses.length > 0) {
+      const currentTotal = currentMonthExpenses.reduce((sum, exp) => sum + exp.amount, 0);
+      const previousTotal = previousMonthExpenses.reduce((sum, exp) => sum + exp.amount, 0);
+      
+      if (currentTotal < previousTotal) {
+        const reduction = ((previousTotal - currentTotal) / previousTotal) * 100;
+        createAchievementNotification('spending_reduced', {
+          percentage: reduction.toFixed(1),
+          savedAmount: (previousTotal - currentTotal).toFixed(2)
+        });
+      }
+    }
+  }, [totalBalance, totalExpenses, expenses, filteredExpenses, createAchievementNotification]);
 
   if (isLoading) {
     return (

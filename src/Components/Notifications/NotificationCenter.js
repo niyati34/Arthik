@@ -235,19 +235,19 @@ const NotificationPanel = styled.div`
   position: absolute;
   top: 100%;
   right: 0;
-  width: 400px;
+  width: 380px;
   max-height: 500px;
   background: white;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  z-index: 1000;
+  z-index: 1001;
   overflow: hidden;
   margin-top: 0.5rem;
 
   @media (max-width: 480px) {
-    width: 320px;
-    right: -50px;
+    width: 300px;
+    right: 0;
   }
 `;
 

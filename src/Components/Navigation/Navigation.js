@@ -135,16 +135,18 @@ const Navigation = ({ active, setActive }) => {
               <span className="user-name">Welcome Back</span>
               <span className="user-status">Ready to manage finances</span>
             </div>
-            <div className="user-actions">
-              <NotificationCenter
-                notifications={notifications}
-                onMarkAsRead={markAsRead}
-                onRemove={removeNotification}
-                onMarkAllAsRead={markAllAsRead}
-                onClearAll={clearAll}
-              />
-            </div>
           </div>
+        </div>
+
+        {/* Notification Center - Fixed Position */}
+        <div className="notification-section">
+          <NotificationCenter
+            notifications={notifications}
+            onMarkAsRead={markAsRead}
+            onRemove={removeNotification}
+            onMarkAllAsRead={markAllAsRead}
+            onClearAll={clearAll}
+          />
         </div>
       </div>
     </NavigationStyled>
@@ -358,6 +360,16 @@ const NavigationStyled = styled.nav`
         gap: 0.5rem;
         flex-shrink: 0;
       }
+    }
+
+    .notification-section {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 1000;
+      display: flex;
+      justify-content: flex-end;
+    }
     }
   }
 

@@ -1,20 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { useGlobalContext } from "../../context/globalContext";
-import NotificationCenter from "../Notifications/NotificationCenter";
-import { useNotifications } from "../../utils/useNotifications";
 
 const Navigation = ({ active, setActive }) => {
   const { totalIncomes, totalExpenses, totalBalance } = useGlobalContext();
-  
-  // Initialize notifications
-  const {
-    notifications,
-    markAsRead,
-    removeNotification,
-    markAllAsRead,
-    clearAll
-  } = useNotifications();
 
   // Navigation items with proper structure
   const navItems = [
@@ -138,16 +127,7 @@ const Navigation = ({ active, setActive }) => {
           </div>
         </div>
 
-        {/* Notification Center - Fixed Position */}
-        <div className="notification-section">
-          <NotificationCenter
-            notifications={notifications}
-            onMarkAsRead={markAsRead}
-            onRemove={removeNotification}
-            onMarkAllAsRead={markAllAsRead}
-            onClearAll={clearAll}
-          />
-        </div>
+
       </div>
     </NavigationStyled>
   );
@@ -362,14 +342,6 @@ const NavigationStyled = styled.nav`
       }
     }
 
-    .notification-section {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      z-index: 1000;
-      display: flex;
-      justify-content: flex-end;
-    }
     }
   }
 

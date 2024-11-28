@@ -5,6 +5,7 @@ import Chart from "../Chart/Chart";
 import History from "../../History/History";
 import Skeleton, { SkeletonCard, SkeletonList } from "../Skeleton/Skeleton";
 import { useNotifications } from "../../utils/useNotifications";
+import NotificationCenter from "../Notifications/NotificationCenter";
 
 function Dashboard() {
   const {
@@ -19,7 +20,14 @@ function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
   
   // Initialize notifications
-  const { createAchievementNotification } = useNotifications();
+  const {
+    notifications,
+    markAsRead,
+    removeNotification,
+    markAllAsRead,
+    clearAll,
+    createAchievementNotification
+  } = useNotifications();
 
   // Simulate loading state for demo purposes
   useEffect(() => {
@@ -164,25 +172,34 @@ function Dashboard() {
             <h1>Financial Dashboard</h1>
             <p>Monitor your financial health and track progress</p>
           </div>
-          <div className="timeframe-selector">
-            <button
-              className={timeframe === "all" ? "active" : ""}
-              onClick={() => setTimeframe("all")}
-            >
-              All Time
-            </button>
-            <button
-              className={timeframe === "90days" ? "active" : ""}
-              onClick={() => setTimeframe("90days")}
-            >
-              90 Days
-            </button>
-            <button
-              className={timeframe === "30days" ? "active" : ""}
-              onClick={() => setTimeframe("30days")}
-            >
-              30 Days
-            </button>
+          <div className="header-actions">
+            <div className="timeframe-selector">
+              <button
+                className={timeframe === "all" ? "active" : ""}
+                onClick={() => setTimeframe("all")}
+              >
+                All Time
+              </button>
+              <button
+                className={timeframe === "90days" ? "active" : ""}
+                onClick={() => setTimeframe("90days")}
+              >
+                90 Days
+              </button>
+              <button
+                className={timeframe === "30days" ? "active" : ""}
+                onClick={() => setTimeframe("30days")}
+              >
+                30 Days
+              </button>
+            </div>
+            <NotificationCenter
+              notifications={notifications}
+              onMarkAsRead={markAsRead}
+              onRemove={removeNotification}
+              onMarkAllAsRead={markAllAsRead}
+              onClearAll={clearAll}
+            />
           </div>
         </div>
 
@@ -308,6 +325,12 @@ const DashboardStyled = styled.div`
         line-height: 1.4;
         margin: 0;
       }
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
     }
   }
 

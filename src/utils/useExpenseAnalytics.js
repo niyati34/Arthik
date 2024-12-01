@@ -166,22 +166,24 @@ export const useExpenseAnalytics = (expenses) => {
     
     if (topCategories.length > 0) {
       const topCategory = topCategories[0];
-      insights.push({
-        type: 'top_category',
-        message: `${topCategory.category} is your highest spending category at $${topCategory.total.toFixed(2)} (${topCategory.percentage.toFixed(1)}% of total)`,
-        value: topCategory.total,
-        category: topCategory.category
-      });
+      if (topCategory && topCategory.total !== undefined && topCategory.percentage !== undefined) {
+        insights.push({
+          type: 'top_category',
+          message: `${topCategory.category} is your highest spending category at $${topCategory.total.toFixed(2)} (${topCategory.percentage.toFixed(1)}% of total)`,
+          value: topCategory.total,
+          category: topCategory.category
+        });
+      }
     }
 
-    if (recentTrends.trendPercentage > 10) {
+    if (recentTrends.trendPercentage !== undefined && recentTrends.trendPercentage > 10) {
       insights.push({
         type: 'spending_increase',
         message: `Your spending has increased by ${Math.abs(recentTrends.trendPercentage).toFixed(1)}% compared to the previous month`,
         value: recentTrends.trendPercentage,
         severity: 'warning'
       });
-    } else if (recentTrends.trendPercentage < -10) {
+    } else if (recentTrends.trendPercentage !== undefined && recentTrends.trendPercentage < -10) {
       insights.push({
         type: 'spending_decrease',
         message: `Great job! Your spending has decreased by ${Math.abs(recentTrends.trendPercentage).toFixed(1)}% compared to the previous month`,
@@ -190,7 +192,7 @@ export const useExpenseAnalytics = (expenses) => {
       });
     }
 
-    if (averageExpense > 100) {
+    if (averageExpense !== undefined && averageExpense > 100) {
       insights.push({
         type: 'high_average',
         message: `Your average expense is $${averageExpense.toFixed(2)}. Consider reviewing larger purchases.`,

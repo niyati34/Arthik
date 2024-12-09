@@ -47,26 +47,22 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// API routes (will be added later)
+// Import middleware
+const { auth } = require('./middleware/auth');
+const { errorHandler, notFound } = require('./middleware/errorHandler');
+
+// API routes
 app.use('/api/users', require('./routes/users'));
-app.use('/api/expenses', require('./routes/expenses'));
-app.use('/api/incomes', require('./routes/incomes'));
-app.use('/api/budgets', require('./routes/budgets'));
-app.use('/api/goals', require('./routes/goals'));
+app.use('/api/expenses', auth, require('./routes/expenses'));
+app.use('/api/incomes', auth, require('./routes/incomes'));
+app.use('/api/budgets', auth, require('./routes/budgets'));
+app.use('/api/goals', auth, require('./routes/goals'));
+
+// 404 handler for undefined routes
+app.use(notFound);
 
 // Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ 
-    message: 'Something went wrong!',
-    error: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error'
-  });
-});
-
-// 404 handler
-app.use('*', (req, res) => {
-  res.status(404).json({ message: 'Route not found' });
-});
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);

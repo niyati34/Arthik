@@ -61,16 +61,20 @@ export const useExpenseAnalytics = (expenses) => {
     }
 
     // Calculate basic metrics
-    const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-    const averageExpense = totalExpenses / expenses.length;
+    const totalExpenses = expenses.reduce((sum, expense) => {
+      const amount = typeof expense.amount === 'number' ? expense.amount : 0;
+      return sum + amount;
+    }, 0);
+    const averageExpense = expenses.length > 0 ? totalExpenses / expenses.length : 0;
 
     // Category breakdown
     const categoryBreakdown = expenses.reduce((acc, expense) => {
       const category = expense.category || 'Uncategorized';
+      const amount = typeof expense.amount === 'number' ? expense.amount : 0;
       if (!acc[category]) {
         acc[category] = { total: 0, count: 0, average: 0 };
       }
-      acc[category].total += expense.amount;
+      acc[category].total += amount;
       acc[category].count += 1;
       acc[category].average = acc[category].total / acc[category].count;
       return acc;
@@ -98,7 +102,10 @@ export const useExpenseAnalytics = (expenses) => {
                expenseDate.getMonth() === date.getMonth();
       });
 
-      const monthTotal = monthExpenses.reduce((sum, expense) => sum + expense.amount, 0);
+      const monthTotal = monthExpenses.reduce((sum, expense) => {
+        const amount = typeof expense.amount === 'number' ? expense.amount : 0;
+        return sum + amount;
+      }, 0);
       
       monthlyTrends.push({
         month: date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
@@ -117,7 +124,10 @@ export const useExpenseAnalytics = (expenses) => {
         return expenseDate.getFullYear() === year;
       });
 
-      const yearTotal = yearExpenses.reduce((sum, expense) => sum + expense.amount, 0);
+      const yearTotal = yearExpenses.reduce((sum, expense) => {
+        const amount = typeof expense.amount === 'number' ? expense.amount : 0;
+        return sum + amount;
+      }, 0);
       
       yearlyTrends.push({
         year: year.toString(),
@@ -141,7 +151,10 @@ export const useExpenseAnalytics = (expenses) => {
       return expenseDate >= thirtyDaysAgo;
     });
 
-    const recentTotal = recentExpenses.reduce((sum, expense) => sum + expense.amount, 0);
+    const recentTotal = recentExpenses.reduce((sum, expense) => {
+      const amount = typeof expense.amount === 'number' ? expense.amount : 0;
+      return sum + amount;
+    }, 0);
     const previousThirtyDays = new Date();
     previousThirtyDays.setDate(previousThirtyDays.getDate() - 60);
     
@@ -150,7 +163,10 @@ export const useExpenseAnalytics = (expenses) => {
       return expenseDate >= previousThirtyDays && expenseDate < thirtyDaysAgo;
     });
 
-    const previousTotal = previousExpenses.reduce((sum, expense) => sum + expense.amount, 0);
+    const previousTotal = previousExpenses.reduce((sum, expense) => {
+      const amount = typeof expense.amount === 'number' ? expense.amount : 0;
+      return sum + amount;
+    }, 0);
     const trendPercentage = previousTotal > 0 ? ((recentTotal - previousTotal) / previousTotal) * 100 : 0;
 
     const recentTrends = {
@@ -166,7 +182,11 @@ export const useExpenseAnalytics = (expenses) => {
     
     if (topCategories.length > 0) {
       const topCategory = topCategories[0];
-      if (topCategory && topCategory.total !== undefined && topCategory.percentage !== undefined) {
+      if (topCategory && 
+          typeof topCategory.total === 'number' && 
+          typeof topCategory.percentage === 'number' && 
+          !isNaN(topCategory.total) && 
+          !isNaN(topCategory.percentage)) {
         insights.push({
           type: 'top_category',
           message: `${topCategory.category} is your highest spending category at $${topCategory.total.toFixed(2)} (${topCategory.percentage.toFixed(1)}% of total)`,
@@ -176,14 +196,18 @@ export const useExpenseAnalytics = (expenses) => {
       }
     }
 
-    if (recentTrends.trendPercentage !== undefined && recentTrends.trendPercentage > 10) {
+    if (typeof recentTrends.trendPercentage === 'number' && 
+        !isNaN(recentTrends.trendPercentage) && 
+        recentTrends.trendPercentage > 10) {
       insights.push({
         type: 'spending_increase',
         message: `Your spending has increased by ${Math.abs(recentTrends.trendPercentage).toFixed(1)}% compared to the previous month`,
         value: recentTrends.trendPercentage,
         severity: 'warning'
       });
-    } else if (recentTrends.trendPercentage !== undefined && recentTrends.trendPercentage < -10) {
+    } else if (typeof recentTrends.trendPercentage === 'number' && 
+               !isNaN(recentTrends.trendPercentage) && 
+               recentTrends.trendPercentage < -10) {
       insights.push({
         type: 'spending_decrease',
         message: `Great job! Your spending has decreased by ${Math.abs(recentTrends.trendPercentage).toFixed(1)}% compared to the previous month`,
@@ -192,7 +216,9 @@ export const useExpenseAnalytics = (expenses) => {
       });
     }
 
-    if (averageExpense !== undefined && averageExpense > 100) {
+    if (typeof averageExpense === 'number' && 
+        !isNaN(averageExpense) && 
+        averageExpense > 100) {
       insights.push({
         type: 'high_average',
         message: `Your average expense is $${averageExpense.toFixed(2)}. Consider reviewing larger purchases.`,
@@ -221,7 +247,8 @@ export const useExpenseAnalytics = (expenses) => {
       if (!spendingPatterns.byDayOfWeek[dayOfWeek]) {
         spendingPatterns.byDayOfWeek[dayOfWeek] = { total: 0, count: 0 };
       }
-      spendingPatterns.byDayOfWeek[dayOfWeek].total += expense.amount;
+      const amount = typeof expense.amount === 'number' ? expense.amount : 0;
+      spendingPatterns.byDayOfWeek[dayOfWeek].total += amount;
       spendingPatterns.byDayOfWeek[dayOfWeek].count += 1;
 
       // Time of day pattern
@@ -234,12 +261,12 @@ export const useExpenseAnalytics = (expenses) => {
       if (!spendingPatterns.byTimeOfDay[timeOfDay]) {
         spendingPatterns.byTimeOfDay[timeOfDay] = { total: 0, count: 0 };
       }
-      spendingPatterns.byTimeOfDay[timeOfDay].total += expense.amount;
+      spendingPatterns.byTimeOfDay[timeOfDay].total += amount;
       spendingPatterns.byTimeOfDay[timeOfDay].count += 1;
 
       // Amount range pattern
-      if (expense.amount < 50) spendingPatterns.byAmountRange.small += 1;
-      else if (expense.amount >= 50 && expense.amount <= 200) spendingPatterns.byAmountRange.medium += 1;
+      if (amount < 50) spendingPatterns.byAmountRange.small += 1;
+      else if (amount >= 50 && amount <= 200) spendingPatterns.byAmountRange.medium += 1;
       else spendingPatterns.byAmountRange.large += 1;
     });
 

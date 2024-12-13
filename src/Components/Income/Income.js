@@ -53,7 +53,7 @@ function Income() {
               </div>
               <div className="summary-content">
                 <h3>Total Income</h3>
-                <span className="amount">${totalIncomes.toFixed(2)}</span>
+                <span className="amount">${typeof totalIncomes === 'number' && !isNaN(totalIncomes) ? totalIncomes.toFixed(2) : '0.00'}</span>
                 <span className="count">{incomes.length} sources</span>
               </div>
             </div>

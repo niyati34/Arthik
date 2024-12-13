@@ -268,16 +268,16 @@ function GoalSetter() {
                       <div className="goal-amounts">
                         <div className="amount-row">
                           <span className="label">Target:</span>
-                          <span className="value">${goal.targetAmount.toFixed(2)}</span>
+                          <span className="value">${typeof goal.targetAmount === 'number' && !isNaN(goal.targetAmount) ? goal.targetAmount.toFixed(2) : '0.00'}</span>
                         </div>
                         <div className="amount-row">
                           <span className="label">Current:</span>
-                          <span className="value">${goal.currentAmount.toFixed(2)}</span>
+                          <span className="value">${typeof goal.currentAmount === 'number' && !isNaN(goal.currentAmount) ? goal.currentAmount.toFixed(2) : '0.00'}</span>
                         </div>
                         <div className="amount-row">
                           <span className="label">Remaining:</span>
                           <span className="value remaining">
-                            ${(goal.targetAmount - goal.currentAmount).toFixed(2)}
+                            ${typeof (goal.targetAmount - goal.currentAmount) === 'number' && !isNaN(goal.targetAmount - goal.currentAmount) ? (goal.targetAmount - goal.currentAmount).toFixed(2) : '0.00'}
                           </span>
                         </div>
                       </div>

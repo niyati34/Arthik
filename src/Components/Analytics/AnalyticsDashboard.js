@@ -87,7 +87,7 @@ const AnalyticsDashboard = ({ expenses }) => {
           </div>
           <div className="metric-content">
             <h3>Total Expenses</h3>
-            <span className="amount">${totalExpenses.toFixed(2)}</span>
+            <span className="amount">${typeof totalExpenses === 'number' && !isNaN(totalExpenses) ? totalExpenses.toFixed(2) : '0.00'}</span>
             <span className="count">{expenses.length} transactions</span>
           </div>
         </div>
@@ -100,7 +100,7 @@ const AnalyticsDashboard = ({ expenses }) => {
           </div>
           <div className="metric-content">
             <h3>Average Expense</h3>
-            <span className="amount">${averageExpense.toFixed(2)}</span>
+            <span className="amount">${typeof averageExpense === 'number' && !isNaN(averageExpense) ? averageExpense.toFixed(2) : '0.00'}</span>
             <span className="count">per transaction</span>
           </div>
         </div>
@@ -116,7 +116,7 @@ const AnalyticsDashboard = ({ expenses }) => {
             <h3>Recent Trend</h3>
             <span className={`amount ${recentTrends.trendDirection}`}>
               {getTrendIcon(recentTrends.trendDirection)}
-              {Math.abs(recentTrends.trendPercentage).toFixed(1)}%
+              {typeof recentTrends.trendPercentage === 'number' && !isNaN(recentTrends.trendPercentage) ? Math.abs(recentTrends.trendPercentage).toFixed(1) : '0.0'}%
             </span>
             <span className="count">
               {recentTrends.trendDirection === 'up' ? 'Increase' : 
@@ -172,8 +172,8 @@ const AnalyticsDashboard = ({ expenses }) => {
                   <span className="category-count">{category.count} transactions</span>
                 </div>
                 <div className="category-amount">
-                  <span className="amount">${category.total.toFixed(2)}</span>
-                  <span className="percentage">{category.percentage.toFixed(1)}%</span>
+                  <span className="amount">${typeof category.total === 'number' && !isNaN(category.total) ? category.total.toFixed(2) : '0.00'}</span>
+                  <span className="percentage">{typeof category.percentage === 'number' && !isNaN(category.percentage) ? category.percentage.toFixed(1) : '0.0'}%</span>
                 </div>
                 <div className="category-bar">
                   <div 
@@ -198,7 +198,7 @@ const AnalyticsDashboard = ({ expenses }) => {
           {monthlyTrends.map((month, index) => (
             <div key={index} className="chart-bar">
               <div className="bar-tooltip">
-                <span className="tooltip-amount">${month.total.toFixed(2)}</span>
+                <span className="tooltip-amount">${typeof month.total === 'number' && !isNaN(month.total) ? month.total.toFixed(2) : '0.00'}</span>
                 <span className="tooltip-count">{month.count} expenses</span>
               </div>
               <div 
@@ -221,11 +221,11 @@ const AnalyticsDashboard = ({ expenses }) => {
             <div key={year.year} className="year-stat">
               <div className="year-header">
                 <h4>{year.year}</h4>
-                <span className="year-total">${year.total.toFixed(2)}</span>
+                <span className="year-total">${typeof year.total === 'number' && !isNaN(year.total) ? year.total.toFixed(2) : '0.00'}</span>
               </div>
               <div className="year-details">
                 <span>{year.count} transactions</span>
-                <span>Avg: ${year.average.toFixed(2)}</span>
+                <span>Avg: ${typeof year.average === 'number' && !isNaN(year.average) ? year.average.toFixed(2) : '0.00'}</span>
               </div>
             </div>
           ))}
@@ -251,7 +251,7 @@ const AnalyticsDashboard = ({ expenses }) => {
                   }}
                 ></div>
               </div>
-              <span className="pattern-amount">${data.total.toFixed(2)}</span>
+              <span className="pattern-amount">${typeof data.total === 'number' && !isNaN(data.total) ? data.total.toFixed(2) : '0.00'}</span>
             </div>
           ))}
         </div>

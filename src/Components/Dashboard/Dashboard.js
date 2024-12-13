@@ -62,8 +62,8 @@ function Dashboard() {
       const savingsRate = (totalBalance / totalExpenses) * 100;
       if (savingsRate >= 20) { // 20% savings rate
         createAchievementNotification('budget_saved', {
-          savedAmount: totalBalance.toFixed(2),
-          savingsRate: savingsRate.toFixed(1)
+                  savedAmount: typeof totalBalance === 'number' && !isNaN(totalBalance) ? totalBalance.toFixed(2) : '0.00',
+        savingsRate: typeof savingsRate === 'number' && !isNaN(savingsRate) ? savingsRate.toFixed(1) : '0.0'
         });
       }
     }
@@ -101,8 +101,8 @@ function Dashboard() {
       if (currentTotal < previousTotal) {
         const reduction = ((previousTotal - currentTotal) / previousTotal) * 100;
         createAchievementNotification('spending_reduced', {
-          percentage: reduction.toFixed(1),
-          savedAmount: (previousTotal - currentTotal).toFixed(2)
+          percentage: typeof reduction === 'number' && !isNaN(reduction) ? reduction.toFixed(1) : '0.0',
+          savedAmount: typeof (previousTotal - currentTotal) === 'number' && !isNaN(previousTotal - currentTotal) ? (previousTotal - currentTotal).toFixed(2) : '0.00'
         });
       }
     }
@@ -215,7 +215,7 @@ function Dashboard() {
               </div>
               <div className="card-content">
                 <h3>Total Income</h3>
-                <div className="amount">${totalIncomes.toFixed(2)}</div>
+                <div className="amount">${typeof totalIncomes === 'number' && !isNaN(totalIncomes) ? totalIncomes.toFixed(2) : '0.00'}</div>
                 <span className="count">{incomes.length} transactions</span>
               </div>
             </div>
@@ -230,7 +230,7 @@ function Dashboard() {
               </div>
               <div className="card-content">
                 <h3>Total Expenses</h3>
-                <div className="amount">${totalExpenses.toFixed(2)}</div>
+                <div className="amount">${typeof totalExpenses === 'number' && !isNaN(totalExpenses) ? totalExpenses.toFixed(2) : '0.00'}</div>
                 <span className="count">{expenses.length} transactions</span>
               </div>
             </div>
@@ -248,7 +248,7 @@ function Dashboard() {
               <div className="card-content">
                 <h3>Net Balance</h3>
                 <div className={`amount ${totalBalance >= 0 ? 'positive' : 'negative'}`}>
-                  ${totalBalance.toFixed(2)}
+                  ${typeof totalBalance === 'number' && !isNaN(totalBalance) ? totalBalance.toFixed(2) : '0.00'}
                 </div>
                 <span className={`status ${totalBalance >= 0 ? 'positive' : 'negative'}`}>
                   {totalBalance >= 0 ? 'In Good Standing' : 'Needs Attention'}

@@ -30,7 +30,7 @@ export const useDataExport = () => {
         
         // Format currency
         if (col.type === 'currency' && value) {
-          value = `$${parseFloat(value).toFixed(2)}`;
+          value = `$${typeof parseFloat(value) === 'number' && !isNaN(parseFloat(value)) ? parseFloat(value).toFixed(2) : '0.00'}`;
         }
         
         // Escape commas and quotes
@@ -131,7 +131,7 @@ export const useDataExport = () => {
           if (col.type === 'date' && value) {
             value = new Date(value).toLocaleDateString();
           } else if (col.type === 'currency' && value) {
-            value = `$${parseFloat(value).toFixed(2)}`;
+            value = `$${typeof parseFloat(value) === 'number' && !isNaN(parseFloat(value)) ? parseFloat(value).toFixed(2) : '0.00'}`;
           }
           
           // Truncate long text

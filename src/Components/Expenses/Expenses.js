@@ -91,7 +91,7 @@ function Expenses() {
               </div>
               <div className="summary-content">
                 <h3>Total Expenses</h3>
-                <span className="amount">${totalExpenses.toFixed(2)}</span>
+                <span className="amount">${typeof totalExpenses === 'number' && !isNaN(totalExpenses) ? totalExpenses.toFixed(2) : '0.00'}</span>
                 <span className="count">
                   {expenses.length} expense{expenses.length !== 1 ? "s" : ""}
                 </span>

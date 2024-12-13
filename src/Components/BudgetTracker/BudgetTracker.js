@@ -63,16 +63,16 @@ const BudgetTracker = () => {
         <div className="summary-grid">
           <div className="summary-item">
             <h3>Total Budget</h3>
-            <span className="amount">${totalBudget.toFixed(2)}</span>
+            <span className="amount">${typeof totalBudget === 'number' && !isNaN(totalBudget) ? totalBudget.toFixed(2) : '0.00'}</span>
           </div>
           <div className="summary-item">
             <h3>Total Spent</h3>
-            <span className="amount">${totalSpent.toFixed(2)}</span>
+            <span className="amount">${typeof totalSpent === 'number' && !isNaN(totalSpent) ? totalSpent.toFixed(2) : '0.00'}</span>
           </div>
           <div className="summary-item">
             <h3>Remaining</h3>
             <span className={`amount ${totalBudget - totalSpent >= 0 ? 'positive' : 'negative'}`}>
-              ${(totalBudget - totalSpent).toFixed(2)}
+              ${typeof (totalBudget - totalSpent) === 'number' && !isNaN(totalBudget - totalSpent) ? (totalBudget - totalSpent).toFixed(2) : '0.00'}
             </span>
           </div>
         </div>
@@ -147,16 +147,16 @@ const BudgetTracker = () => {
                 <div className="budget-stats">
                   <div className="stat-row">
                     <span className="label">Budget:</span>
-                    <span className="value">${budget.amount.toFixed(2)}</span>
+                    <span className="value">${typeof budget.amount === 'number' && !isNaN(budget.amount) ? budget.amount.toFixed(2) : '0.00'}</span>
                   </div>
                   <div className="stat-row">
                     <span className="label">Spent:</span>
-                    <span className="value">${budget.spent.toFixed(2)}</span>
+                    <span className="value">${typeof budget.spent === 'number' && !isNaN(budget.spent) ? budget.spent.toFixed(2) : '0.00'}</span>
                   </div>
                   <div className="stat-row">
                     <span className="label">Remaining:</span>
                     <span className={`value ${budget.savings >= 0 ? 'positive' : 'negative'}`}>
-                      ${budget.savings.toFixed(2)}
+                      ${typeof budget.savings === 'number' && !isNaN(budget.savings) ? budget.savings.toFixed(2) : '0.00'}
                     </span>
                   </div>
                 </div>
@@ -164,7 +164,7 @@ const BudgetTracker = () => {
                 <div className="budget-progress">
                   <div className="progress-info">
                     <span className="progress-text">
-                      {Math.min(100, (budget.spent / budget.amount) * 100).toFixed(1)}% used
+                      {typeof budget.spent === 'number' && typeof budget.amount === 'number' && !isNaN(budget.spent) && !isNaN(budget.amount) ? Math.min(100, (budget.spent / budget.amount) * 100).toFixed(1) : '0.0'}% used
                     </span>
                     <span className="period-text">{budget.period}</span>
                   </div>

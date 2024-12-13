@@ -171,7 +171,7 @@ function History({ limit = 5, showAll = false, allowDelete = false }) {
                   className="transaction-amount"
                   style={{ color: typeColor }}
                 >
-                  {dollar} {isNaN(amount) ? "0.00" : amount.toFixed(2)}
+                  {dollar} {typeof amount === 'number' && !isNaN(amount) ? amount.toFixed(2) : "0.00"}
                 </div>
 
                 {allowDelete && (

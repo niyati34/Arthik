@@ -147,7 +147,7 @@ export const useNotifications = () => {
       const notification = {
         type: 'budget_alert',
         title: 'Budget Alert',
-        message: `You've used ${percentage.toFixed(1)}% of your ${budget.category} budget ($${budget.amount})`,
+        message: `You've used ${typeof percentage === 'number' && !isNaN(percentage) ? percentage.toFixed(1) : '0.0'}% of your ${budget.category} budget ($${budget.amount})`,
         severity: percentage >= 100 ? 'critical' : 'warning',
         category: budget.category,
         data: { budget, currentSpending, percentage },
@@ -166,7 +166,7 @@ export const useNotifications = () => {
       if (percentage >= 100) {
         sendBrowserNotification({
           title: 'Budget Exceeded!',
-          message: `You've exceeded your ${budget.category} budget by $${(currentSpending - budget.amount).toFixed(2)}`,
+          message: `You've exceeded your ${budget.category} budget by $${typeof (currentSpending - budget.amount) === 'number' && !isNaN(currentSpending - budget.amount) ? (currentSpending - budget.amount).toFixed(2) : '0.00'}`,
           requireInteraction: true
         });
       }
@@ -182,7 +182,7 @@ export const useNotifications = () => {
     const notification = {
       type: 'spending_reminder',
       title: 'Spending Reminder',
-      message: `You spent $${expense.amount} on ${expense.category}. Your daily average is $${dailyAverage.toFixed(2)}`,
+              message: `You spent $${expense.amount} on ${expense.category}. Your daily average is $${typeof dailyAverage === 'number' && !isNaN(dailyAverage) ? dailyAverage.toFixed(2) : '0.00'}`,
       severity: 'info',
       category: expense.category,
       data: { expense, dailyAverage },

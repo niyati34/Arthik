@@ -263,9 +263,7 @@ function Chart() {
               0
             );
                     const percentage = typeof context.raw === 'number' && typeof total === 'number' && !isNaN(context.raw) && !isNaN(total) ? ((context.raw / total) * 100).toFixed(1) : '0.0';
-        return `${context.label}: $${typeof context.raw === 'number' && !isNaN(context.raw) ? context.raw.toFixed(
-              2
-            )} (${percentage}%)`;
+        return `${context.label}: $${typeof context.raw === 'number' && !isNaN(context.raw) ? context.raw.toFixed(2) : '0.00'} (${percentage}%)`;
           },
         },
       },

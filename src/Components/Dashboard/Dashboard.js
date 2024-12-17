@@ -267,7 +267,7 @@ function Dashboard() {
                 <p>Income vs. Expenses visualization</p>
               </div>
               <div className="chart-container">
-                <Chart incomes={filteredIncomes} expenses={filteredExpenses} />
+                <Chart />
               </div>
             </div>
 

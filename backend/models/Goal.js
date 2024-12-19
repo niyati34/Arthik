@@ -4,8 +4,7 @@ const goalSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
-    index: true
+    required: [true, 'User is required']
   },
   title: {
     type: String,
@@ -22,44 +21,38 @@ const goalSchema = new mongoose.Schema({
     type: Number,
     required: [true, 'Target amount is required'],
     min: [0.01, 'Target amount must be greater than 0'],
-    max: [999999.99, 'Target amount cannot exceed 999,999.99']
+    max: [999999999, 'Target amount cannot exceed 999,999,999']
   },
   currentAmount: {
     type: Number,
     default: 0,
     min: [0, 'Current amount cannot be negative'],
-    max: [999999.99, 'Current amount cannot exceed 999,999.99']
+    max: [999999999, 'Current amount cannot exceed 999,999,999']
   },
   category: {
     type: String,
     required: [true, 'Category is required'],
-    enum: [
-      'Emergency Fund',
-      'Vacation',
-      'Home Purchase',
-      'Car Purchase',
-      'Education',
-      'Wedding',
-      'Retirement',
-      'Investment',
-      'Debt Payoff',
-      'Business',
-      'Other'
-    ],
-    index: true
+    trim: true,
+    maxlength: [50, 'Category cannot exceed 50 characters']
   },
-  targetDate: {
-    type: Date,
-    required: [true, 'Target date is required']
-  },
-  startDate: {
-    type: Date,
-    default: Date.now
+  type: {
+    type: String,
+    enum: ['savings', 'debt_payoff', 'investment', 'purchase', 'emergency_fund', 'other'],
+    default: 'savings'
   },
   priority: {
     type: String,
     enum: ['low', 'medium', 'high', 'urgent'],
     default: 'medium'
+  },
+  startDate: {
+    type: Date,
+    required: [true, 'Start date is required'],
+    default: Date.now
+  },
+  targetDate: {
+    type: Date,
+    required: [true, 'Target date is required']
   },
   status: {
     type: String,
@@ -68,16 +61,12 @@ const goalSchema = new mongoose.Schema({
   },
   color: {
     type: String,
-    default: '#10b981',
+    default: '#3b82f6',
     match: [/^#[0-9A-F]{6}$/i, 'Color must be a valid hex color']
   },
   icon: {
     type: String,
     default: '🎯'
-  },
-  isPublic: {
-    type: Boolean,
-    default: false
   },
   milestones: [{
     amount: {
@@ -96,50 +85,64 @@ const goalSchema = new mongoose.Schema({
     },
     achievedAt: Date
   }],
-  contributions: [{
-    amount: {
-      type: Number,
-      required: true,
-      min: [0.01, 'Contribution amount must be greater than 0']
-    },
-    date: {
-      type: Date,
-      default: Date.now
-    },
-    description: {
-      type: String,
-      trim: true,
-      maxlength: [200, 'Contribution description cannot exceed 200 characters']
-    }
-  }],
-  notifications: {
+  alerts: {
     enabled: {
       type: Boolean,
       default: true
     },
-    milestoneAlerts: {
-      type: Boolean,
-      default: true
+    threshold: {
+      type: Number,
+      default: 80, // Alert when 80% of goal is reached
+      min: [1, 'Threshold must be at least 1%'],
+      max: [100, 'Threshold cannot exceed 100%']
     },
-    deadlineReminders: {
-      type: Boolean,
-      default: true
-    },
-    progressUpdates: {
-      type: Boolean,
-      default: true
+    notifications: {
+      email: { type: Boolean, default: true },
+      push: { type: Boolean, default: true },
+      inApp: { type: Boolean, default: true }
     }
+  },
+  recurring: {
+    isRecurring: {
+      type: Boolean,
+      default: false
+    },
+    frequency: {
+      type: String,
+      enum: ['daily', 'weekly', 'monthly', 'yearly'],
+      default: 'monthly'
+    },
+    contributionAmount: {
+      type: Number,
+      min: [0, 'Contribution amount cannot be negative']
+    },
+    nextContributionDate: Date
   },
   tags: [{
     type: String,
     trim: true,
-    maxlength: [50, 'Tag cannot exceed 50 characters']
+    maxlength: [30, 'Tag cannot exceed 30 characters']
   }],
   notes: {
     type: String,
     trim: true,
     maxlength: [1000, 'Notes cannot exceed 1000 characters']
-  }
+  },
+  isShared: {
+    type: Boolean,
+    default: false
+  },
+  sharedWith: [{
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    shareType: {
+      type: String,
+      enum: ['view', 'edit'],
+      default: 'view'
+    }
+  }]
 }, {
   timestamps: true,
   toJSON: { virtuals: true },
@@ -147,9 +150,9 @@ const goalSchema = new mongoose.Schema({
 });
 
 // Indexes for better query performance
-goalSchema.index({ user: 1, status: 1 });
+goalSchema.index({ user: 1, targetDate: -1 });
 goalSchema.index({ user: 1, category: 1 });
-goalSchema.index({ user: 1, targetDate: 1 });
+goalSchema.index({ user: 1, status: 1 });
 goalSchema.index({ user: 1, priority: 1 });
 
 // Virtual for formatted target amount
@@ -169,22 +172,22 @@ goalSchema.virtual('formattedCurrentAmount').get(function() {
 });
 
 // Virtual for progress percentage
-goalSchema.virtual('progressPercentage').get(function() {
+goalSchema.virtual('progress').get(function() {
   if (this.targetAmount === 0) return 0;
-  return Math.min(100, (this.currentAmount / this.targetAmount) * 100);
+  return Math.min((this.currentAmount / this.targetAmount) * 100, 100);
 });
 
 // Virtual for remaining amount
-goalSchema.virtual('remainingAmount').get(function() {
-  return Math.max(0, this.targetAmount - this.currentAmount);
+goalSchema.virtual('remaining').get(function() {
+  return Math.max(this.targetAmount - this.currentAmount, 0);
 });
 
 // Virtual for formatted remaining amount
-goalSchema.virtual('formattedRemainingAmount').get(function() {
+goalSchema.virtual('formattedRemaining').get(function() {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD'
-  }).format(this.remainingAmount);
+  }).format(this.remaining);
 });
 
 // Virtual for days remaining
@@ -193,32 +196,13 @@ goalSchema.virtual('daysRemaining').get(function() {
   const target = new Date(this.targetDate);
   const diffTime = target - now;
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  return Math.max(0, diffDays);
+  return Math.max(diffDays, 0);
 });
 
-// Virtual for days elapsed
-goalSchema.virtual('daysElapsed').get(function() {
-  const now = new Date();
-  const start = new Date(this.startDate);
-  const diffTime = now - start;
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  return Math.max(0, diffDays);
-});
-
-// Virtual for total days
-goalSchema.virtual('totalDays').get(function() {
-  const start = new Date(this.startDate);
-  const target = new Date(this.targetDate);
-  const diffTime = target - start;
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  return Math.max(0, diffDays);
-});
-
-// Virtual for average daily contribution needed
+// Virtual for daily contribution needed
 goalSchema.virtual('dailyContributionNeeded').get(function() {
-  const remaining = this.remainingAmount;
-  const daysLeft = this.daysRemaining;
-  return daysLeft > 0 ? remaining / daysLeft : 0;
+  if (this.daysRemaining <= 0) return 0;
+  return this.remaining / this.daysRemaining;
 });
 
 // Virtual for formatted daily contribution needed
@@ -229,50 +213,106 @@ goalSchema.virtual('formattedDailyContributionNeeded').get(function() {
   }).format(this.dailyContributionNeeded);
 });
 
-// Virtual for status based on progress and time
-goalSchema.virtual('progressStatus').get(function() {
-  const progress = this.progressPercentage;
-  const daysLeft = this.daysRemaining;
-  const totalDays = this.totalDays;
+// Virtual for goal status info
+goalSchema.virtual('statusInfo').get(function() {
+  const progress = this.progress;
+  const daysRemaining = this.daysRemaining;
   
-  if (progress >= 100) return 'completed';
-  if (daysLeft <= 0) return 'overdue';
-  if (progress >= 75) return 'on-track';
-  if (progress >= 50) return 'good-progress';
-  if (progress >= 25) return 'moderate-progress';
-  return 'needs-attention';
+  if (progress >= 100) {
+    return {
+      status: 'completed',
+      message: 'Goal achieved!',
+      color: '#10b981'
+    };
+  } else if (daysRemaining <= 0) {
+    return {
+      status: 'overdue',
+      message: 'Target date passed',
+      color: '#ef4444'
+    };
+  } else if (progress >= this.alerts.threshold) {
+    return {
+      status: 'near_completion',
+      message: 'Almost there!',
+      color: '#f59e0b'
+    };
+  } else if (progress >= 50) {
+    return {
+      status: 'on_track',
+      message: 'On track',
+      color: '#3b82f6'
+    };
+  } else {
+    return {
+      status: 'needs_attention',
+      message: 'Needs attention',
+      color: '#6b7280'
+    };
+  }
 });
 
-// Static method to get user's total goals
-goalSchema.statics.getTotalGoals = async function(userId, status = 'active') {
-  const matchQuery = { user: userId };
-  if (status) matchQuery.status = status;
+// Virtual for priority color
+goalSchema.virtual('priorityColor').get(function() {
+  const colors = {
+    low: '#6b7280',
+    medium: '#3b82f6',
+    high: '#f59e0b',
+    urgent: '#ef4444'
+  };
+  return colors[this.priority] || colors.medium;
+});
 
-  const result = await this.aggregate([
-    { $match: matchQuery },
-    { $group: { _id: null, total: { $sum: '$targetAmount' } } }
-  ]);
+// Pre-save middleware to validate dates
+goalSchema.pre('save', function(next) {
+  if (this.targetDate <= this.startDate) {
+    return next(new Error('Target date must be after start date'));
+  }
+  next();
+});
 
-  return result.length > 0 ? result[0].total : 0;
-};
-
-// Static method to get goals by category
-goalSchema.statics.getGoalsByCategory = async function(userId) {
-  return await this.aggregate([
-    { $match: { user: userId, status: 'active' } },
-    { $group: { _id: '$category', total: { $sum: '$targetAmount' }, count: { $sum: 1 } } },
-    { $sort: { total: -1 } }
-  ]);
+// Instance method to get goal summary
+goalSchema.methods.getSummary = function() {
+  return {
+    id: this._id,
+    title: this.title,
+    description: this.description,
+    targetAmount: this.targetAmount,
+    formattedTargetAmount: this.formattedTargetAmount,
+    currentAmount: this.currentAmount,
+    formattedCurrentAmount: this.formattedCurrentAmount,
+    category: this.category,
+    type: this.type,
+    priority: this.priority,
+    startDate: this.startDate,
+    targetDate: this.targetDate,
+    status: this.status,
+    progress: this.progress,
+    remaining: this.remaining,
+    formattedRemaining: this.formattedRemaining,
+    daysRemaining: this.daysRemaining,
+    dailyContributionNeeded: this.dailyContributionNeeded,
+    formattedDailyContributionNeeded: this.formattedDailyContributionNeeded,
+    statusInfo: this.statusInfo,
+    priorityColor: this.priorityColor,
+    color: this.color,
+    icon: this.icon,
+    createdAt: this.createdAt
+  };
 };
 
 // Instance method to add contribution
-goalSchema.methods.addContribution = function(amount, description = '') {
+goalSchema.methods.addContribution = function(amount) {
+  if (amount <= 0) {
+    throw new Error('Contribution amount must be positive');
+  }
+  
   this.currentAmount += amount;
-  this.contributions.push({
-    amount,
-    description,
-    date: new Date()
-  });
+  
+  // Check if goal is completed
+  if (this.currentAmount >= this.targetAmount) {
+    this.status = 'completed';
+    this.currentAmount = this.targetAmount; // Don't exceed target
+  }
   
   // Check milestones
   this.milestones.forEach(milestone => {
@@ -282,46 +322,132 @@ goalSchema.methods.addContribution = function(amount, description = '') {
     }
   });
   
-  // Update status if completed
-  if (this.currentAmount >= this.targetAmount && this.status === 'active') {
-    this.status = 'completed';
-  }
-  
   return this.save();
 };
 
-// Instance method to get goal summary
-goalSchema.methods.getSummary = function() {
-  return {
-    _id: this._id,
-    title: this.title,
-    description: this.description,
-    targetAmount: this.targetAmount,
-    formattedTargetAmount: this.formattedTargetAmount,
-    currentAmount: this.currentAmount,
-    formattedCurrentAmount: this.formattedCurrentAmount,
-    category: this.category,
-    targetDate: this.targetDate,
-    startDate: this.startDate,
-    priority: this.priority,
-    status: this.status,
-    color: this.color,
-    icon: this.icon,
-    progressPercentage: this.progressPercentage,
-    remainingAmount: this.remainingAmount,
-    formattedRemainingAmount: this.formattedRemainingAmount,
-    daysRemaining: this.daysRemaining,
-    daysElapsed: this.daysElapsed,
-    totalDays: this.totalDays,
-    dailyContributionNeeded: this.dailyContributionNeeded,
-    formattedDailyContributionNeeded: this.formattedDailyContributionNeeded,
-    progressStatus: this.progressStatus,
-    milestones: this.milestones,
-    contributions: this.contributions,
-    notifications: this.notifications,
-    tags: this.tags,
-    createdAt: this.createdAt
+// Static method to get active goals
+goalSchema.statics.getActive = function(userId) {
+  return this.find({
+    user: userId,
+    status: 'active'
+  }).sort({ priority: -1, targetDate: 1 });
+};
+
+// Static method to get goals by category
+goalSchema.statics.getByCategory = function(userId, category) {
+  return this.find({ user: userId, category: category }).sort({ targetDate: 1 });
+};
+
+// Static method to get goals by type
+goalSchema.statics.getByType = function(userId, type) {
+  return this.find({ user: userId, type: type }).sort({ targetDate: 1 });
+};
+
+// Static method to get goals by priority
+goalSchema.statics.getByPriority = function(userId, priority) {
+  return this.find({ user: userId, priority: priority }).sort({ targetDate: 1 });
+};
+
+// Static method to get goal statistics
+goalSchema.statics.getStats = async function(userId) {
+  const stats = await this.aggregate([
+    {
+      $match: {
+        user: mongoose.Types.ObjectId(userId)
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        totalGoals: { $sum: 1 },
+        totalTargetAmount: { $sum: '$targetAmount' },
+        totalCurrentAmount: { $sum: '$currentAmount' },
+        averageProgress: { $avg: { $multiply: [{ $divide: ['$currentAmount', '$targetAmount'] }, 100] } },
+        activeGoals: {
+          $sum: {
+            $cond: [{ $eq: ['$status', 'active'] }, 1, 0]
+          }
+        },
+        completedGoals: {
+          $sum: {
+            $cond: [{ $eq: ['$status', 'completed'] }, 1, 0]
+          }
+        },
+        urgentGoals: {
+          $sum: {
+            $cond: [{ $eq: ['$priority', 'urgent'] }, 1, 0]
+          }
+        }
+      }
+    }
+  ]);
+
+  return stats[0] || {
+    totalGoals: 0,
+    totalTargetAmount: 0,
+    totalCurrentAmount: 0,
+    averageProgress: 0,
+    activeGoals: 0,
+    completedGoals: 0,
+    urgentGoals: 0
   };
+};
+
+// Static method to get category breakdown
+goalSchema.statics.getCategoryBreakdown = async function(userId) {
+  return await this.aggregate([
+    {
+      $match: {
+        user: mongoose.Types.ObjectId(userId)
+      }
+    },
+    {
+      $group: {
+        _id: '$category',
+        totalTargetAmount: { $sum: '$targetAmount' },
+        totalCurrentAmount: { $sum: '$currentAmount' },
+        count: { $sum: 1 },
+        averageProgress: { $avg: { $multiply: [{ $divide: ['$currentAmount', '$targetAmount'] }, 100] } }
+      }
+    },
+    {
+      $project: {
+        category: '$_id',
+        totalTargetAmount: 1,
+        totalCurrentAmount: 1,
+        count: 1,
+        averageProgress: { $round: ['$averageProgress', 2] }
+      }
+    },
+    { $sort: { totalTargetAmount: -1 } }
+  ]);
+};
+
+// Static method to update goal status
+goalSchema.statics.updateStatus = async function() {
+  const now = new Date();
+  
+  // Update overdue goals
+  await this.updateMany(
+    {
+      targetDate: { $lt: now },
+      status: 'active'
+    },
+    {
+      $set: { status: 'overdue' }
+    }
+  );
+  
+  // Update completed goals
+  await this.updateMany(
+    {
+      currentAmount: { $gte: '$targetAmount' },
+      status: { $in: ['active', 'overdue'] }
+    },
+    {
+      $set: { status: 'completed' }
+    }
+  );
 };
 
 module.exports = mongoose.model('Goal', goalSchema);

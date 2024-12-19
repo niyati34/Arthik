@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Username is required'],
     unique: true,
     trim: true,
-    minlength: [3, 'Username must be at least 3 characters'],
+    minlength: [3, 'Username must be at least 3 characters long'],
     maxlength: [30, 'Username cannot exceed 30 characters']
   },
   email: {
@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, 'Password is required'],
-    minlength: [6, 'Password must be at least 6 characters'],
+    minlength: [6, 'Password must be at least 6 characters long'],
     select: false // Don't include password in queries by default
   },
   firstName: {
@@ -35,14 +35,14 @@ const userSchema = new mongoose.Schema({
     trim: true,
     maxlength: [50, 'Last name cannot exceed 50 characters']
   },
-  avatar: {
+  profilePicture: {
     type: String,
     default: null
   },
   currency: {
     type: String,
     default: 'USD',
-    enum: ['USD', 'EUR', 'GBP', 'INR', 'CAD', 'AUD']
+    enum: ['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'JPY', 'INR']
   },
   timezone: {
     type: String,
@@ -73,7 +73,15 @@ const userSchema = new mongoose.Schema({
   lastLogin: {
     type: Date,
     default: Date.now
-  }
+  },
+  emailVerified: {
+    type: Boolean,
+    default: false
+  },
+  emailVerificationToken: String,
+  emailVerificationExpires: Date,
+  passwordResetToken: String,
+  passwordResetExpires: Date
 }, {
   timestamps: true,
   toJSON: { virtuals: true },
@@ -85,67 +93,121 @@ userSchema.virtual('fullName').get(function() {
   return `${this.firstName} ${this.lastName}`;
 });
 
-// Virtual for user's expenses
-userSchema.virtual('expenses', {
+// Virtual for user's total expenses
+userSchema.virtual('totalExpenses', {
   ref: 'Expense',
   localField: '_id',
-  foreignField: 'user'
+  foreignField: 'user',
+  pipeline: [
+    { $group: { _id: null, total: { $sum: '$amount' } } }
+  ],
+  justOne: true
 });
 
-// Virtual for user's incomes
-userSchema.virtual('incomes', {
+// Virtual for user's total income
+userSchema.virtual('totalIncome', {
   ref: 'Income',
   localField: '_id',
-  foreignField: 'user'
+  foreignField: 'user',
+  pipeline: [
+    { $group: { _id: null, total: { $sum: '$amount' } } }
+  ],
+  justOne: true
 });
 
-// Virtual for user's budgets
-userSchema.virtual('budgets', {
-  ref: 'Budget',
-  localField: '_id',
-  foreignField: 'user'
-});
+// Index for better query performance
+userSchema.index({ email: 1 });
+userSchema.index({ username: 1 });
+userSchema.index({ createdAt: -1 });
 
-// Virtual for user's goals
-userSchema.virtual('goals', {
-  ref: 'Goal',
-  localField: '_id',
-  foreignField: 'user'
-});
-
-// Hash password before saving
+// Pre-save middleware to hash password
 userSchema.pre('save', async function(next) {
+  // Only hash the password if it has been modified (or is new)
   if (!this.isModified('password')) return next();
-  
+
   try {
-    const salt = await bcrypt.genSalt(12);
-    this.password = await bcrypt.hash(this.password, salt);
+    // Hash password with cost of 12
+    const hashedPassword = await bcrypt.hash(this.password, 12);
+    this.password = hashedPassword;
     next();
   } catch (error) {
     next(error);
   }
 });
 
-// Compare password method
+// Instance method to check password
 userSchema.methods.comparePassword = async function(candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
-// Get user profile (without sensitive data)
+// Instance method to get user profile (without sensitive data)
 userSchema.methods.getProfile = function() {
   return {
-    _id: this._id,
+    id: this._id,
     username: this.username,
     email: this.email,
     firstName: this.firstName,
     lastName: this.lastName,
     fullName: this.fullName,
-    avatar: this.avatar,
+    profilePicture: this.profilePicture,
     currency: this.currency,
     timezone: this.timezone,
     preferences: this.preferences,
+    isActive: this.isActive,
     lastLogin: this.lastLogin,
-    createdAt: this.createdAt
+    emailVerified: this.emailVerified,
+    createdAt: this.createdAt,
+    updatedAt: this.updatedAt
+  };
+};
+
+// Static method to find user by email
+userSchema.statics.findByEmail = function(email) {
+  return this.findOne({ email: email.toLowerCase() });
+};
+
+// Static method to find user by username
+userSchema.statics.findByUsername = function(username) {
+  return this.findOne({ username: username });
+};
+
+// Static method to get user statistics
+userSchema.statics.getUserStats = async function(userId) {
+  const stats = await this.aggregate([
+    { $match: { _id: mongoose.Types.ObjectId(userId) } },
+    {
+      $lookup: {
+        from: 'expenses',
+        localField: '_id',
+        foreignField: 'user',
+        as: 'expenses'
+      }
+    },
+    {
+      $lookup: {
+        from: 'incomes',
+        localField: '_id',
+        foreignField: 'user',
+        as: 'incomes'
+      }
+    },
+    {
+      $project: {
+        totalExpenses: { $sum: '$expenses.amount' },
+        totalIncome: { $sum: '$incomes.amount' },
+        expenseCount: { $size: '$expenses' },
+        incomeCount: { $size: '$incomes' },
+        netBalance: { $subtract: [{ $sum: '$incomes.amount' }, { $sum: '$expenses.amount' }] }
+      }
+    }
+  ]);
+
+  return stats[0] || {
+    totalExpenses: 0,
+    totalIncome: 0,
+    expenseCount: 0,
+    incomeCount: 0,
+    netBalance: 0
   };
 };
 

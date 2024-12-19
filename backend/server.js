@@ -1,17 +1,22 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
-const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
+const morgan = require('morgan');
 require('dotenv').config();
 
-const connectDB = require('./config/db');
-
 const app = express();
-const PORT = process.env.PORT || 5000;
 
-// Connect to MongoDB
-connectDB();
+// Import routes
+const userRoutes = require('./routes/users');
+const expenseRoutes = require('./routes/expenses');
+const incomeRoutes = require('./routes/incomes');
+const budgetRoutes = require('./routes/budgets');
+const goalRoutes = require('./routes/goals');
+
+// Import middleware
+const { errorHandler } = require('./middleware/errorHandler');
 
 // Security middleware
 app.use(helmet());
@@ -19,9 +24,10 @@ app.use(helmet());
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again later.'
 });
-app.use(limiter);
+app.use('/api/', limiter);
 
 // CORS configuration
 app.use(cors({
@@ -36,36 +42,74 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Logging middleware
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
+} else {
+  app.use(morgan('combined'));
 }
 
-// Health check route
-app.get('/api/health', (req, res) => {
-  res.json({ 
-    status: 'OK', 
-    message: 'Arthik Backend is running',
-    timestamp: new Date().toISOString()
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'OK',
+    message: 'Arthik Backend API is running',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
   });
 });
 
-// Import middleware
-const { auth } = require('./middleware/auth');
-const { errorHandler, notFound } = require('./middleware/errorHandler');
-
 // API routes
-app.use('/api/users', require('./routes/users'));
-app.use('/api/expenses', auth, require('./routes/expenses'));
-app.use('/api/incomes', auth, require('./routes/incomes'));
-app.use('/api/budgets', auth, require('./routes/budgets'));
-app.use('/api/goals', auth, require('./routes/goals'));
+app.use('/api/users', userRoutes);
+app.use('/api/expenses', expenseRoutes);
+app.use('/api/incomes', incomeRoutes);
+app.use('/api/budgets', budgetRoutes);
+app.use('/api/goals', goalRoutes);
 
-// 404 handler for undefined routes
-app.use(notFound);
+// 404 handler
+app.use('*', (req, res) => {
+  res.status(404).json({
+    success: false,
+    message: `Route ${req.originalUrl} not found`
+  });
+});
 
-// Error handling middleware
+// Global error handler
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
+// Connect to MongoDB
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/arthik', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error('Error connecting to MongoDB:', error.message);
+    process.exit(1);
+  }
+};
+
+// Start server
+const PORT = process.env.PORT || 5000;
+const startServer = async () => {
+  await connectDB();
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  });
+};
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (err, promise) => {
+  console.log(`Error: ${err.message}`);
+  // Close server & exit process
+  process.exit(1);
 });
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (err) => {
+  console.log(`Error: ${err.message}`);
+  console.log('Shutting down the server due to uncaught exception');
+  process.exit(1);
+});
+
+startServer();

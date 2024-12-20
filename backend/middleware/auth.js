@@ -1,25 +1,17 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-/**
- * Authentication middleware to protect routes
- * Verifies JWT token and adds user info to request
- */
+// Protect routes - require authentication
 const auth = async (req, res, next) => {
   try {
-    // Get token from header
-    const authHeader = req.header('Authorization');
-    
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({
-        success: false,
-        message: 'Access denied. No token provided.'
-      });
+    let token;
+
+    // Check for token in headers
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+      token = req.headers.authorization.split(' ')[1];
     }
 
-    // Extract token from "Bearer <token>"
-    const token = authHeader.substring(7);
-
+    // Check if token exists
     if (!token) {
       return res.status(401).json({
         success: false,
@@ -31,121 +23,82 @@ const auth = async (req, res, next) => {
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       
-      // Check if user still exists
-      const user = await User.findById(decoded.userId).select('-password');
+      // Get user from token
+      const user = await User.findById(decoded.id).select('-password');
       
       if (!user) {
         return res.status(401).json({
           success: false,
-          message: 'Token is valid but user no longer exists.'
+          message: 'Token is not valid. User not found.'
         });
       }
 
-      // Check if user is active
       if (!user.isActive) {
         return res.status(401).json({
           success: false,
-          message: 'User account is deactivated.'
+          message: 'Account is deactivated.'
         });
       }
 
-      // Add user info to request
-      req.user = {
-        userId: user._id,
-        email: user.email,
-        username: user.username,
-        firstName: user.firstName,
-        lastName: user.lastName
-      };
-
+      // Add user to request object
+      req.user = user;
       next();
     } catch (error) {
-      if (error.name === 'TokenExpiredError') {
-        return res.status(401).json({
-          success: false,
-          message: 'Token has expired.'
-        });
-      } else if (error.name === 'JsonWebTokenError') {
-        return res.status(401).json({
-          success: false,
-          message: 'Invalid token.'
-        });
-      } else {
-        throw error;
-      }
+      return res.status(401).json({
+        success: false,
+        message: 'Token is not valid.'
+      });
     }
   } catch (error) {
-    console.error('Auth middleware error:', error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: 'Server error during authentication.'
+      message: 'Server error in authentication.'
     });
   }
 };
 
-/**
- * Optional authentication middleware
- * Similar to auth but doesn't require token
- * Adds user info if token is provided and valid
- */
+// Optional authentication - user can be authenticated but not required
 const optionalAuth = async (req, res, next) => {
   try {
-    const authHeader = req.header('Authorization');
-    
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return next();
+    let token;
+
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+      token = req.headers.authorization.split(' ')[1];
     }
 
-    const token = authHeader.substring(7);
-
-    if (!token) {
-      return next();
-    }
-
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      const user = await User.findById(decoded.userId).select('-password');
-      
-      if (user && user.isActive) {
-        req.user = {
-          userId: user._id,
-          email: user.email,
-          username: user.username,
-          firstName: user.firstName,
-          lastName: user.lastName
-        };
+    if (token) {
+      try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.id).select('-password');
+        
+        if (user && user.isActive) {
+          req.user = user;
+        }
+      } catch (error) {
+        // Token is invalid, but we continue without user
       }
-    } catch (error) {
-      // Token is invalid, but we don't throw an error
-      // Just continue without user info
     }
 
     next();
   } catch (error) {
-    console.error('Optional auth middleware error:', error);
     next();
   }
 };
 
-/**
- * Role-based authorization middleware
- * Checks if user has required role
- */
+// Role-based authorization
 const authorize = (...roles) => {
   return (req, res, next) => {
     if (!req.user) {
       return res.status(401).json({
         success: false,
-        message: 'Authentication required.'
+        message: 'Authentication required for this action.'
       });
     }
 
-    // For now, we'll implement basic role checking
-    // You can extend this based on your user roles
-    if (roles.length && !roles.includes('user')) {
+    if (!roles.includes(req.user.role)) {
       return res.status(403).json({
         success: false,
-        message: 'Access denied. Insufficient permissions.'
+        message: 'You do not have permission to perform this action.'
       });
     }
 
@@ -153,8 +106,41 @@ const authorize = (...roles) => {
   };
 };
 
+// Check if user owns the resource
+const checkOwnership = (model) => {
+  return async (req, res, next) => {
+    try {
+      const resource = await model.findById(req.params.id);
+      
+      if (!resource) {
+        return res.status(404).json({
+          success: false,
+          message: 'Resource not found.'
+        });
+      }
+
+      // Check if user owns the resource
+      if (resource.user.toString() !== req.user._id.toString()) {
+        return res.status(403).json({
+          success: false,
+          message: 'You do not have permission to access this resource.'
+        });
+      }
+
+      req.resource = resource;
+      next();
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: 'Server error in ownership check.'
+      });
+    }
+  };
+};
+
 module.exports = {
   auth,
   optionalAuth,
-  authorize
+  authorize,
+  checkOwnership
 };

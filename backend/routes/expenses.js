@@ -1,405 +1,376 @@
 const express = require('express');
-const { body, validationResult, query } = require('express-validator');
+const { body, query, validationResult } = require('express-validator');
 const Expense = require('../models/Expense');
+const { auth, checkOwnership } = require('../middleware/auth');
+const { asyncHandler, sendSuccessResponse, sendErrorResponse, AppError } = require('../middleware/errorHandler');
 
 const router = express.Router();
 
-// @route   GET /api/expenses
-// @desc    Get all expenses for user
-// @access  Private
-router.get('/', [
-  query('page').optional().isInt({ min: 1 }).withMessage('Page must be a positive integer'),
-  query('limit').optional().isInt({ min: 1, max: 100 }).withMessage('Limit must be between 1 and 100'),
-  query('category').optional().isString().withMessage('Category must be a string'),
-  query('startDate').optional().isISO8601().withMessage('Start date must be a valid date'),
-  query('endDate').optional().isISO8601().withMessage('End date must be a valid date'),
-  query('sortBy').optional().isIn(['date', 'amount', 'category']).withMessage('Invalid sort field'),
-  query('sortOrder').optional().isIn(['asc', 'desc']).withMessage('Sort order must be asc or desc')
-], async (req, res) => {
-  try {
-    // Check for validation errors
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ 
-        success: false,
-        message: 'Validation failed',
-        errors: errors.array()
-      });
-    }
-
-    const {
-      page = 1,
-      limit = 20,
-      category,
-      startDate,
-      endDate,
-      sortBy = 'date',
-      sortOrder = 'desc'
-    } = req.query;
-
-    // Build query
-    const query = { user: req.user.userId, status: 'active' };
-    
-    if (category) {
-      query.category = category;
-    }
-    
-    if (startDate || endDate) {
-      query.date = {};
-      if (startDate) query.date.$gte = new Date(startDate);
-      if (endDate) query.date.$lte = new Date(endDate);
-    }
-
-    // Build sort object
-    const sort = {};
-    sort[sortBy] = sortOrder === 'asc' ? 1 : -1;
-
-    // Execute query with pagination
-    const skip = (page - 1) * limit;
-    const expenses = await Expense.find(query)
-      .sort(sort)
-      .skip(skip)
-      .limit(parseInt(limit))
-      .populate('user', 'firstName lastName');
-
-    // Get total count for pagination
-    const total = await Expense.countDocuments(query);
-
-    // Get summary statistics
-    const totalAmount = await Expense.getTotalExpenses(req.user.userId, startDate, endDate);
-    const categoryBreakdown = await Expense.getExpensesByCategory(req.user.userId, startDate, endDate);
-
-    res.json({
-      success: true,
-      data: {
-        expenses: expenses.map(expense => expense.getSummary()),
-        pagination: {
-          currentPage: parseInt(page),
-          totalPages: Math.ceil(total / limit),
-          totalItems: total,
-          itemsPerPage: parseInt(limit)
-        },
-        summary: {
-          totalAmount,
-          categoryBreakdown
-        }
-      }
-    });
-
-  } catch (error) {
-    console.error('Get expenses error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Server error while fetching expenses'
-    });
-  }
-});
+// Apply auth middleware to all routes
+router.use(auth);
 
 // @route   POST /api/expenses
 // @desc    Create a new expense
 // @access  Private
 router.post('/', [
   body('title')
-    .notEmpty()
-    .withMessage('Title is required')
-    .isLength({ max: 100 })
-    .withMessage('Title cannot exceed 100 characters'),
+    .trim()
+    .isLength({ min: 1, max: 100 })
+    .withMessage('Title is required and must be less than 100 characters'),
   body('amount')
-    .isFloat({ min: 0.01, max: 999999.99 })
-    .withMessage('Amount must be between 0.01 and 999,999.99'),
+    .isFloat({ min: 0.01 })
+    .withMessage('Amount must be a positive number'),
   body('category')
-    .isIn([
-      'Food & Dining',
-      'Transportation',
-      'Shopping',
-      'Entertainment',
-      'Healthcare',
-      'Education',
-      'Housing',
-      'Utilities',
-      'Insurance',
-      'Travel',
-      'Gifts',
-      'Personal Care',
-      'Subscriptions',
-      'Investments',
-      'Other'
-    ])
-    .withMessage('Invalid category'),
+    .trim()
+    .isLength({ min: 1, max: 50 })
+    .withMessage('Category is required and must be less than 50 characters'),
   body('date')
     .optional()
     .isISO8601()
-    .withMessage('Date must be a valid date'),
+    .withMessage('Date must be a valid ISO date'),
   body('description')
     .optional()
+    .trim()
     .isLength({ max: 500 })
-    .withMessage('Description cannot exceed 500 characters'),
+    .withMessage('Description must be less than 500 characters'),
   body('paymentMethod')
     .optional()
-    .isIn(['Cash', 'Credit Card', 'Debit Card', 'Bank Transfer', 'Digital Wallet', 'Other'])
+    .isIn(['cash', 'credit_card', 'debit_card', 'bank_transfer', 'digital_wallet', 'check', 'other'])
     .withMessage('Invalid payment method'),
   body('location')
     .optional()
+    .trim()
     .isLength({ max: 200 })
-    .withMessage('Location cannot exceed 200 characters'),
+    .withMessage('Location must be less than 200 characters'),
   body('tags')
     .optional()
     .isArray()
     .withMessage('Tags must be an array'),
   body('tags.*')
     .optional()
-    .isLength({ max: 50 })
-    .withMessage('Each tag cannot exceed 50 characters')
-], async (req, res) => {
-  try {
-    // Check for validation errors
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ 
-        success: false,
-        message: 'Validation failed',
-        errors: errors.array()
-      });
-    }
-
-    const expenseData = {
-      ...req.body,
-      user: req.user.userId,
-      date: req.body.date ? new Date(req.body.date) : new Date()
-    };
-
-    const expense = new Expense(expenseData);
-    await expense.save();
-
-    res.status(201).json({
-      success: true,
-      message: 'Expense created successfully',
-      data: {
-        expense: expense.getSummary()
-      }
-    });
-
-  } catch (error) {
-    console.error('Create expense error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Server error while creating expense'
-    });
+    .trim()
+    .isLength({ max: 30 })
+    .withMessage('Each tag must be less than 30 characters')
+], asyncHandler(async (req, res) => {
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return sendErrorResponse(res, errors.array()[0].msg, 400);
   }
-});
+
+  const expenseData = {
+    ...req.body,
+    user: req.user._id,
+    date: req.body.date || new Date()
+  };
+
+  const expense = new Expense(expenseData);
+  await expense.save();
+
+  sendSuccessResponse(res, {
+    expense: expense.getSummary()
+  }, 'Expense created successfully', 201);
+}));
+
+// @route   GET /api/expenses
+// @desc    Get all expenses with filtering and pagination
+// @access  Private
+router.get('/', [
+  query('page')
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage('Page must be a positive integer'),
+  query('limit')
+    .optional()
+    .isInt({ min: 1, max: 100 })
+    .withMessage('Limit must be between 1 and 100'),
+  query('category')
+    .optional()
+    .trim()
+    .isLength({ max: 50 })
+    .withMessage('Category must be less than 50 characters'),
+  query('startDate')
+    .optional()
+    .isISO8601()
+    .withMessage('Start date must be a valid ISO date'),
+  query('endDate')
+    .optional()
+    .isISO8601()
+    .withMessage('End date must be a valid ISO date'),
+  query('minAmount')
+    .optional()
+    .isFloat({ min: 0 })
+    .withMessage('Min amount must be a positive number'),
+  query('maxAmount')
+    .optional()
+    .isFloat({ min: 0 })
+    .withMessage('Max amount must be a positive number'),
+  query('sortBy')
+    .optional()
+    .isIn(['date', 'amount', 'title', 'category'])
+    .withMessage('Invalid sort field'),
+  query('sortOrder')
+    .optional()
+    .isIn(['asc', 'desc'])
+    .withMessage('Sort order must be asc or desc')
+], asyncHandler(async (req, res) => {
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return sendErrorResponse(res, errors.array()[0].msg, 400);
+  }
+
+  const {
+    page = 1,
+    limit = 20,
+    category,
+    startDate,
+    endDate,
+    minAmount,
+    maxAmount,
+    sortBy = 'date',
+    sortOrder = 'desc'
+  } = req.query;
+
+  // Build filter object
+  const filter = { user: req.user._id };
+
+  if (category) filter.category = category;
+  if (startDate || endDate) {
+    filter.date = {};
+    if (startDate) filter.date.$gte = new Date(startDate);
+    if (endDate) filter.date.$lte = new Date(endDate);
+  }
+  if (minAmount || maxAmount) {
+    filter.amount = {};
+    if (minAmount) filter.amount.$gte = parseFloat(minAmount);
+    if (maxAmount) filter.amount.$lte = parseFloat(maxAmount);
+  }
+
+  // Build sort object
+  const sort = {};
+  sort[sortBy] = sortOrder === 'asc' ? 1 : -1;
+
+  // Calculate pagination
+  const skip = (parseInt(page) - 1) * parseInt(limit);
+
+  // Execute query
+  const expenses = await Expense.find(filter)
+    .sort(sort)
+    .skip(skip)
+    .limit(parseInt(limit));
+
+  // Get total count for pagination
+  const total = await Expense.countDocuments(filter);
+
+  sendSuccessResponse(res, {
+    expenses: expenses.map(expense => expense.getSummary()),
+    pagination: {
+      page: parseInt(page),
+      limit: parseInt(limit),
+      total,
+      pages: Math.ceil(total / parseInt(limit))
+    }
+  });
+}));
 
 // @route   GET /api/expenses/:id
 // @desc    Get a specific expense
 // @access  Private
-router.get('/:id', async (req, res) => {
-  try {
-    const expense = await Expense.findOne({
-      _id: req.params.id,
-      user: req.user.userId,
-      status: 'active'
-    }).populate('user', 'firstName lastName');
-
-    if (!expense) {
-      return res.status(404).json({
-        success: false,
-        message: 'Expense not found'
-      });
-    }
-
-    res.json({
-      success: true,
-      data: {
-        expense: expense.getSummary()
-      }
-    });
-
-  } catch (error) {
-    console.error('Get expense error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Server error while fetching expense'
-    });
-  }
-});
+router.get('/:id', checkOwnership(Expense), asyncHandler(async (req, res) => {
+  sendSuccessResponse(res, {
+    expense: req.resource.getSummary()
+  });
+}));
 
 // @route   PUT /api/expenses/:id
 // @desc    Update an expense
 // @access  Private
-router.put('/:id', [
+router.put('/:id', checkOwnership(Expense), [
   body('title')
     .optional()
-    .isLength({ max: 100 })
-    .withMessage('Title cannot exceed 100 characters'),
+    .trim()
+    .isLength({ min: 1, max: 100 })
+    .withMessage('Title must be between 1 and 100 characters'),
   body('amount')
     .optional()
-    .isFloat({ min: 0.01, max: 999999.99 })
-    .withMessage('Amount must be between 0.01 and 999,999.99'),
+    .isFloat({ min: 0.01 })
+    .withMessage('Amount must be a positive number'),
   body('category')
     .optional()
-    .isIn([
-      'Food & Dining',
-      'Transportation',
-      'Shopping',
-      'Entertainment',
-      'Healthcare',
-      'Education',
-      'Housing',
-      'Utilities',
-      'Insurance',
-      'Travel',
-      'Gifts',
-      'Personal Care',
-      'Subscriptions',
-      'Investments',
-      'Other'
-    ])
-    .withMessage('Invalid category'),
+    .trim()
+    .isLength({ min: 1, max: 50 })
+    .withMessage('Category must be between 1 and 50 characters'),
   body('date')
     .optional()
     .isISO8601()
-    .withMessage('Date must be a valid date'),
+    .withMessage('Date must be a valid ISO date'),
   body('description')
     .optional()
+    .trim()
     .isLength({ max: 500 })
-    .withMessage('Description cannot exceed 500 characters'),
+    .withMessage('Description must be less than 500 characters'),
   body('paymentMethod')
     .optional()
-    .isIn(['Cash', 'Credit Card', 'Debit Card', 'Bank Transfer', 'Digital Wallet', 'Other'])
+    .isIn(['cash', 'credit_card', 'debit_card', 'bank_transfer', 'digital_wallet', 'check', 'other'])
     .withMessage('Invalid payment method'),
   body('location')
     .optional()
+    .trim()
     .isLength({ max: 200 })
-    .withMessage('Location cannot exceed 200 characters'),
+    .withMessage('Location must be less than 200 characters'),
   body('tags')
     .optional()
     .isArray()
     .withMessage('Tags must be an array'),
   body('tags.*')
     .optional()
-    .isLength({ max: 50 })
-    .withMessage('Each tag cannot exceed 50 characters')
-], async (req, res) => {
-  try {
-    // Check for validation errors
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ 
-        success: false,
-        message: 'Validation failed',
-        errors: errors.array()
-      });
-    }
-
-    const expense = await Expense.findOne({
-      _id: req.params.id,
-      user: req.user.userId,
-      status: 'active'
-    });
-
-    if (!expense) {
-      return res.status(404).json({
-        success: false,
-        message: 'Expense not found'
-      });
-    }
-
-    // Update allowed fields
-    const allowedUpdates = [
-      'title', 'amount', 'category', 'description', 'date',
-      'paymentMethod', 'location', 'tags', 'receipt', 'notes'
-    ];
-
-    allowedUpdates.forEach(field => {
-      if (req.body[field] !== undefined) {
-        expense[field] = req.body[field];
-      }
-    });
-
-    await expense.save();
-
-    res.json({
-      success: true,
-      message: 'Expense updated successfully',
-      data: {
-        expense: expense.getSummary()
-      }
-    });
-
-  } catch (error) {
-    console.error('Update expense error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Server error while updating expense'
-    });
+    .trim()
+    .isLength({ max: 30 })
+    .withMessage('Each tag must be less than 30 characters')
+], asyncHandler(async (req, res) => {
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return sendErrorResponse(res, errors.array()[0].msg, 400);
   }
-});
+
+  const expense = req.resource;
+
+  // Update fields
+  Object.keys(req.body).forEach(key => {
+    if (req.body[key] !== undefined) {
+      expense[key] = req.body[key];
+    }
+  });
+
+  await expense.save();
+
+  sendSuccessResponse(res, {
+    expense: expense.getSummary()
+  }, 'Expense updated successfully');
+}));
 
 // @route   DELETE /api/expenses/:id
-// @desc    Delete an expense (soft delete)
+// @desc    Delete an expense
 // @access  Private
-router.delete('/:id', async (req, res) => {
-  try {
-    const expense = await Expense.findOne({
-      _id: req.params.id,
-      user: req.user.userId,
-      status: 'active'
-    });
+router.delete('/:id', checkOwnership(Expense), asyncHandler(async (req, res) => {
+  await req.resource.remove();
 
-    if (!expense) {
-      return res.status(404).json({
-        success: false,
-        message: 'Expense not found'
-      });
+  sendSuccessResponse(res, {}, 'Expense deleted successfully');
+}));
+
+// @route   GET /api/expenses/stats/overview
+// @desc    Get expense statistics overview
+// @access  Private
+router.get('/stats/overview', [
+  query('startDate')
+    .optional()
+    .isISO8601()
+    .withMessage('Start date must be a valid ISO date'),
+  query('endDate')
+    .optional()
+    .isISO8601()
+    .withMessage('End date must be a valid ISO date')
+], asyncHandler(async (req, res) => {
+  const { startDate, endDate } = req.query;
+
+  const stats = await Expense.getStats(req.user._id, startDate, endDate);
+
+  sendSuccessResponse(res, { stats });
+}));
+
+// @route   GET /api/expenses/stats/categories
+// @desc    Get expense breakdown by category
+// @access  Private
+router.get('/stats/categories', [
+  query('startDate')
+    .optional()
+    .isISO8601()
+    .withMessage('Start date must be a valid ISO date'),
+  query('endDate')
+    .optional()
+    .isISO8601()
+    .withMessage('End date must be a valid ISO date')
+], asyncHandler(async (req, res) => {
+  const { startDate, endDate } = req.query;
+
+  const categories = await Expense.getCategoryBreakdown(req.user._id, startDate, endDate);
+
+  sendSuccessResponse(res, { categories });
+}));
+
+// @route   GET /api/expenses/stats/trends
+// @desc    Get monthly expense trends
+// @access  Private
+router.get('/stats/trends', [
+  query('months')
+    .optional()
+    .isInt({ min: 1, max: 60 })
+    .withMessage('Months must be between 1 and 60')
+], asyncHandler(async (req, res) => {
+  const { months = 12 } = req.query;
+
+  const trends = await Expense.getMonthlyTrends(req.user._id, parseInt(months));
+
+  sendSuccessResponse(res, { trends });
+}));
+
+// @route   GET /api/expenses/categories
+// @desc    Get all unique categories for the user
+// @access  Private
+router.get('/categories', asyncHandler(async (req, res) => {
+  const categories = await Expense.distinct('category', { user: req.user._id });
+
+  sendSuccessResponse(res, { categories });
+}));
+
+// @route   GET /api/expenses/search
+// @desc    Search expenses by title or description
+// @access  Private
+router.get('/search', [
+  query('q')
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage('Search query is required'),
+  query('page')
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage('Page must be a positive integer'),
+  query('limit')
+    .optional()
+    .isInt({ min: 1, max: 100 })
+    .withMessage('Limit must be between 1 and 100')
+], asyncHandler(async (req, res) => {
+  const { q, page = 1, limit = 20 } = req.query;
+
+  const filter = {
+    user: req.user._id,
+    $or: [
+      { title: { $regex: q, $options: 'i' } },
+      { description: { $regex: q, $options: 'i' } },
+      { category: { $regex: q, $options: 'i' } }
+    ]
+  };
+
+  const skip = (parseInt(page) - 1) * parseInt(limit);
+
+  const expenses = await Expense.find(filter)
+    .sort({ date: -1 })
+    .skip(skip)
+    .limit(parseInt(limit));
+
+  const total = await Expense.countDocuments(filter);
+
+  sendSuccessResponse(res, {
+    expenses: expenses.map(expense => expense.getSummary()),
+    pagination: {
+      page: parseInt(page),
+      limit: parseInt(limit),
+      total,
+      pages: Math.ceil(total / parseInt(limit))
     }
-
-    // Soft delete
-    expense.status = 'deleted';
-    await expense.save();
-
-    res.json({
-      success: true,
-      message: 'Expense deleted successfully'
-    });
-
-  } catch (error) {
-    console.error('Delete expense error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Server error while deleting expense'
-    });
-  }
-});
-
-// @route   GET /api/expenses/analytics/summary
-// @desc    Get expense analytics summary
-// @access  Private
-router.get('/analytics/summary', [
-  query('startDate').optional().isISO8601().withMessage('Start date must be a valid date'),
-  query('endDate').optional().isISO8601().withMessage('End date must be a valid date')
-], async (req, res) => {
-  try {
-    const { startDate, endDate } = req.query;
-
-    const totalExpenses = await Expense.getTotalExpenses(req.user.userId, startDate, endDate);
-    const categoryBreakdown = await Expense.getExpensesByCategory(req.user.userId, startDate, endDate);
-    const monthlyExpenses = await Expense.getMonthlyExpenses(req.user.userId, new Date().getFullYear());
-
-    res.json({
-      success: true,
-      data: {
-        totalExpenses,
-        categoryBreakdown,
-        monthlyExpenses
-      }
-    });
-
-  } catch (error) {
-    console.error('Get analytics error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Server error while fetching analytics'
-    });
-  }
-});
+  });
+}));
 
 module.exports = router;

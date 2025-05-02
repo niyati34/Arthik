@@ -11,7 +11,7 @@ function Expenses() {
     return (
         <ExpenseStyled>
             <InnerLayout>
-                <h1 className="neon-title">Expenses</h1>
+                <h1>Expenses</h1>
                 <h2 className="total-expense">
                     Total Expense: <span>${totalExpenses().toFixed(2)}</span>
                 </h2>
@@ -21,23 +21,20 @@ function Expenses() {
                     </div>
                     <div className="expenses">
                         {expenses.length > 0 ? (
-                            expenses.map((expense) => {
-                                const { id, title, amount, date, category, description } = expense;
-                                return (
-                                    <IncomeItem
-                                        key={id}
-                                        id={id}
-                                        title={title || 'N/A'}
-                                        description={description || 'N/A'}
-                                        amount={amount}
-                                        date={date || 'N/A'}
-                                        category={category || 'N/A'}
-                                        type="expense"
-                                        deleteItem={deleteExpense}
-                                        indicatorColor="var(--color-red)"
-                                    />
-                                );
-                            })
+                            expenses.map((expense) => (
+                                <IncomeItem
+                                    key={expense.id}
+                                    id={expense.id}
+                                    title={expense.title || 'N/A'}
+                                    description={expense.description || 'N/A'}
+                                    amount={expense.amount}
+                                    date={expense.date || 'N/A'}
+                                    category={expense.category || 'N/A'}
+                                    type="expense"
+                                    deleteItem={deleteExpense}
+                                    indicatorColor="var(--color-red)"
+                                />
+                            ))
                         ) : (
                             <p>No expenses recorded yet.</p>
                         )}
@@ -49,44 +46,47 @@ function Expenses() {
 }
 
 const ExpenseStyled = styled.div`
-    display: flex;
-    flex-direction: column; /* Stack the elements vertically */
-    padding: 2rem; /* Add padding around the component */
-    background: #1a1a1a; /* Dark background */
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.4); /* Slight shadow for depth */
+    padding: 2rem;
+     background: #FCF6F9;
+    color: #212529;
 
-    
+    h1 {
+        font-size: 2.5rem;
+        text-align: center;
+        margin-bottom: 1rem;
+        color: #343a40;
+    }
+
     .total-expense {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
-        border: 2px solid #00ffab; /* Neon border */
-        box-shadow: 0px 1px 15px rgba(0, 255, 171, 0.5); /* Glow effect */
-        border-radius: 20px;
+        background: #ffffff;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
         padding: 1rem;
-        margin: 1rem 0;
-        font-size: 2rem;
-        gap: .5rem;
-        color: #00ffab; /* Neon text color */
-        
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 2rem;
+
         span {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--color-green);
+            color: #dc3545;
+            font-size: 1.7rem;
         }
     }
 
     .expense-content {
         display: flex;
+        flex-direction: row;
         gap: 2rem;
 
-        .expenses {
+        .form-container {
             flex: 1;
+        }
+
+        .expenses {
+            flex: 2;
             display: flex;
             flex-direction: column;
-            gap: 1rem; /* Space between expense items */
+            gap: 1rem;
         }
     }
 `;

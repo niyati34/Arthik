@@ -83,6 +83,7 @@ function Form({ addIncome }) {
                     cols="30"
                     rows="4"
                     onChange={handleInput('description')}
+                    
                 />
             </div>
             <div className="submit-btn">
@@ -92,7 +93,7 @@ function Form({ addIncome }) {
                     bPad={'.8rem 1.6rem'}
                     bRad={'30px'}
                     bg={'var(--color-accent)'}
-                    color={'#fff'}
+                    color={'black'}
                 />
             </div>
         </IncomeFormStyled>
@@ -111,7 +112,7 @@ const IncomeFormStyled = styled.form`
         padding: .5rem 1rem;
         border-radius: 5px;
         border: 2px solid #fff;
-        background: transparent;
+          background: #f8f9fa;
         resize: none;
         box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
         color: rgba(34, 34, 96, 0.9);
@@ -137,8 +138,8 @@ const IncomeFormStyled = styled.form`
     }
 
     .submit-btn{
-        button{
-            box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+        button{1
+            box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.06);
             &:hover{
                 background: var(--color-green) !important;
             }

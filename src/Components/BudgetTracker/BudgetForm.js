@@ -45,10 +45,10 @@ const BudgetForm = () => {
             return;
         }
 
-        addBudget({ 
-            name: category, 
-            amount: parseFloat(amount), 
-            period, 
+        addBudget({
+            name: category,
+            amount: parseFloat(amount),
+            period,
             startDate: startDate.toISOString(),
             endDate: endDate.toISOString(),
         });
@@ -87,7 +87,7 @@ const BudgetForm = () => {
             </div>
             <div className="input-control">
                 <label>Period</label>
-                <select name="period" value={period} onChange={handleInputChange} className="dropdown">
+                <select name="period" value={period} onChange={handleInputChange}>
                     <option value="weekly">Weekly</option>
                     <option value="monthly">Monthly</option>
                 </select>
@@ -95,7 +95,7 @@ const BudgetForm = () => {
             <div className="input-control">
                 <label>Start Date</label>
                 <DatePicker
-                    selected={new Date(startDate)}
+                    selected={startDate}
                     onChange={(date) => handleDateChange('startDate', date)}
                     dateFormat="dd/MM/yyyy"
                 />
@@ -103,7 +103,7 @@ const BudgetForm = () => {
             <div className="input-control">
                 <label>End Date</label>
                 <DatePicker
-                    selected={new Date(endDate)}
+                    selected={endDate}
                     onChange={(date) => handleDateChange('endDate', date)}
                     dateFormat="dd/MM/yyyy"
                 />
@@ -115,7 +115,7 @@ const BudgetForm = () => {
                     bPad={'.8rem 1.6rem'}
                     bRad={'30px'}
                     bg={'var(--color-accent)'}
-                    color={'#fff'}
+                    color={'black'}
                 />
             </div>
         </BudgetFormStyled>
@@ -125,62 +125,39 @@ const BudgetForm = () => {
 const BudgetFormStyled = styled.form`
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    padding: 1.5rem; /* Slightly increased padding */
-    background: #1a1a1a; /* Dark background */
+    gap: 2rem;
+    padding: 2rem;
+     background: #f8f9fa;
     border-radius: 10px;
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4), inset 0px 0px 10px rgba(0, 255, 171, 0.5); /* 3D effect with inner shadow */
-    transform: perspective(1000px) translateZ(0); /* Enable 3D perspective */
-    transition: transform 0.3s ease; /* Smooth transition for hover */
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4);
 
-    &:hover {
-        transform: perspective(1000px) translateZ(10px); /* Raise effect on hover */
+    input, select, textarea {
+        font-family: inherit;
+        font-size: inherit;
+        outline: none;
+        border: 2px solid #fff;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        background: #f8f9fa;
+        color: rgba(34, 34, 96, 0.9);
+        box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+
+        &::placeholder {
+            color: rgba(34, 34, 96, 0.4);
+        }
     }
 
     .input-control {
-        display: flex;
-        flex-direction: column;
-
         label {
             margin-bottom: 0.5rem;
-            font-weight: bold;
-            color: #00ffab; /* Neon color */
-            text-shadow: 0 0 1px #00ffab, 0 0 5px #00ffab; /* Reduced glow */
-        }
-
-        input, select {
-            padding: 0.5rem 1rem;
-            border: 1px solid #00ffab; /* Neon border */
-            border-radius: 5px;
-            font-size: 1rem;
-            background: transparent; /* Transparent background */
-            color: #fff; /* Text color */
-            outline: none;
-            transition: border 0.3s ease;
-
-            &:focus {
-                border-color: #00ffab; /* Neon glow on focus */
-                box-shadow: 0 0 3px #00ffab, 0 0 5px #00ffab; /* Reduced glow on focus */
-            }
-        }
-
-        select {
-            cursor: pointer;
-            color: #fff; /* Text color */
-            background: transparent; /* Transparent background */
-            border: 1px solid #00ffab; /* Neon border */
-            appearance: none; /* Remove default dropdown arrow */
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="%2300ffab"><polygon points="4 6 8 10 12 6" /></svg>'); /* Custom arrow */
-            background-repeat: no-repeat;
-            background-position: right 10px center; /* Position the arrow */
-            background-size: 12px; /* Size of the arrow */
-            padding-right: 2rem; /* Space for the arrow */
+            color: #black;
         }
     }
 
     .submit-btn {
         display: flex;
         justify-content: flex-end;
+        width: 100%;
     }
 `;
 

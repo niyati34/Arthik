@@ -6,7 +6,7 @@ import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 const BudgetTracker = () => {
     const { savingsPerBudget } = useGlobalContext();
 
-    const COLORS = ['#39ff14', '#ff073a', '#ffd700']; // Neon colors for the pie chart
+    const COLORS = ['#39ff14', '#ff073a', '#ffd700'];
 
     const renderPieChart = (budget) => {
         const data = [
@@ -67,61 +67,61 @@ const BudgetTracker = () => {
 const getStatusColor = (status) => {
     switch (status) {
         case 'Under Budget':
-            return '#39ff14'; // Neon green
+            return '#39ff14';
         case 'On Budget':
-            return '#00bfff'; // Neon blue
+            return '#00bfff';
         case 'Over Budget':
-            return '#ff073a'; // Neon red
+            return '#ff073a';
         default:
-            return '#f9f9f9'; // White for default
+            return '#f9f9f9';
     }
 };
 
 const BudgetTrackerStyled = styled.div`
     padding: 20px;
-    background-color: #1e1e1e; /* Dark black background */
+    background-color: #f8f9fa;
     border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Darker shadow */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 
     h2 {
         margin-bottom: 20px;
         text-align: center;
-        color: #39ff14; /* Neon green text */
+        color: #39ff14;
     }
-    
+
     ul {
         list-style-type: none;
         padding: 0;
     }
-    
+
     li {
         margin-bottom: 20px;
         padding: 20px;
-        border: 2px solid #444; /* Neon glow effect */
+        border: 2px solid #444;
         border-radius: 10px;
         display: flex;
         align-items: center;
-        justify-content: space-between; /* Horizontal layout */
+        justify-content: space-between;
         transition: box-shadow 0.3s;
-        
+
         &:hover {
-            box-shadow: 0 4px 15px rgba(57, 255, 20, 0.7); /* Neon green glow */
+            box-shadow: 0 4px 15px rgba(57, 255, 20, 0.7);
         }
     }
-    
+
     .budget-info {
         flex: 2;
         margin-right: 20px;
-        color: #fff; /* White text */
-        
+        color: #fff;
+
         p {
             margin: 5px 0;
-            color: #bbb; /* Softer neon text */
+            color: #bbb;
         }
     }
 
     .visuals {
-        flex: 1; /* Allow visuals to take less space */
+        flex: 1;
         display: flex;
         justify-content: center;
         align-items: center;

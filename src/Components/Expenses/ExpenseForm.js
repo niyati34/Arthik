@@ -39,7 +39,8 @@ function ExpenseForm({ addExpense }) {
     return (
         <ExpenseFormStyled onSubmit={handleSubmit}>
             <div className="input-control">
-                <input 
+                <label>Title</label>
+                <input
                     type="text"
                     value={title}
                     placeholder="Expense Title"
@@ -47,25 +48,27 @@ function ExpenseForm({ addExpense }) {
                 />
             </div>
             <div className="input-control">
+                <label>Amount</label>
                 <input
-                    type="text"
+                    type="number"
                     value={amount}
-                    placeholder={'Expense Amount'}
+                    placeholder="Expense Amount"
                     onChange={handleInput('amount')}
                 />
             </div>
             <div className="input-control">
+                <label>Date</label>
                 <DatePicker
-                    placeholderText='Enter A Date'
                     selected={date}
-                    onChange={(date) => {
-                        setInputState({ ...inputState, date });
-                    }}
+                    onChange={(date) => setInputState({ ...inputState, date })}
+                    placeholderText="Select Date"
+                    className="date-picker"
                 />
             </div>
-            <div className="selects input-control">
+            <div className="input-control">
+                <label>Category</label>
                 <select required value={category} onChange={handleInput('category')}>
-                    <option value="" disabled>Select Option</option>
+                    <option value="" disabled>Select Category</option>
                     <option value="education">Education</option>
                     <option value="groceries">Groceries</option>
                     <option value="health">Health</option>
@@ -77,22 +80,22 @@ function ExpenseForm({ addExpense }) {
                 </select>
             </div>
             <div className="input-control">
+                <label>Description</label>
                 <textarea
                     value={description}
-                    placeholder='Add A Reference'
-                    cols="30"
-                    rows="4"
+                    placeholder="Add a Reference"
                     onChange={handleInput('description')}
+                    rows="4"
                 />
             </div>
             <div className="submit-btn">
                 <Button
-                    name={'Add Expense'}
+                    name="Add Expense"
                     icon={plus}
-                    bPad={'.8rem 1.6rem'}
-                    bRad={'30px'}
-                    bg={'var(--color-accent)'}
-                    color={'#fff'}
+                    bPad=".8rem 1.6rem"
+                    bRad="30px"
+                    bg="var(--color-accent)"
+                    color="black"
                 />
             </div>
         </ExpenseFormStyled>
@@ -102,66 +105,57 @@ function ExpenseForm({ addExpense }) {
 const ExpenseFormStyled = styled.form`
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    padding: 1.5rem; /* Slightly increased padding */
-    background: #1a1a1a; /* Dark background */
-    border-radius: 10px;
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4), inset 0px 0px 10px rgba(0, 255, 171, 0.5); /* 3D effect with inner shadow */
-    transform: perspective(1000px) translateZ(0); /* Enable 3D perspective */
-    transition: transform 0.3s ease; /* Smooth transition for hover */
-
-    &:hover {
-        transform: perspective(1000px) translateZ(10px); /* Raise effect on hover */
-    }
-    
-    }
-    input, textarea, select {
-        font-family: inherit;
-        font-size: inherit;
-        outline: none;
-        border: none;
-        padding: .5rem 1rem;
-        border-radius: 5px;
-        border: 2px solid #00ffab; /* Neon border */
-        background: transparent;
-        resize: none;
-        box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
-        color: #00ffab; /* Neon text color */
-        
-        &::placeholder {
-            color: rgba(0, 255, 171, 0.6); /* Slightly transparent neon for placeholders */
-        }
-    }
+    align-items: center;
+    gap: 1.5rem;
+     background: #FCF6F9f;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 2rem;
+    width: 100%;
 
     .input-control {
-        input {
-            width: 100%;
-        }
-    }
-
-    .selects {
+        width: 100%;
+        max-width: 500px;
         display: flex;
-        justify-content: flex-end;
+        flex-direction: column;
+
+        input,
+        textarea,
+        select,
+        .react-datepicker-wrapper,
+        .react-datepicker__input-container input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+            font-size: 1rem;
+            background: #f8f9fa;
+            color: #212529;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+        }
 
         select {
-            color: #00ffab; /* Neon text color */
-            background: transparent; /* Transparent background */
-            border: 2px solid #00ffab; /* Neon border */
+            appearance: none;
+            background-color: #f8f9fa;
+        }
 
-            &:focus, &:active {
-                color: #fff; /* Change color on focus */
-            }
+        input::placeholder,
+        textarea::placeholder {
+            color: #6c757d;
         }
     }
 
     .submit-btn {
-        button {
-            box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
-            &:hover {
-                background: var(--color-green) !important;
-            }
-        }
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        max-width: 500px;
     }
 `;
+
 
 export default ExpenseForm;

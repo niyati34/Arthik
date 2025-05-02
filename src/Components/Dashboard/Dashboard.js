@@ -87,142 +87,145 @@ function Dashboard() {
         </DashboardStyled>
     );
 }
-
 const DashboardStyled = styled.div`
-    background-color: #0d0d0d;
-    min-height: 100vh;
-    color: white;
     padding: 2rem;
-    
+    min-height: 100vh;
+    color: var(--color-dark);
+    background-color: #f5f5f5;
+
     h1 {
         text-align: center;
-        color: #00ffab;
-        font-size: 3rem;
-        text-shadow: 0px 0px 15px #00ffab;
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+        color: var(--color-dark);
     }
 
     .stats-con {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 2rem;
-        
+
         .chart-con {
-            grid-column: 1 / 2;
-            height: 300px;
-            background: linear-gradient(135deg, #282828, #111);
-            padding: 1rem;
-            border-radius: 20px;
-            box-shadow: 0px 10px 30px rgba(0, 255, 171, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+
             .amount-con {
                 display: grid;
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
                 gap: 1rem;
-                margin-top: 1.5rem;
 
                 .income, .expense, .balance {
-                    background: rgba(0, 0, 0, 0.3);
-                    backdrop-filter: blur(10px);
-                    border-radius: 15px;
+                    background-color: #fafafa;
                     padding: 1rem;
-                    border: 1px solid rgba(255, 255, 255, 0.3);
-                    box-shadow: 0px 0px 15px rgba(0, 255, 171, 0.3);
-                    transition: all 0.4s ease-in-out;
-                    
-                    p {
-                        font-size: 2.2rem;
-                        font-weight: bold;
-                        color: #00ffab;
-                        text-shadow: 0px 0px 10px #00ffab;
+                    border: 1px solid #e0e0e0;
+                    border-radius: 10px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
+
+                    h2 {
+                        font-size: 1.1rem;
+                        color: var(--color-dark);
                     }
 
-                    &:hover {
-                        transform: translateY(-5px);
-                        box-shadow: 0px 0px 25px rgba(0, 255, 171, 0.7);
+                    p {
+                        font-size: 1.5rem;
+                        font-weight: 700;
+                        color: var(--color-green);
                     }
                 }
 
+                .expense p {
+                    color: var(--color-red);
+                }
+
                 .balance {
-                    grid-column: span 3;
+                    grid-column: span 2;
                     p {
-                        color: #ff6f00;
-                        font-size: 3rem;
-                        text-shadow: 0px 0px 15px #ff6f00;
+                        color: var(--color-primary);
+                        font-size: 1.8rem;
                     }
                 }
             }
         }
 
         .history-con {
-            grid-column: 2 / 3;
-            background: linear-gradient(135deg, #282828, #111);
-            padding: 1rem;
-            border-radius: 20px;
-            box-shadow: 0px 10px 30px rgba(0, 255, 171, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
 
-            h2 {
-                color: #00ffab;
-                text-shadow: 0px 0px 10px #00ffab;
+            h2.salary-title {
+                font-size: 1.2rem;
+                font-weight: 600;
+                color: var(--color-dark);
+
+                span {
+                    color: var(--color-accent);
+                }
             }
 
             .salary-item {
-                background: rgba(0, 0, 0, 0.3);
-                border-radius: 15px;
-                padding: 1rem;
-                border: 1px solid rgba(255, 255, 255, 0.2);
-                box-shadow: 0px 0px 15px rgba(0, 255, 171, 0.3);
                 display: flex;
                 justify-content: space-between;
+                background-color: #fafafa;
+                padding: 0.8rem 1rem;
+                border: 1px solid #e0e0e0;
+                border-radius: 8px;
 
                 p {
                     font-weight: 600;
-                    font-size: 1.4rem;
-                    color: #ff6f00;
+                    color: var(--color-dark);
                 }
             }
         }
     }
 
     .form-con {
-        position: fixed;
-        bottom: 1rem;
-        right: 1rem;
-        background: rgba(0, 0, 0, 0.5);
-        padding: 1rem;
-        border-radius: 10px;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        box-shadow: 0px 4px 15px rgba(255, 102, 0, 0.5);
-        
-        input {
-            padding: 0.7rem;
-            font-size: 1rem;
-            border-radius: 5px;
-            border: none;
-            margin-bottom: 0.5rem;
-            background: #111;
-            color: white;
-            box-shadow: 0px 0px 10px rgba(255, 102, 0, 0.5);
-        }
+        margin-top: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
 
-        button {
-            padding: 0.7rem;
-            font-size: 1rem;
-            border: none;
-            background-color: #00ffab;
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: all 0.3s ease;
+        form {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
 
-            &:hover {
-                background-color: #ff6f00;
-                box-shadow: 0px 0px 20px rgba(255, 102, 0, 0.8);
+            input {
+                flex: 1;
+                padding: 0.8rem 1rem;
+                font-size: 1rem;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+                background: #fff;
+                color: var(--color-dark);
+            }
+
+            button {
+                padding: 0.8rem 1.2rem;
+                background-color: var(--color-accent);
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+
+                &:hover {
+                    background-color: var(--color-green);
+                }
             }
         }
     }
 `;
+
 
 export default Dashboard;

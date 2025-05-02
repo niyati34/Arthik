@@ -3,53 +3,53 @@
 /* Home Section Container */
 .home-container {
   display: flex;
-  flex-direction: column; /* Stack sections vertically */
-  align-items: center; /* Center main content horizontally */
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  min-height: 100vh; /* Full viewport height */
+  min-height: 100vh;
   color: #ffffff;
-  position: relative; /* Create a positioning context for the video */
-  overflow: hidden; /* Hide overflow for a clean look */
+  position: relative;
+  overflow: hidden;
 }
 
 /* Video Background Styling */
 .video-container {
-  position: absolute; /* Absolute positioning within home-container */
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100%; /* Full width of the home-container */
-  height: 100%; /* Full height of the home-container */
-  overflow: hidden; /* Hide overflow */
-  z-index: 0; /* Ensure it stays behind other content */
-  pointer-events: none; /* Prevent interaction with the video */
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .video-background {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Cover the entire container */
+  object-fit: cover;
 }
 
 /* Main content styling */
 .main-content {
-  display: flex; /* Flexbox layout */
-  justify-content: space-around; /* Center main content */
+  display: flex;
+  justify-content: space-around;
   align-items: center;
   width: 100%;
-  position: relative; /* Ensure it overlaps with video */
-  z-index: 1; /* Ensure it's above the video */
-  margin-top: 50px; /* Add spacing from top */
-  padding: 20px; /* Padding for spacing */
-  flex-wrap: wrap; /* Wrap content on smaller screens */
+  position: relative;
+  z-index: 1;
+  margin-top: 50px;
+  padding: 20px;
+  flex-wrap: wrap;
 }
 
 /* Text section in the main content */
 .text-section {
-  display: flex; /* Flexbox for alignment */
-  flex-direction: column; /* Stack text vertically */
-  align-items: flex-start; /* Align items to the left */
-  text-align: left; /* Left-align text */
-  flex: 1; /* Allow text to take up available space */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  flex: 1;
   padding: 20px;
 }
 
@@ -58,41 +58,36 @@
   margin-top: 20px;
   margin-left: 70px;
   line-height: 1.2;
-  text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.3);
-  transition: background 0.3s ease, color 0.3s ease;
-  background: linear-gradient(70deg, #00dbde, #fc00ff, #00f260, #0575e6); /* Gradient colors */
-  background-size: 400%; /* Larger background size for animation */
-  background-clip: text;
-  -webkit-background-clip: text;
-  background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  animation: gradientAnimation 8s ease-in-out infinite; /* Smooth transition with easing */
+  color: #ffffff;
+  text-shadow: none;
+  background: none;
+  -webkit-text-fill-color: initial;
+  animation: none;
 }
 
 .text-section p {
   font-size: 20px;
   margin-left: 75px;
   margin-bottom: 30px;
-  color: #b8b8d4; /* Softer color for description */
+  color: #cccccc;
 }
 
 .hero-button {
-  background: linear-gradient(45deg, #00c6ff, #0072ff); /* Gradient button */
+  background-color: #007bff;
   border: none;
   margin-left: 70px;
   padding: 15px 30px;
   border-radius: 30px;
   color: #ffffff;
   font-weight: 500;
-  box-shadow: 0 10px 30px rgba(0, 198, 255, 0.5); /* Soft glow effect */
   cursor: pointer;
-  transition: background 0.3s ease, box-shadow 0.3s ease;
+  transition: background 0.3s ease;
+  box-shadow: none;
 }
 
 .hero-button:hover {
-  background: linear-gradient(45deg, #00f260, #0575e6); /* Button color change on hover */
-  box-shadow: 0 15px 35px rgba(0, 242, 96, 0.6); /* Stronger glow on hover */
+  background-color: #0056b3;
+  box-shadow: none;
 }
 
 .image-section {
@@ -102,23 +97,23 @@
 }
 
 .right-image {
-  max-width: 3500px; /* Restrict maximum size of the image */
+  max-width: 100%;
   padding-right: 100px;
-  width: 500px; /* Scale the image based on container */
-  height: auto; /* Maintain aspect ratio */
-  border-radius: 0px; /* Optional: Rounded corners */
-  animation: floatImage 3s ease-in-out infinite, rotateImage 10s linear infinite, scaleImage 6s ease-in-out infinite; /* Multiple animations */
+  width: 500px;
+  height: auto;
+  border-radius: 0;
+  animation: none;
 }
 
-/* Floating animation */
+/* Optional: Remove the keyframes if no animations are used */
 @keyframes floatImage {
   0% {
-      transform: translateY(0);
+    transform: translateY(0);
   }
   50% {
-      transform: translateY(-20px);
+    transform: translateY(-20px);
   }
   100% {
-      transform: translateY(0);
+    transform: translateY(0);
   }
 }

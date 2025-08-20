@@ -210,11 +210,11 @@ npm run lint
 
 | 💰 Income Management | 💸 Expense Tracking |
 |---------------------|---------------------|
-| ![Income](docs/screenshots/income.png) | ![Expenses](docs/screenshots/expenses.png) |
+| <img width="1897" height="910" alt="image" src="https://github.com/user-attachments/assets/812cad5a-9cb9-40cf-81c6-4003c6c309c9" /> | <img width="1886" height="905" alt="image" src="https://github.com/user-attachments/assets/b67c069f-071f-4416-85c4-475d5a8c3c14" /> |
 
 | 🎯 Goal Setting | 📈 Analytics |
 |-----------------|-------------|
-| ![Goals](docs/screenshots/goals.png) | ![Budget](docs/screenshots/budget.png) |
+| <img width="1897" height="902" alt="image" src="https://github.com/user-attachments/assets/0a3b3d93-e6ed-4521-b8b5-69b45aabc817" /> | <img width="1911" height="911" alt="image" src="https://github.com/user-attachments/assets/96fea53b-e347-4f81-8698-5efd6ddf4593" /> |
 
 > � **Note:** Add your screenshots to `docs/screenshots/` to display them here
 
